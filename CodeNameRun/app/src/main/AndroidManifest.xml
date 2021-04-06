@@ -10,8 +10,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CodeNameRun">
         <activity android:name=".WriteAgentInfo"></activity>
-        <activity android:name=".StartActivity" />
-        <activity android:name=".SelectStage" />
+        <activity android:name=".Community" />
+        <activity android:name=".Home" />
         <activity android:name=".ScoreBoard" />
         <activity android:name=".Running" />
         <activity android:name=".Ranking" />
