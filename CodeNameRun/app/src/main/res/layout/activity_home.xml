@@ -7,6 +7,50 @@
     android:layout_height="match_parent"
     tools:context=".Home">
 
+    <Button
+        android:id="@+id/TutorialStageButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="Tutorial"
+        android:layout_margin="20dp"/>
+
+    <Button
+        android:id="@+id/Stage1Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/TutorialStageButton"
+
+        android:text="Stage1"
+        android:layout_margin="20dp"/>
+
+    <Button
+        android:id="@+id/Stage2Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/TutorialStageButton"
+        android:layout_alignParentRight="true"
+        android:text="Stage2"
+        android:layout_margin="20dp"/>
+
+    <Button
+        android:id="@+id/Stage3Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/Stage1Button"
+
+        android:text="Stage3"
+        android:layout_margin="20dp"/>
+
+    <Button
+        android:id="@+id/Stage4Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/Stage1Button"
+        android:layout_alignParentRight="true"
+        android:text="Stage3"
+        android:layout_margin="20dp"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
