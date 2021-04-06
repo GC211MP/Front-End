@@ -9,6 +9,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CodeNameRun">
+        <activity android:name=".WriteAgentInfo"></activity>
+        <activity android:name=".StartActivity" />
+        <activity android:name=".SelectStage" />
+        <activity android:name=".ScoreBoard" />
+        <activity android:name=".Running" />
+        <activity android:name=".Ranking" />
+        <activity android:name=".AgentInfo" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
