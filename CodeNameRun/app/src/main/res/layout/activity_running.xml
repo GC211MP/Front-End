@@ -54,8 +54,8 @@
         android:id="@+id/alertStage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="stage 1"
+        android:text="stage 알려줌"
         android:layout_below="@id/stageBar"
         android:layout_margin="30dp"/>
 
-</>
+</RelativeLayout>
