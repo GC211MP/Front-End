@@ -7,6 +7,7 @@
     android:backgroundTint="@color/black"
     tools:context=".MainActivity">
 
+    /* title */
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -19,6 +20,7 @@
         android:layout_marginTop="230dp"
         />
 
+    /* game start button */
     <Button
         android:id="@+id/startButton"
         android:layout_width="wrap_content"

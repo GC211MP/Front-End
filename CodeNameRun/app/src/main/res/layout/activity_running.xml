@@ -8,6 +8,7 @@
     tools:context=".Running"
     android:background="@color/white">
 
+    /* 기밀문서 상단 바 */
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -61,6 +62,7 @@
 
     </LinearLayout>
 
+    /* stage 알림 txt */
     <TextView
         android:id="@+id/alertStage"
         android:layout_width="wrap_content"
