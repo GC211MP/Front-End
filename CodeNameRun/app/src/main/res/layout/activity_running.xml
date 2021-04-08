@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Running">
+    tools:context=".Running"
+    android:background="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,40 +14,50 @@
         android:id="@+id/stageBar"
         android:orientation="horizontal">
 
-        <TextView
+        <ImageView
             android:id="@+id/TopSecret1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="기밀1"
-            android:layout_margin="10dp"/>
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/topsecret"
+            android:scaleType="centerInside"
+            android:layout_margin="10dp"
+            android:background="@android:color/transparent"/>
 
-        <TextView
+        <ImageView
             android:id="@+id/TopSecret2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="기밀2"
-            android:layout_margin="10dp"/>
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/topsecret"
+            android:scaleType="centerInside"
+            android:layout_margin="10dp"
+            android:background="@android:color/transparent"/>
 
-        <TextView
+        <ImageView
             android:id="@+id/TopSecret3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="기밀3"
-            android:layout_margin="10dp"/>
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/topsecret"
+            android:scaleType="centerInside"
+            android:layout_margin="10dp"
+            android:background="@android:color/transparent"/>
 
-        <TextView
+        <ImageView
             android:id="@+id/TopSecret4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="기밀4"
-            android:layout_margin="10dp"/>
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/topsecret"
+            android:scaleType="centerInside"
+            android:layout_margin="10dp"
+            android:background="@android:color/transparent"/>
 
-        <TextView
+        <ImageView
             android:id="@+id/TopSecret5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="기밀5"
-            android:layout_margin="10dp"/>
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/topsecret"
+            android:scaleType="centerInside"
+            android:layout_margin="10dp"
+            android:background="@android:color/transparent"/>
 
     </LinearLayout>
 
@@ -55,6 +66,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="stage 알려줌"
+        android:textSize="30dp"
         android:layout_below="@id/stageBar"
         android:layout_margin="30dp"/>
 

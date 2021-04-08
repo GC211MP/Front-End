@@ -3,18 +3,18 @@ package gachon.hanul.codenamerun;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class Running extends AppCompatActivity {
 
     /* variables */
-    TextView TopSecret1;
-    TextView TopSecret2;
-    TextView TopSecret3;
-    TextView TopSecret4;
-    TextView TopSecret5;
+    ImageView TopSecret1;
+    ImageView TopSecret2;
+    ImageView TopSecret3;
+    ImageView TopSecret4;
+    ImageView TopSecret5;
     TextView stageNameText;
     String stageName;
 
@@ -37,7 +37,7 @@ public class Running extends AppCompatActivity {
 
         /* change values */
         TopSecret1.setVisibility(View.VISIBLE);
-        TopSecret2.setVisibility(View.INVISIBLE);
+        TopSecret2.setVisibility(View.VISIBLE);
         TopSecret3.setVisibility(View.INVISIBLE);
         TopSecret4.setVisibility(View.INVISIBLE);
         TopSecret5.setVisibility(View.INVISIBLE);
