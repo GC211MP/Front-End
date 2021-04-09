@@ -8,9 +8,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.speech.tts.TextToSpeech;
-import static android.speech.tts.TextToSpeech.ERROR;
 
 import java.util.Locale;
+
+import static android.speech.tts.TextToSpeech.ERROR;
 
 public class Running extends AppCompatActivity {
 
@@ -50,6 +51,7 @@ public class Running extends AppCompatActivity {
 
         stageNameText.setText(stageName);
 
+        /* set TTS */
         tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
@@ -74,7 +76,7 @@ public class Running extends AppCompatActivity {
                 "어서 오세요! 오늘부터 미션을 수행하시면 됩니다!! 요원 님!!\n" +
                 "네? 저 오늘 취직했는데...\n" +
                 "일단 달려요!!\n" +
-                "으아아!\n",TextToSpeech.QUEUE_FLUSH, null);
+                "으아아!\n",TextToSpeech.QUEUE_FLUSH, null, "1");
     }
 
 
