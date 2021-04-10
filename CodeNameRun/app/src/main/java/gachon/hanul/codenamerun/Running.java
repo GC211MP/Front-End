@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
+import android.os.Handler;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -62,24 +63,24 @@ public class Running extends AppCompatActivity {
             }
         });
 
+        /* if 시간이 1000 미만일때는 사운드가 나오지 않는 버그가 있는 것 같습니다*/
+        if (stageName.equals("Tutorial")) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    tts.speak("Tutorial", TextToSpeech.QUEUE_FLUSH, null, "1");
+                }
+            }, 1000);
+        }
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                tts.speak("2", TextToSpeech.QUEUE_FLUSH, null, "2");
+            }
+        }, 2000);
+
+
     }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        tts.speak("나는 어렸을 때부터 정의로운 비밀요원 같은 영화에나 나올 법한 영웅에 관심이 많았다...\n" +
-                "하지만 현실은 그저 평범한 일반인에 지나지 않았다!\n" +
-                "그러던 도중 발견한 구인광고!\n" +
-                "비밀요원을 구한다고?\n" +
-                "누가 비밀요원을 이렇게 전단지로 구하냐 싶냐 만은,\n" +
-                "나의 오랜 꿈을 위해 용기 있게 지원한다! \n" +
-                "어서 오세요! 오늘부터 미션을 수행하시면 됩니다!! 요원 님!!\n" +
-                "네? 저 오늘 취직했는데...\n" +
-                "일단 달려요!!\n" +
-                "으아아!\n",TextToSpeech.QUEUE_FLUSH, null, "1");
-    }
-
-
-
 
 }
