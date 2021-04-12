@@ -46,7 +46,7 @@ public class Running extends AppCompatActivity {
 
         /* change values */
         TopSecret1.setVisibility(View.VISIBLE);
-        TopSecret2.setVisibility(View.VISIBLE);
+        TopSecret2.setVisibility(View.INVISIBLE);
         TopSecret3.setVisibility(View.INVISIBLE);
         TopSecret4.setVisibility(View.INVISIBLE);
         TopSecret5.setVisibility(View.INVISIBLE);
@@ -54,74 +54,55 @@ public class Running extends AppCompatActivity {
         stageNameText.setText(stageName);
 
         /* set TTS */
-        tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int status) {
-                if(status != ERROR) {
-                    tts.setLanguage(Locale.KOREAN); // 언어
-                    tts.setPitch(2.0f); // 톤 (높낮이, default= 1.0f)
-                    tts.setSpeechRate(1.5f); // 속도 (default= 1.0f)
-                }
+        tts = new TextToSpeech(this, status -> {
+            if(status != ERROR) {
+                tts.setLanguage(Locale.KOREAN); // 언어
+                tts.setPitch(2.0f); // 톤 (높낮이, default= 1.0f)
+                tts.setSpeechRate(1.5f); // 속도 (default= 1.0f)
             }
         });
 
-        /* if 시간이 1000 미만일때는 사운드가 나오지 않는 버그(?)가 있는 것 같습니다*/
+        /* if 시간이 1000(?) 미만일때는 사운드가 나오지 않음*/
         if (stageName.equals("Tutorial")) {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    tts.speak("Tutorial", TextToSpeech.QUEUE_FLUSH, null, "Tutorial");
-                }
-            }, 1000);
+            new Handler().postDelayed(() -> tts.speak("Tutorial", TextToSpeech.QUEUE_FLUSH, null, "Tutorial"), 1000);
         }
         if (stageName.equals("Stage1")) {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    tts.speak("Stage1", TextToSpeech.QUEUE_FLUSH, null, "Stage1");
-                }
-            }, 1000);
-        }
-        if (stageName.equals("Stage2")) {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    tts.speak("Stage2", TextToSpeech.QUEUE_FLUSH, null, "Stage2");
-                }
-            }, 1000);
-        }
-        if (stageName.equals("Stage3")) {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    tts.speak("Stage3", TextToSpeech.QUEUE_FLUSH, null, "Stage3");
-                }
-            }, 1000);
-        }
-        if (stageName.equals("Stage4")) {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    tts.speak("Stage4", TextToSpeech.QUEUE_FLUSH, null, "Stage3");
-                }
-            }, 1000);
-        }
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                tts.speak("테스트 대사 입니다", TextToSpeech.QUEUE_FLUSH, null, "2");
-                /* a bgm cycle */
+            new Handler().postDelayed(() -> {
+                tts.speak("Stage1", TextToSpeech.QUEUE_FLUSH, null, "Stage1");
                 MainActivity.mediaPlayer = MediaPlayer.create(Running.this, R.raw.footstep);
                 MainActivity.mediaPlayer.start();
-                MainActivity.mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                    @Override
-                    public void onCompletion(MediaPlayer mp) {
-                        MainActivity.mediaPlayer.release();
-                        MainActivity.mediaPlayer = null;
-                    }
+                MainActivity.mediaPlayer.setOnCompletionListener(mp -> {
+                    MainActivity.mediaPlayer.release();
+                    MainActivity.mediaPlayer = null;
                 });
-            }
+            }, 1000);
+
+            /* 5번의(4분 ->test로 4초 간격 해둠) 인터벌 표시 마크 보이기 */
+            new Handler().postDelayed(() -> TopSecret1.setVisibility(View.VISIBLE), 4000);
+            new Handler().postDelayed(() -> TopSecret2.setVisibility(View.VISIBLE), 8000);
+            new Handler().postDelayed(() -> TopSecret3.setVisibility(View.VISIBLE), 12000);
+            new Handler().postDelayed(() -> TopSecret4.setVisibility(View.VISIBLE), 16000);
+            new Handler().postDelayed(() -> TopSecret5.setVisibility(View.VISIBLE), 20000);
+        }
+        if (stageName.equals("Stage2")) {
+            new Handler().postDelayed(() -> tts.speak("Stage2", TextToSpeech.QUEUE_FLUSH, null, "Stage2"), 1000);
+        }
+        if (stageName.equals("Stage3")) {
+            new Handler().postDelayed(() -> tts.speak("Stage3", TextToSpeech.QUEUE_FLUSH, null, "Stage3"), 1000);
+        }
+        if (stageName.equals("Stage4")) {
+            new Handler().postDelayed(() -> tts.speak("Stage4", TextToSpeech.QUEUE_FLUSH, null, "Stage3"), 1000);
+        }
+
+        new Handler().postDelayed(() -> {
+            tts.speak("테스트 대사 입니다", TextToSpeech.QUEUE_FLUSH, null, "2");
+            /* a bgm cycle */
+            MainActivity.mediaPlayer = MediaPlayer.create(Running.this, R.raw.footstep);
+            MainActivity.mediaPlayer.start();
+            MainActivity.mediaPlayer.setOnCompletionListener(mp -> {
+                MainActivity.mediaPlayer.release();
+                MainActivity.mediaPlayer = null;
+            });
         }, 2000);
         
     }
