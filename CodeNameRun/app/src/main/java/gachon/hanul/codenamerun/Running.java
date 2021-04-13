@@ -6,10 +6,13 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 
 import android.os.Handler;
+import android.speech.tts.UtteranceProgressListener;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.speech.tts.TextToSpeech;
+import android.widget.Toast;
 
 import java.util.Locale;
 
@@ -61,14 +64,38 @@ public class Running extends AppCompatActivity {
                 tts.setSpeechRate(1.5f); // 속도 (default= 1.0f)
             }
         });
+        tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
+            @Override
+            public void onStart(final String utteranceId) {
+                Running.this.runOnUiThread(new Runnable() {
+                    public void run() {
+                    }
+                });
+            }
+
+            @Override
+
+            public void onError(String utteranceId) { }
+
+            @Override
+
+            public void onDone(String utteranceId) {
+                Running.this.runOnUiThread(new Runnable() {
+                    public void run() {
+                        Toast.makeText(Running.this, utteranceId, Toast.LENGTH_SHORT).show();
+                    }
+                });
+                Log.d("listener", "start: " + utteranceId);
+            }
+        });
 
         /* if 시간이 1000(?) 미만일때는 사운드가 나오지 않음*/
         if (stageName.equals("Tutorial")) {
-            new Handler().postDelayed(() -> tts.speak("Tutorial", TextToSpeech.QUEUE_FLUSH, null, "Tutorial"), 1000);
+            new Handler().postDelayed(() -> tts.speak("Tutorial", TextToSpeech.QUEUE_FLUSH, null, "Tutorial"), 2000);
         }
         if (stageName.equals("Stage1")) {
             new Handler().postDelayed(() -> {
-                tts.speak("Stage1", TextToSpeech.QUEUE_FLUSH, null, "Stage1");
+                tts.speak("Stage1", TextToSpeech.QUEUE_ADD, null, "Stage1");
                 MainActivity.mediaPlayer = MediaPlayer.create(Running.this, R.raw.footstep);
                 MainActivity.mediaPlayer.start();
                 MainActivity.mediaPlayer.setOnCompletionListener(mp -> {
@@ -85,17 +112,17 @@ public class Running extends AppCompatActivity {
             new Handler().postDelayed(() -> TopSecret5.setVisibility(View.VISIBLE), 20000);
         }
         if (stageName.equals("Stage2")) {
-            new Handler().postDelayed(() -> tts.speak("Stage2", TextToSpeech.QUEUE_FLUSH, null, "Stage2"), 1000);
+            new Handler().postDelayed(() -> tts.speak("Stage2", TextToSpeech.QUEUE_ADD, null, "Stage2"), 1000);
         }
         if (stageName.equals("Stage3")) {
-            new Handler().postDelayed(() -> tts.speak("Stage3", TextToSpeech.QUEUE_FLUSH, null, "Stage3"), 1000);
+            new Handler().postDelayed(() -> tts.speak("Stage3", TextToSpeech.QUEUE_ADD, null, "Stage3"), 1000);
         }
         if (stageName.equals("Stage4")) {
-            new Handler().postDelayed(() -> tts.speak("Stage4", TextToSpeech.QUEUE_FLUSH, null, "Stage3"), 1000);
+            new Handler().postDelayed(() -> tts.speak("Stage4", TextToSpeech.QUEUE_ADD, null, "Stage3"), 1000);
         }
 
         new Handler().postDelayed(() -> {
-            tts.speak("테스트 대사 입니다", TextToSpeech.QUEUE_FLUSH, null, "2");
+            tts.speak("4초", TextToSpeech.QUEUE_ADD, null, "4초");
             /* a bgm cycle */
             MainActivity.mediaPlayer = MediaPlayer.create(Running.this, R.raw.footstep);
             MainActivity.mediaPlayer.start();
@@ -103,7 +130,17 @@ public class Running extends AppCompatActivity {
                 MainActivity.mediaPlayer.release();
                 MainActivity.mediaPlayer = null;
             });
-        }, 2000);
-        
+        }, 4000);
+
+        new Handler().postDelayed(() -> {
+            tts.speak("8초", TextToSpeech.QUEUE_ADD, null, "8초");
+        }, 8000);
+        new Handler().postDelayed(() -> {
+            tts.speak("12초", TextToSpeech.QUEUE_ADD, null, "12초");
+        }, 12000);
+        new Handler().postDelayed(() -> {
+            tts.speak("16초", TextToSpeech.QUEUE_ADD, null, "16초");
+        }, 16000);
+
     }
 }
