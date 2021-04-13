@@ -20,4 +20,6 @@
             그때까지 계속 걸으면서 주변을 살피고 계시길 바랍니다. </item>
 
     </string-array>
+
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyABMefWjQMzsJNJvtniwXfN9uhbRjU6ofE</string>
 </resources>
