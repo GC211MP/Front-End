@@ -5,11 +5,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:backgroundTint="@color/black"
+    android:background="@color/basic"
     tools:context=".MainActivity">
 
     /* title */
     <TextView
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
@@ -28,7 +29,7 @@
         android:layout_height="wrap_content"
 
         android:text="START"
-        android:textSize="20dp"
+        android:textSize="30dp"
 
         android:padding="0dp"
 
