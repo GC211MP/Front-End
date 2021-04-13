@@ -70,10 +70,11 @@ public class Running extends AppCompatActivity implements LocationListener {
 
         // help
         helpGPS = new HelpGPS(this);
-        helpMap = new HelpMap();
+        helpMap = new HelpMap(this,helpGPS.getLocation());
+        helpGPS.setHelpMap(helpMap);
 
-        // 지도에 경로를 표시하기 위해서 지도를 다룰 함수를 콜백하는 겁니다다
-       SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        // 지도에 경로를 표시하기 위해서 지도를 다룰 함수를 콜백하는 겁니다
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(helpMap);
 
 
