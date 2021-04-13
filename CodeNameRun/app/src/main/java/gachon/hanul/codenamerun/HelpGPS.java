@@ -20,34 +20,54 @@ import androidx.core.content.ContextCompat;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.awt.font.NumericShaper;
+import java.util.ArrayList;
+
 /*
- * This is not our original code
+ * 이 클래스가 해줘야할 역할
+ * 1. 위치정보를 받아와야함
+ * 2. 위치정보가 바뀔때마다 지도정보를 바꿀 수 있게 콜 해줘야함
+ * 3. 속도가 떨어지면 알려줘야해 --> 이거 어케 구현하지?
+ * 4. 스테이지가 끝난걸 알려주면 디비에 속 정보를 넣어줘야해
  *
  */
 public class HelpGPS extends Service implements LocationListener {
 
 
-
+    private static final long MIN_DISTANCE_UPDATES = 10;
+    private static final long MIN_TIME_UPDATES = 3000; // 3 seconds
+    protected LocationManager locationManager;
 
     private final Context mContext;
-    Location location;
+    private Location location;
     private double latitude;
     private double longitude;
     private double altitude;
 
-    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10;
-    private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1;
-    protected LocationManager locationManager;
 
+    private HelpMap helpMap;
+    private ArrayList<Location> location_list;
 
     public HelpGPS(Context context) {
         this.mContext = context;
+        locationManager = (LocationManager) mContext.getSystemService(LOCATION_SERVICE);
+
+        location_list = new ArrayList<Location>();
         getLocation();
+
+        location_list.add(location);
     }
 
-
+    /*
+     * 위치정보가 바뀔때마다 알려주는 리스너 함수
+     * 1. 바뀌면 어레이 정보를 업데이트
+     * 2. 헬프맵을 콜해서 지도 업데이트
+     */
     @Override
     public void onLocationChanged(Location location) {
+        location_list.add(location);
+        helpMap.updateMAP(location);
+
     }
 
     @Override
@@ -69,7 +89,7 @@ public class HelpGPS extends Service implements LocationListener {
 
     public Location getLocation() {
         try {
-            locationManager = (LocationManager) mContext.getSystemService(LOCATION_SERVICE);
+
 
             boolean isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
             boolean isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
@@ -87,28 +107,18 @@ public class HelpGPS extends Service implements LocationListener {
 
 
                 if (isNetworkEnabled) {
-                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
-
-                    if (locationManager != null) {
-                        location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                        if (location != null) {
-                            latitude = location.getLatitude();
-                            longitude = location.getLongitude();
-                            altitude = location.getAltitude();
-                        }
+                    if (location == null) {
+                        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME_UPDATES, MIN_DISTANCE_UPDATES, this);
+                        if (locationManager != null)
+                            location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                     }
+
                 }
                 if (isGPSEnabled) {
                     if (location == null) {
-                        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
-                        if (locationManager != null) {
+                        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME_UPDATES, MIN_DISTANCE_UPDATES, this);
+                        if (locationManager != null)
                             location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                            if (location != null) {
-                                latitude = location.getLatitude();
-                                longitude = location.getLongitude();
-                                altitude = location.getAltitude();
-                            }
-                        }
                     }
                 }
             }
@@ -127,9 +137,13 @@ public class HelpGPS extends Service implements LocationListener {
         return longitude;
     }
 
-    public String locationToString(){
-        return  Double.toString(latitude) + "/" + Double.toString(longitude) +
+    public String locationToString() {
+        return Double.toString(latitude) + "/" + Double.toString(longitude) +
                 "/" + Double.toString(altitude);
+    }
+
+    public void setHelpMap(HelpMap helpMap) {
+        this.helpMap = helpMap;
     }
 
     public void stopUsingGPS() {
@@ -137,13 +151,6 @@ public class HelpGPS extends Service implements LocationListener {
             locationManager.removeUpdates(HelpGPS.this);
         }
     }
-
-
-
-
-
-
-
 
 
 }
