@@ -130,8 +130,8 @@ public class Running extends AppCompatActivity implements LocationListener {
         });
 
         /* if 시간이 1000(?) 미만일때는 사운드가 나오지 않음*/
-        if (stageName.equals("Tutorial")) {
-            new Handler().postDelayed(() -> tts.speak("Tutorial", TextToSpeech.QUEUE_FLUSH, null, "Tutorial"), 2000);
+        if (stageName.equals("Prologue")) {
+            new Handler().postDelayed(() -> tts.speak("Prologue", TextToSpeech.QUEUE_FLUSH, null, "Prologue"), 2000);
         }
         if (stageName.equals("Stage1")) {
             new Handler().postDelayed(() -> {

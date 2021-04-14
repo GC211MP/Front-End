@@ -9,18 +9,18 @@
 
     /* stage buttons */
     <Button
-        android:id="@+id/TutorialStageButton"
+        android:id="@+id/PrologueStageButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:text="Tutorial"
+        android:text="Prologue"
         android:layout_margin="20dp"/>
 
     <Button
         android:id="@+id/Stage1Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/TutorialStageButton"
+        android:layout_below="@id/PrologueStageButton"
 
         android:text="Stage1"
         android:layout_margin="20dp"/>
@@ -29,7 +29,7 @@
         android:id="@+id/Stage2Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/TutorialStageButton"
+        android:layout_below="@id/PrologueStageButton"
         android:layout_alignParentRight="true"
         android:text="Stage2"
         android:layout_margin="20dp"/>
