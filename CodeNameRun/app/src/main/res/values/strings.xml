@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CodeNameRun</string>
+    <string name="app_name">CodeNameRunner</string>
 
     <string name="faster">요원 님!! 느립니다. 더 빠르게 달리셔야 합니다!</string>
     <string name="good_speed">요원 님! 잘 달리고 계십니다! 계속 달리십시오!</string>
@@ -76,6 +76,7 @@
         스파이의 예상 진행 경로를 앞질러 미리 잠복해야 할 것 같습니다.
         요원 님도 자리를 옮기죠.
     </string>
+
     <string name="Stage1_run2">
          (긴박한 bgm) 걷기가 끝났습니다. 달리십시오.
     </string>

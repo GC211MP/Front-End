@@ -14,6 +14,10 @@ public class Home extends AppCompatActivity {
     Button Stage3Button;
     Button Stage4Button;
 
+    Button AgentInfo;
+    Button Home;
+    Button Community;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,7 +30,12 @@ public class Home extends AppCompatActivity {
         Stage3Button = findViewById(R.id.Stage3Button);
         Stage4Button = findViewById(R.id.Stage4Button);
 
-        /* buttons */
+        /* find view by id */
+        AgentInfo =  findViewById(R.id.AgentInfoButton);
+        Home =  findViewById(R.id.HomeButton);
+        Community =  findViewById(R.id.CommunityButton);
+
+        /* stage buttons */
         PrologueStageButton.setOnClickListener(v -> {
             Intent PrologueIntent = new Intent(getApplicationContext(), Running.class);
             PrologueIntent.putExtra("stageName", "Prologue");
@@ -55,6 +64,22 @@ public class Home extends AppCompatActivity {
             Intent Stage4Intent= new Intent(getApplicationContext(), Running.class);
             Stage4Intent.putExtra("stageName", "Stage4");
             startActivity(Stage4Intent);
+        });
+
+        /* menu buttons */
+        AgentInfo.setOnClickListener(v -> {
+            Intent AgentInfoIntent= new Intent(getApplicationContext(), AgentInfo.class);
+            startActivity(AgentInfoIntent);
+        });
+
+        Home.setOnClickListener(v -> {
+            Intent HomeIntent= new Intent(getApplicationContext(), Home.class);
+            startActivity(HomeIntent);
+        });
+
+        Community.setOnClickListener(v -> {
+            Intent CommunityIntent= new Intent(getApplicationContext(), Community.class);
+            startActivity(CommunityIntent);
         });
 
     }

@@ -7,4 +7,36 @@
     android:layout_height="match_parent"
     tools:context=".AgentInfo">
 
+    /* menu bar */
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true">
+
+        <Button
+            android:id="@+id/AgentInfoButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="요원정보"
+            android:layout_margin="10dp"/>
+
+        <Button
+            android:id="@+id/HomeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="홈"
+            android:layout_margin="10dp"/>
+
+        <Button
+            android:id="@+id/CommunityButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="커뮤니티"
+            android:layout_margin="10dp"/>
+    </LinearLayout>
+
 </RelativeLayout>

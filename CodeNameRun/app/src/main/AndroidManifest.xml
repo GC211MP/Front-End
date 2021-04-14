@@ -12,6 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CodeNameRun">
+
         <activity android:name=".WriteAgentInfo"></activity>
         <activity android:name=".Community" />
         <activity android:name=".Home" />
