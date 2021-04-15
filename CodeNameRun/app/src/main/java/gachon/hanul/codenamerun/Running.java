@@ -6,9 +6,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -88,7 +86,7 @@ public class Running extends AppCompatActivity implements LocationListener {
         stageNameText = findViewById(R.id.alertStage);
 
         /* change values */
-        TopSecret1.setVisibility(View.VISIBLE);
+        TopSecret1.setVisibility(View.INVISIBLE);
         TopSecret2.setVisibility(View.INVISIBLE);
         TopSecret3.setVisibility(View.INVISIBLE);
         TopSecret4.setVisibility(View.INVISIBLE);
@@ -131,18 +129,35 @@ public class Running extends AppCompatActivity implements LocationListener {
 
         /* if 시간이 1000(?) 미만일때는 사운드가 나오지 않음*/
         if (stageName.equals("Prologue")) {
-            new Handler().postDelayed(() -> tts.speak("Prologue", TextToSpeech.QUEUE_FLUSH, null, "Prologue"), 2000);
+            new Handler().postDelayed(() -> tts.speak(getResources().getString(R.string.prologue_1), TextToSpeech.QUEUE_FLUSH, null, "prologue_1"), 2000);
         }
+
         if (stageName.equals("Stage1")) {
+            /* tts */
             new Handler().postDelayed(() -> {
-                tts.speak("Stage1", TextToSpeech.QUEUE_ADD, null, "Stage1");
+                tts.speak(getResources().getString(R.string.Stage1_walk1_1), TextToSpeech.QUEUE_ADD, null, "Stage1_walk1_1");
                 MainActivity.mediaPlayer = MediaPlayer.create(Running.this, R.raw.footstep);
                 MainActivity.mediaPlayer.start();
                 MainActivity.mediaPlayer.setOnCompletionListener(mp -> {
                     MainActivity.mediaPlayer.release();
                     MainActivity.mediaPlayer = null;
                 });
-            }, 1000);
+            }, 2000);
+            new Handler().postDelayed(() -> {
+                tts.speak(getResources().getString(R.string.Stage1_walk1_2), TextToSpeech.QUEUE_ADD, null, "Stage1_walk1_2");
+            }, 4000);
+            new Handler().postDelayed(() -> {
+                tts.speak(getResources().getString(R.string.Stage1_walk1_3), TextToSpeech.QUEUE_ADD, null, "Stage1_walk1_3");
+            }, 6000);
+            new Handler().postDelayed(() -> {
+                tts.speak(getResources().getString(R.string.Stage1_walk1_4), TextToSpeech.QUEUE_ADD, null, "Stage1_walk1_4");
+            }, 8000);
+            new Handler().postDelayed(() -> {
+                tts.speak(getResources().getString(R.string.Stage1_walk1_5), TextToSpeech.QUEUE_ADD, null, "Stage1_walk1_5");
+            }, 10000);
+            new Handler().postDelayed(() -> {
+                tts.speak(getResources().getString(R.string.Stage1_walk1_6), TextToSpeech.QUEUE_ADD, null, "Stage1_walk1_6");
+            }, 12000);
 
             /* 5번의(4분 ->test로 4초 간격 해둠) 인터벌 표시 마크 보이기 */
             new Handler().postDelayed(() -> TopSecret1.setVisibility(View.VISIBLE), 4000);
@@ -151,36 +166,19 @@ public class Running extends AppCompatActivity implements LocationListener {
             new Handler().postDelayed(() -> TopSecret4.setVisibility(View.VISIBLE), 16000);
             new Handler().postDelayed(() -> TopSecret5.setVisibility(View.VISIBLE), 20000);
         }
+
         if (stageName.equals("Stage2")) {
             new Handler().postDelayed(() -> tts.speak("Stage2", TextToSpeech.QUEUE_ADD, null, "Stage2"), 1000);
         }
+
         if (stageName.equals("Stage3")) {
             new Handler().postDelayed(() -> tts.speak("Stage3", TextToSpeech.QUEUE_ADD, null, "Stage3"), 1000);
         }
+
         if (stageName.equals("Stage4")) {
             new Handler().postDelayed(() -> tts.speak("Stage4", TextToSpeech.QUEUE_ADD, null, "Stage3"), 1000);
         }
 
-        new Handler().postDelayed(() -> {
-            tts.speak("4초", TextToSpeech.QUEUE_ADD, null, "4초");
-            /* a bgm cycle */
-            MainActivity.mediaPlayer = MediaPlayer.create(Running.this, R.raw.footstep);
-            MainActivity.mediaPlayer.start();
-            MainActivity.mediaPlayer.setOnCompletionListener(mp -> {
-                MainActivity.mediaPlayer.release();
-                MainActivity.mediaPlayer = null;
-            });
-        }, 4000);
-
-        new Handler().postDelayed(() -> {
-            tts.speak("8초", TextToSpeech.QUEUE_ADD, null, "8초");
-        }, 8000);
-        new Handler().postDelayed(() -> {
-            tts.speak("12초", TextToSpeech.QUEUE_ADD, null, "12초");
-        }, 12000);
-        new Handler().postDelayed(() -> {
-            tts.speak("16초", TextToSpeech.QUEUE_ADD, null, "16초");
-        }, 16000);
 
     }
 
