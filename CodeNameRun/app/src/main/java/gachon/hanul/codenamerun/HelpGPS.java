@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 
 import androidx.core.content.ContextCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import android.util.Log;
 
@@ -21,7 +22,7 @@ import java.util.ArrayList;
  * 이 클래스가 해줘야할 역할
  * 1. 위치정보를 받아와야함 -> 완료
  * 2. 위치정보가 바뀔때마다 지도정보를 바꿀 수 있게 콜 해줘야함 -> 완료
- * 3. 속도가 떨어지면 알려줘야해 --> 이거 어케 구현하지?
+ * 3. 속도가 떨어지면 알려줘야해 --> 완료
  * 4. 스테이지가 끝난걸 알려주면 디비에 속 정보를 넣어줘야해
  *
  */
@@ -30,13 +31,17 @@ public class HelpGPS extends Service implements LocationListener {
 
     private static final long MIN_DISTANCE_UPDATES = 10; // 3미터
     private static final long MIN_TIME_UPDATES = 3000; // 3초
+    public static final String LOG_SPEED_CHECK = "speed_check";
+    public static final String MSG_SLOW = "limit_speed_slow";
+
+
     protected LocationManager locationManager;
 
     private final Context mContext;
-
     private HelpMap helpMap;
     private ArrayList<Location> locationList;
     private ArrayList<Float> speedList;
+    private float minSpeed;
 
     public HelpGPS(Context context) {
         this.mContext = context;
@@ -58,8 +63,17 @@ public class HelpGPS extends Service implements LocationListener {
     public void onLocationChanged(Location location) {
         locationList.add(location);
         speedList.add(location.getSpeed());
-        Log.d("speed_check", Double.toString(speedList.get(speedList.size()-1)));
+        Log.d(LOG_SPEED_CHECK, Double.toString(speedList.get(speedList.size() - 1)));
         helpMap.updateMAP(location);
+
+        Log.d(LOG_SPEED_CHECK, "now limit: " + Float.toString(minSpeed) + "speed: " + Float.toString(getLastSpeed()));
+
+        // 최소 속도보다 속도가 느리면 로컬방송으로 알려줌
+        if (minSpeed > getLastSpeed()) {
+            Log.d(LOG_SPEED_CHECK, "!!!! slow !!!!" );
+            // 알려주고
+            sendMSG_SpeedIsSlow();
+        }
 
     }
 
@@ -134,12 +148,25 @@ public class HelpGPS extends Service implements LocationListener {
         }
     }
 
-    public float getLastSpeed(){
-        return speedList.get(speedList.size()-1);
+    public float getLastSpeed() {
+        return speedList.get(speedList.size() - 1);
     }
 
     public Location getLastLocation() {
-        return locationList.get(locationList.size()-1);
+        return locationList.get(locationList.size() - 1);
+    }
+
+    public void setMinSpeed(float speed) {
+        this.minSpeed = speed;
+    }
+
+
+
+    private void sendMSG_SpeedIsSlow() {
+        Log.d(LOG_SPEED_CHECK, "sending message");
+        Intent intent = new Intent("gachon.hanul.codenamerun.local");
+        intent.putExtra(MSG_SLOW, false);
+        LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
     }
 
 

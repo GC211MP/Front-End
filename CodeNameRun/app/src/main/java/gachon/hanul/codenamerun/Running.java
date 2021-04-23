@@ -3,11 +3,15 @@ package gachon.hanul.codenamerun;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.media.MediaPlayer;
@@ -26,12 +30,11 @@ import android.widget.Toast;
 import com.google.android.gms.maps.SupportMapFragment;
 
 
-
 import java.util.Locale;
 
 import static android.speech.tts.TextToSpeech.ERROR;
 
-public class Running extends AppCompatActivity{
+public class Running extends AppCompatActivity {
 
     // for gps service
     private static final int GPS_ENABLE_REQUEST_CODE = 2001;
@@ -39,6 +42,7 @@ public class Running extends AppCompatActivity{
     String[] REQUIRED_PERMISSIONS = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
     HelpGPS helpGPS;
     HelpMap helpMap;
+    private static boolean isSpeedOK = true;
     private TextToSpeech tts;
 
     /* variables */
@@ -57,6 +61,12 @@ public class Running extends AppCompatActivity{
 
         /* data from intent */
         stageName = getIntent().getStringExtra("stageName");
+        
+        // 느려진 속도를 받기 위한 브로드캐스터 리시버
+        SpeedReceiver speedReceiver = new SpeedReceiver();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("gachon.hanul.codenamerun.local");
+        LocalBroadcastManager.getInstance(this).registerReceiver(speedReceiver, filter);
 
         // gps permission part
         if (checkLocationServicesStatus()) {
@@ -65,13 +75,15 @@ public class Running extends AppCompatActivity{
 
         // helpGPS 랑 helpMap 객체 생성
         helpGPS = new HelpGPS(this);
-        helpMap = new HelpMap(this,helpGPS.getLocation());
+        helpMap = new HelpMap(this, helpGPS.getLocation());
         helpGPS.setHelpMap(helpMap);
 
         // 화면에 구글맵 가져오기
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(helpMap); // 지도가 준비되면 콜되는 함수
 
+        // 이렇게 최소 속도를 정해주면 되는데 tts 방식이 한번에 큐에 넣는거라 어떻게 넣어야 할지 모르겠음
+        helpGPS.setMinSpeed((float) 4.0);
 
         // UtteranceProgressListener 을 사용해서 tts를 작동시켜도 괜찮을 것 같아요
 
@@ -96,7 +108,7 @@ public class Running extends AppCompatActivity{
 
         /* set TTS */
         tts = new TextToSpeech(this, status -> {
-            if(status != ERROR) {
+            if (status != ERROR) {
                 tts.setLanguage(Locale.KOREAN); // 언어
                 tts.setPitch(2.0f); // 톤 (높낮이, default= 1.0f)
                 tts.setSpeechRate(1.5f); // 속도 (default= 1.0f)
@@ -113,7 +125,8 @@ public class Running extends AppCompatActivity{
 
             @Override
 
-            public void onError(String utteranceId) { }
+            public void onError(String utteranceId) {
+            }
 
             @Override
 
@@ -143,9 +156,11 @@ public class Running extends AppCompatActivity{
                     MainActivity.mediaPlayer = null;
                 });
             }, 2000);
+
             new Handler().postDelayed(() -> {
                 tts.speak(getResources().getString(R.string.Stage1_walk1_2), TextToSpeech.QUEUE_ADD, null, "Stage1_walk1_2");
             }, 4000);
+
             new Handler().postDelayed(() -> {
                 tts.speak(getResources().getString(R.string.Stage1_walk1_3), TextToSpeech.QUEUE_ADD, null, "Stage1_walk1_3");
             }, 6000);
@@ -181,6 +196,21 @@ public class Running extends AppCompatActivity{
 
 
     }
+
+    /*
+     * helpGPS에서 제한 속도(speed limit) 보다 느려지면 보내는 브로드캐스트를 받는 클래스
+     * boolean 값을 받아서 isSpeedOK 에서 넣어줌
+     *
+     * static 을 좀 남발한 느낌이 없잔아 있지만 다른 방식이 생각이 안남
+     */
+    public static class SpeedReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            isSpeedOK = intent.getBooleanExtra(HelpGPS.MSG_SLOW, true);
+            Log.d(HelpGPS.LOG_SPEED_CHECK, "receive slow message: " + Boolean.toString(isSpeedOK));
+        }
+    }
+
 
     //--------------------------------------------------------------Start <gps permission>----------------------------------------------------------------------
     /*
@@ -219,55 +249,57 @@ public class Running extends AppCompatActivity{
         builder.create().show();
     }
 
-        public boolean checkLocationServicesStatus() {
-            LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+    public boolean checkLocationServicesStatus() {
+        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
-            return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
-                    || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-        }
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+                || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+    }
 
-        void checkRunTimePermission() {
+    void checkRunTimePermission() {
 
-            //런타임 퍼미션 처리
-            // 1. 위치 퍼미션을 가지고 있는지 체크합니다.
-            int hasFineLocationPermission = ContextCompat.checkSelfPermission(this,
-                    Manifest.permission.ACCESS_FINE_LOCATION);
-            int hasCoarseLocationPermission = ContextCompat.checkSelfPermission(this,
-                    Manifest.permission.ACCESS_COARSE_LOCATION);
-
-
-            if (hasFineLocationPermission == PackageManager.PERMISSION_GRANTED &&
-                    hasCoarseLocationPermission == PackageManager.PERMISSION_GRANTED) {
-
-                // 2. 이미 퍼미션을 가지고 있다면
-                // ( 안드로이드 6.0 이하 버전은 런타임 퍼미션이 필요없기 때문에 이미 허용된 걸로 인식합니다.)
+        //런타임 퍼미션 처리
+        // 1. 위치 퍼미션을 가지고 있는지 체크합니다.
+        int hasFineLocationPermission = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION);
+        int hasCoarseLocationPermission = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_COARSE_LOCATION);
 
 
-                // 3.  위치 값을 가져올 수 있음
+        if (hasFineLocationPermission == PackageManager.PERMISSION_GRANTED &&
+                hasCoarseLocationPermission == PackageManager.PERMISSION_GRANTED) {
+
+            // 2. 이미 퍼미션을 가지고 있다면
+            // ( 안드로이드 6.0 이하 버전은 런타임 퍼미션이 필요없기 때문에 이미 허용된 걸로 인식합니다.)
 
 
-            } else {  //2. 퍼미션 요청을 허용한 적이 없다면 퍼미션 요청이 필요합니다. 2가지 경우(3-1, 4-1)가 있습니다.
-
-                // 3-1. 사용자가 퍼미션 거부를 한 적이 있는 경우에는
-                if (ActivityCompat.shouldShowRequestPermissionRationale(this, REQUIRED_PERMISSIONS[0])) {
-
-                    // 3-2. 요청을 진행하기 전에 사용자가에게 퍼미션이 필요한 이유를 설명해줄 필요가 있습니다.
-                    Toast.makeText(this, "이 앱을 실행하려면 위치 접근 권한이 필요합니다.", Toast.LENGTH_LONG).show();
-                    // 3-3. 사용자게에 퍼미션 요청을 합니다. 요청 결과는 onRequestPermissionResult에서 수신됩니다.
-                    ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS,
-                            PERMISSIONS_REQUEST_CODE);
+            // 3.  위치 값을 가져올 수 있음
 
 
-                } else {
-                    // 4-1. 사용자가 퍼미션 거부를 한 적이 없는 경우에는 퍼미션 요청을 바로 합니다.
-                    // 요청 결과는 onRequestPermissionResult에서 수신됩니다.
-                    ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS,
-                            PERMISSIONS_REQUEST_CODE);
-                }
+        } else {  //2. 퍼미션 요청을 허용한 적이 없다면 퍼미션 요청이 필요합니다. 2가지 경우(3-1, 4-1)가 있습니다.
+
+            // 3-1. 사용자가 퍼미션 거부를 한 적이 있는 경우에는
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, REQUIRED_PERMISSIONS[0])) {
+
+                // 3-2. 요청을 진행하기 전에 사용자가에게 퍼미션이 필요한 이유를 설명해줄 필요가 있습니다.
+                Toast.makeText(this, "이 앱을 실행하려면 위치 접근 권한이 필요합니다.", Toast.LENGTH_LONG).show();
+                // 3-3. 사용자게에 퍼미션 요청을 합니다. 요청 결과는 onRequestPermissionResult에서 수신됩니다.
+                ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS,
+                        PERMISSIONS_REQUEST_CODE);
+
+
+            } else {
+                // 4-1. 사용자가 퍼미션 거부를 한 적이 없는 경우에는 퍼미션 요청을 바로 합니다.
+                // 요청 결과는 onRequestPermissionResult에서 수신됩니다.
+                ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS,
+                        PERMISSIONS_REQUEST_CODE);
             }
         }
+    }
 
 
     //--------------------------------------------------------------end:<gps permission>---------------------------------------------------------------------
 
-    }
+
+
+}
