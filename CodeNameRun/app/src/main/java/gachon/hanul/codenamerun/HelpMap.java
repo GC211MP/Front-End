@@ -27,6 +27,15 @@ import com.google.android.gms.maps.model.RoundCap;
 
 import java.util.ArrayList;
 
+/*
+ * HelpMap이 해야할 역할
+ * 1. 실시간으로 지도에 경로를 표시해줘야함
+ * 2. 위치 추적(스테이지)이 끝나면 경로를 지워줘야함
+ * 3. 현재 위치를 표시해줘야함
+ * 4. 데이터베이스에 있는 정보만 넘겨줘도 경로를 그려줘야함
+ * 하면좋은거 -> 속도마다 경로 색을 다르게 하면 좋을 듯
+ *
+ */
 public class HelpMap extends AppCompatActivity implements OnMapReadyCallback{
 
     private GoogleMap mMap;

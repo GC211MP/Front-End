@@ -1,6 +1,5 @@
 package gachon.hanul.codenamerun;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -10,8 +9,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -34,7 +31,7 @@ import java.util.Locale;
 
 import static android.speech.tts.TextToSpeech.ERROR;
 
-public class Running extends AppCompatActivity implements LocationListener {
+public class Running extends AppCompatActivity{
 
     // for gps service
     private static final int GPS_ENABLE_REQUEST_CODE = 2001;
@@ -66,14 +63,17 @@ public class Running extends AppCompatActivity implements LocationListener {
             checkRunTimePermission();
         } else showDialogForLocationServiceSetting();
 
-        // help
+        // helpGPS 랑 helpMap 객체 생성
         helpGPS = new HelpGPS(this);
         helpMap = new HelpMap(this,helpGPS.getLocation());
         helpGPS.setHelpMap(helpMap);
 
-        // 지도에 경로를 표시하기 위해서 지도를 다룰 함수를 콜백하는 겁니다
+        // 화면에 구글맵 가져오기
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(helpMap);
+        mapFragment.getMapAsync(helpMap); // 지도가 준비되면 콜되는 함수
+
+
+        // UtteranceProgressListener 을 사용해서 tts를 작동시켜도 괜찮을 것 같아요
 
 
         /* find view by id */
@@ -184,8 +184,6 @@ public class Running extends AppCompatActivity implements LocationListener {
 
     //--------------------------------------------------------------Start <gps permission>----------------------------------------------------------------------
     /*
-     * 저의 코딩 실력이 미천하여 클래스화를 하지 못하고 하드 코딩해버렸습니다.
-     * 코드가 더럽더라고 이해해주시면 감사하겠습니다.
      * Return true if gps service is available
      * else return false
      *
@@ -269,10 +267,7 @@ public class Running extends AppCompatActivity implements LocationListener {
             }
         }
 
-    @Override
-    public void onLocationChanged(@NonNull Location location) {
 
-    }
     //--------------------------------------------------------------end:<gps permission>---------------------------------------------------------------------
 
     }
