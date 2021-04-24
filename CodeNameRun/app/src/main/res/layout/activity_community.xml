@@ -7,6 +7,12 @@
     android:layout_height="match_parent"
     tools:context=".Community">
 
+    <!-- https://lktprogrammer.tistory.com/163 -->
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
     /* menu bar */
     <LinearLayout
         android:layout_width="match_parent"
