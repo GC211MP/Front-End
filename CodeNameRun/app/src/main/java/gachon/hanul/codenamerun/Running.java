@@ -30,6 +30,8 @@ import android.widget.Toast;
 import com.google.android.gms.maps.SupportMapFragment;
 
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 
 import static android.speech.tts.TextToSpeech.ERROR;
@@ -46,6 +48,9 @@ public class Running extends AppCompatActivity {
     private TextToSpeech tts;
 
     /* variables */
+    List<String> messages = new LinkedList<String>();;
+    String str;
+
     ImageView TopSecret1;
     ImageView TopSecret2;
     ImageView TopSecret3;
@@ -53,6 +58,7 @@ public class Running extends AppCompatActivity {
     ImageView TopSecret5;
     TextView stageNameText;
     String stageName;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,53 +134,65 @@ public class Running extends AppCompatActivity {
             public void onError(String utteranceId) {
             }
 
+            /***** add tts speak
+             * List<String> messages = Arrays.asList(getResources().getStringArray(R.array.Lines));
+             *      get list of the string list
+             *      add new line to tts queue
+             *      -> 읽은건 어떻게 지웁니까
+             * if string list is empty
+             *      end function
+             *****/
             @Override
-
             public void onDone(String utteranceId) {
                 Running.this.runOnUiThread(new Runnable() {
                     public void run() {
                         Toast.makeText(Running.this, utteranceId, Toast.LENGTH_SHORT).show();
+                        if (!tts.isSpeaking()){
+                            // 속도 경고 알림은 리스트에 추가 하지 않고 즉시 큐에 추가한다.
+                            // 따라서 속도 경고 알림이 진행중일때는 큐에 message 를 더하지 않는다.
+                            if (!messages.isEmpty()){
+                                // message list 가 비어있을때는 종료한다.
+                                MessageToTTSQueue();
+                            }
+                        }
                     }
                 });
-                Log.d("listener", "start: " + utteranceId);
             }
         });
 
         /***** Prologue *****/
         if (stageName.equals("Prologue")) {
             new Handler().postDelayed(() -> tts.speak(getResources().getString(R.string.prologue_1), TextToSpeech.QUEUE_FLUSH, null, "prologue_1"), 2000);
+            /* Interval marker */
+            // 프롤로그는 마커 필요 없음
         }
 
+        /***** stage 1 *****/
         if (stageName.equals("Stage1")) {
-            /* tts */
+            /* sound */
+
             new Handler().postDelayed(() -> {
-                tts.speak(getResources().getString(R.string.Stage1_walk1_1), TextToSpeech.QUEUE_ADD, null, "Stage1_walk1_1");
+                /* interval 1 */
+                messages.add(getResources().getString(R.string.Stage1_walk1_1));
+                messages.add(getResources().getString(R.string.Stage1_walk1_2));
+                messages.add(getResources().getString(R.string.Stage1_walk1_3));
+                messages.add(getResources().getString(R.string.Stage1_walk1_4));
+                messages.add(getResources().getString(R.string.Stage1_walk1_5));
+                messages.add(getResources().getString(R.string.Stage1_walk1_6));
+                MessageToTTSQueue();
+            }, 2000);
+
+
+            new Handler().postDelayed(() -> {
                 MainActivity.mediaPlayer = MediaPlayer.create(Running.this, R.raw.footstep);
                 MainActivity.mediaPlayer.start();
                 MainActivity.mediaPlayer.setOnCompletionListener(mp -> {
                     MainActivity.mediaPlayer.release();
                     MainActivity.mediaPlayer = null;
                 });
-            }, 2000);
-
-            new Handler().postDelayed(() -> {
-                tts.speak(getResources().getString(R.string.Stage1_walk1_2), TextToSpeech.QUEUE_ADD, null, "Stage1_walk1_2");
             }, 4000);
 
-            new Handler().postDelayed(() -> {
-                tts.speak(getResources().getString(R.string.Stage1_walk1_3), TextToSpeech.QUEUE_ADD, null, "Stage1_walk1_3");
-            }, 6000);
-            new Handler().postDelayed(() -> {
-                tts.speak(getResources().getString(R.string.Stage1_walk1_4), TextToSpeech.QUEUE_ADD, null, "Stage1_walk1_4");
-            }, 8000);
-            new Handler().postDelayed(() -> {
-                tts.speak(getResources().getString(R.string.Stage1_walk1_5), TextToSpeech.QUEUE_ADD, null, "Stage1_walk1_5");
-            }, 10000);
-            new Handler().postDelayed(() -> {
-                tts.speak(getResources().getString(R.string.Stage1_walk1_6), TextToSpeech.QUEUE_ADD, null, "Stage1_walk1_6");
-            }, 12000);
-
-            /***** Interval marker *****/
+            /* Interval marker */
             /* 5번의(4분 ->test로 4초 간격 해둠) 인터벌 표시 마크 보이기 */
             new Handler().postDelayed(() -> TopSecret1.setVisibility(View.VISIBLE), 4000);
             new Handler().postDelayed(() -> TopSecret2.setVisibility(View.VISIBLE), 8000);
@@ -183,14 +201,17 @@ public class Running extends AppCompatActivity {
             new Handler().postDelayed(() -> TopSecret5.setVisibility(View.VISIBLE), 20000);
         }
 
+        /***** stage 2 *****/
         if (stageName.equals("Stage2")) {
             new Handler().postDelayed(() -> tts.speak("Stage2", TextToSpeech.QUEUE_ADD, null, "Stage2"), 1000);
         }
 
+        /***** stage 3 *****/
         if (stageName.equals("Stage3")) {
             new Handler().postDelayed(() -> tts.speak("Stage3", TextToSpeech.QUEUE_ADD, null, "Stage3"), 1000);
         }
 
+        /***** stage 4 *****/
         if (stageName.equals("Stage4")) {
             new Handler().postDelayed(() -> tts.speak("Stage4", TextToSpeech.QUEUE_ADD, null, "Stage3"), 1000);
         }
@@ -211,6 +232,22 @@ public class Running extends AppCompatActivity {
             Log.d(HelpGPS.LOG_SPEED_CHECK, "receive slow message: " + Boolean.toString(isSpeedOK));
         }
     }
+
+    //--------------------------------------------------------------------------------------------------------------------------------------
+    /***** add tts speak
+     * List<String> messages = Arrays.asList(getResources().getStringArray(R.array.Lines));
+     * if there is nothing speaking -> call this function
+     *      get list of the string list
+     *      add new line to tts queue
+     * if string list is empty
+     *      end function
+     *****/
+
+    private void  MessageToTTSQueue(){
+        tts.speak(messages.get(0), TextToSpeech.QUEUE_ADD, null, messages.get(0));
+        messages.remove(0);
+    }
+
 
 
     //--------------------------------------------------------------Start <gps permission>----------------------------------------------------------------------
