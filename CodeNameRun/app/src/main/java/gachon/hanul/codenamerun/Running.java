@@ -127,7 +127,7 @@ public class Running extends AppCompatActivity{
             }
         });
 
-        /* if 시간이 1000(?) 미만일때는 사운드가 나오지 않음*/
+        /***** Prologue *****/
         if (stageName.equals("Prologue")) {
             new Handler().postDelayed(() -> tts.speak(getResources().getString(R.string.prologue_1), TextToSpeech.QUEUE_FLUSH, null, "prologue_1"), 2000);
         }
@@ -159,6 +159,7 @@ public class Running extends AppCompatActivity{
                 tts.speak(getResources().getString(R.string.Stage1_walk1_6), TextToSpeech.QUEUE_ADD, null, "Stage1_walk1_6");
             }, 12000);
 
+            /***** Interval marker *****/
             /* 5번의(4분 ->test로 4초 간격 해둠) 인터벌 표시 마크 보이기 */
             new Handler().postDelayed(() -> TopSecret1.setVisibility(View.VISIBLE), 4000);
             new Handler().postDelayed(() -> TopSecret2.setVisibility(View.VISIBLE), 8000);

@@ -5,15 +5,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Running"
-    android:background="@color/white">
+    tools:context=".Running">
 
     /* 기밀문서 상단 바 */
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/stageBar"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:gravity="center">
 
         <ImageView
             android:id="@+id/TopSecret1"
@@ -64,16 +64,18 @@
 
     /* stage 알림 txt */
     <TextView
+        android:layout_centerHorizontal="true"
         android:id="@+id/alertStage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="stage 알려줌"
         android:textSize="30dp"
         android:layout_below="@id/stageBar"
-        android:layout_margin="30dp"/>
+        android:layout_margin="10dp"/>
 
 
     <fragment
+        android:layout_margin="30dp"
         android:id="@+id/map"
         android:layout_below="@id/alertStage"
         android:layout_width="match_parent"
