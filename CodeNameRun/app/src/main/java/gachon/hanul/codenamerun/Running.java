@@ -162,7 +162,7 @@ public class Running extends AppCompatActivity {
 
         /***** Prologue *****/
         if (stageName.equals("Prologue")) {
-            new Handler().postDelayed(() -> tts.speak(getResources().getString(R.string.prologue_1), TextToSpeech.QUEUE_FLUSH, null, "prologue_1"), 2000);
+            new Handler().postDelayed(() -> tts.speak(getResources().getString(R.string.prologue_1), TextToSpeech.QUEUE_ADD, null, "prologue_1"), 2000);
             /* Interval marker */
             // 프롤로그는 마커 필요 없음
         }
