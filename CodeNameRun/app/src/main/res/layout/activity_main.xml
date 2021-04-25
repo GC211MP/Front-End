@@ -36,6 +36,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="310dp"
         android:fontFamily="@font/badhead_typeface"
+
         android:padding="0dp"
         android:text="Runner"
         android:textColor="@color/warm_white"
