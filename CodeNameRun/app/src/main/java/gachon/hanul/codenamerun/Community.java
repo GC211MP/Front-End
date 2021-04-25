@@ -9,7 +9,6 @@ import android.widget.ImageButton;
 
 public class Community extends AppCompatActivity {
 
-
     ImageButton AgentInfo;
     ImageButton Home;
     ImageButton Community;

@@ -20,29 +20,35 @@
         android:orientation="horizontal"
         android:layout_alignParentBottom="true">
 
-        <Button
+        <ImageButton
             android:id="@+id/AgentInfoButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="24dp"
+            android:layout_height="30dp"
+            android:layout_margin="10dp"
             android:layout_weight="1"
-            android:text="요원정보"
-            android:layout_margin="10dp"/>
+            android:background="#00ff0000"
+            android:scaleType="centerInside"
+            android:src="@drawable/agent_info" />
 
-        <Button
+        <ImageButton
             android:id="@+id/HomeButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="24dp"
+            android:layout_height="30dp"
+            android:layout_margin="10dp"
             android:layout_weight="1"
-            android:text="홈"
-            android:layout_margin="10dp"/>
+            android:background="#00ff0000"
+            android:scaleType="centerInside"
+            android:src="@drawable/home" />
 
-        <Button
+        <ImageButton
             android:id="@+id/CommunityButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="24dp"
+            android:layout_height="30dp"
+            android:layout_margin="10dp"
             android:layout_weight="1"
-            android:text="커뮤니티"
-            android:layout_margin="10dp"/>
+            android:background="#00ff0000"
+            android:scaleType="centerInside"
+            android:src="@drawable/community" />
     </LinearLayout>
 
 </RelativeLayout>
