@@ -3,9 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+
     <!-- 출처 : https://bongcando.tistory.com/12-->
     <!--regular-->
-    <font
+  <font
         android:font="@font/nanumsquarer"
         android:fontStyle="normal"
         android:fontWeight="400"
@@ -13,7 +14,6 @@
         app:fontStyle="normal"
         app:fontWeight="500" />
 
-    <!--bold-->
     <font
         android:font="@font/nanumsquarer"
         android:fontStyle="normal"
@@ -21,5 +21,10 @@
         app:font="@font/nanumsquarer"
         app:fontStyle="normal"
         app:fontWeight="1000" />
+
+    <font
+        android:font="@font/cookierun_bold"
+        app:font="@font/cookierun_bold"/>
+
 
 </font-family>
