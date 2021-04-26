@@ -68,7 +68,8 @@
         android:id="@+id/alertStage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="stage 알려줌"
+        android:text="stage num"
+        android:textColor="@color/warm_white"
         android:textSize="30dp"
         android:layout_below="@id/stageBar"
         android:layout_margin="10dp"/>
