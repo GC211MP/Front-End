@@ -9,12 +9,15 @@
 
     <!-- https://lktprogrammer.tistory.com/163 -->
     <ListView
+        android:layout_below="@+id/ranking_name"
+        android:layout_above="@+id/menubar"
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
 
     <TextView
+        android:id="@+id/ranking_name"
         android:layout_width="150dp"
         android:layout_height="49dp"
         android:layout_centerHorizontal="true"
@@ -28,6 +31,7 @@
 
     /* menu bar */
     <LinearLayout
+        android:id="@+id/menubar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
