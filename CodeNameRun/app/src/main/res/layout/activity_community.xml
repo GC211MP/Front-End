@@ -9,11 +9,14 @@
 
     <!-- https://lktprogrammer.tistory.com/163 -->
     <ListView
+        android:layout_margin="30dp"
         android:layout_below="@+id/ranking_name"
         android:layout_above="@+id/menubar"
         android:id="@+id/listView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="10dp"/>
 
 
     <TextView
