@@ -39,8 +39,8 @@
         /* 기밀문서 상단 바 */
         <ImageView
             android:id="@+id/TopSecret1"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
             android:layout_below="@id/alertStage"
             android:layout_margin="15dp"
             android:background="@android:color/transparent"
@@ -49,8 +49,8 @@
 
         <ImageView
             android:id="@+id/TopSecret2"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
             android:layout_below="@id/alertStage"
             android:layout_margin="15dp"
             android:layout_toRightOf="@id/TopSecret1"
@@ -60,8 +60,8 @@
 
         <ImageView
             android:id="@+id/TopSecret3"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
             android:layout_below="@id/alertStage"
             android:layout_margin="15dp"
             android:layout_toRightOf="@id/TopSecret2"
@@ -71,8 +71,8 @@
 
         <ImageView
             android:id="@+id/TopSecret4"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
             android:layout_below="@id/alertStage"
             android:layout_margin="15dp"
             android:layout_toRightOf="@id/TopSecret3"
@@ -82,8 +82,8 @@
 
         <ImageView
             android:id="@+id/TopSecret5"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
             android:layout_below="@id/alertStage"
             android:layout_margin="15dp"
             android:layout_toRightOf="@id/TopSecret4"
