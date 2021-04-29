@@ -7,80 +7,105 @@
     android:layout_height="match_parent"
     tools:context=".Running">
 
-    /* 기밀문서 상단 바 */
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/stageBar"
-        android:orientation="horizontal"
-        android:gravity="center">
 
+
+
+    /* stage 알림 txt */
+
+    <TextView
+        android:id="@+id/alertStage"
+        android:layout_width="150dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="15dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
+        android:text="stage num"
+        android:textColor="@color/warm_white"
+        android:textSize="30dp"
+        android:gravity="center" />
+
+    <LinearLayout
+        android:id="@+id/stageBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginStart="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="70dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="30dp"
+        android:orientation="horizontal">
+
+        /* 기밀문서 상단 바 */
         <ImageView
             android:id="@+id/TopSecret1"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/topsecret"
+            android:layout_below="@id/alertStage"
+            android:layout_margin="15dp"
+            android:background="@android:color/transparent"
             android:scaleType="centerInside"
-            android:layout_margin="10dp"
-            android:background="@android:color/transparent"/>
+            android:src="@drawable/topsecret" />
 
         <ImageView
             android:id="@+id/TopSecret2"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/topsecret"
+            android:layout_below="@id/alertStage"
+            android:layout_margin="15dp"
+            android:layout_toRightOf="@id/TopSecret1"
+            android:background="@android:color/transparent"
             android:scaleType="centerInside"
-            android:layout_margin="10dp"
-            android:background="@android:color/transparent"/>
+            android:src="@drawable/topsecret" />
 
         <ImageView
             android:id="@+id/TopSecret3"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/topsecret"
+            android:layout_below="@id/alertStage"
+            android:layout_margin="15dp"
+            android:layout_toRightOf="@id/TopSecret2"
+            android:background="@android:color/transparent"
             android:scaleType="centerInside"
-            android:layout_margin="10dp"
-            android:background="@android:color/transparent"/>
+            android:src="@drawable/topsecret" />
 
         <ImageView
             android:id="@+id/TopSecret4"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/topsecret"
+            android:layout_below="@id/alertStage"
+            android:layout_margin="15dp"
+            android:layout_toRightOf="@id/TopSecret3"
+            android:background="@android:color/transparent"
             android:scaleType="centerInside"
-            android:layout_margin="10dp"
-            android:background="@android:color/transparent"/>
+            android:src="@drawable/topsecret" />
 
         <ImageView
             android:id="@+id/TopSecret5"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/topsecret"
+            android:layout_below="@id/alertStage"
+            android:layout_margin="15dp"
+            android:layout_toRightOf="@id/TopSecret4"
+            android:background="@android:color/transparent"
             android:scaleType="centerInside"
-            android:layout_margin="10dp"
-            android:background="@android:color/transparent"/>
-
+            android:src="@drawable/topsecret" />
     </LinearLayout>
 
-    /* stage 알림 txt */
-    <TextView
-        android:layout_centerHorizontal="true"
-        android:id="@+id/alertStage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="stage num"
-        android:textColor="@color/warm_white"
-        android:textSize="30dp"
-        android:layout_below="@id/stageBar"
-        android:layout_margin="10dp"/>
-
-
+    /* 지도 */
     <fragment
-        android:layout_margin="30dp"
         android:id="@+id/map"
-        android:layout_below="@id/alertStage"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:name="com.google.android.gms.maps.SupportMapFragment"/>
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="400dp"
+        android:layout_height="570dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="170dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="30dp" />
+
 
 </RelativeLayout>
