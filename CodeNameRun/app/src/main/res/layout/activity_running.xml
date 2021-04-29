@@ -23,20 +23,20 @@
         android:textSize="30dp"
         android:gravity="center" />
 
+    /* 지도 */
+
     <LinearLayout
         android:id="@+id/stageBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_marginStart="30dp"
-        android:layout_marginLeft="30dp"
+        android:layout_marginStart="40dp"
         android:layout_marginTop="70dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginBottom="30dp"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
         android:orientation="horizontal">
 
         /* 기밀문서 상단 바 */
+
         <ImageView
             android:id="@+id/TopSecret1"
             android:layout_width="45dp"
@@ -92,7 +92,6 @@
             android:src="@drawable/topsecret" />
     </LinearLayout>
 
-    /* 지도 */
     <fragment
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
