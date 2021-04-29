@@ -8,8 +8,6 @@
     tools:context=".Running">
 
 
-
-
     /* stage 알림 txt */
 
     <TextView
