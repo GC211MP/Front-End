@@ -31,6 +31,20 @@ public class HelpGPS extends Service implements LocationListener {
 
     private static final long MIN_DISTANCE_UPDATES = 10; // 3미터
     private static final long MIN_TIME_UPDATES = 3000; // 3초
+    // 찐
+//    public static final float WALK_SLOW = (float)0.833; // 3km/h
+//    public static final float WALK_FAST = (float)1.11111; // 4km/h
+//    public static final float RUN_SLOW = (float)1.66667; // 6km/h
+//    public static final float RUN_AVG = (float)2.72; // 10km/h
+//    public static final float RUN_FAST = (float)4.16; // 15km/h
+
+    // 테스트용
+    public static final float WALK_SLOW = (float)1.5;
+    public static final float WALK_FAST = (float)3.0;
+    public static final float RUN_SLOW = (float)4.5;
+    public static final float RUN_AVG = (float)6.0;
+    public static final float RUN_FAST = (float)7.0;
+
     public static final String LOG_SPEED_CHECK = "speed_check";
     public static final String MSG_SLOW = "limit_speed_slow";
 
@@ -39,8 +53,8 @@ public class HelpGPS extends Service implements LocationListener {
     private final Context mContext;
     private HelpMap helpMap;
     private ArrayList<Location> locationList;
-    private ArrayList<Float> speedList;
-    private float minSpeed;
+    private ArrayList<Float> speedList; // m/s
+    private float minSpeed; // m/s
 
     public HelpGPS(Context context) {
         this.mContext = context;
@@ -63,7 +77,7 @@ public class HelpGPS extends Service implements LocationListener {
         locationList.add(location);
         speedList.add(location.getSpeed());
         Log.d(LOG_SPEED_CHECK, Double.toString(speedList.get(speedList.size() - 1)));
-        helpMap.updateMAP(location);
+        helpMap.updateMAP(location, speedList.get(speedList.size() - 1));
 
         Log.d(LOG_SPEED_CHECK, "now limit: " + Float.toString(minSpeed) + "speed: " + Float.toString(getLastSpeed()));
 

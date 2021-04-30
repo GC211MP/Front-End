@@ -1,11 +1,13 @@
 package gachon.hanul.codenamerun;
 
 
-
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.location.Location;
+import android.text.style.StyleSpan;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -36,18 +38,16 @@ import java.util.ArrayList;
  * 하면좋은거 -> 속도마다 경로 색을 다르게 하면 좋을 듯
  *
  */
-public class HelpMap extends AppCompatActivity implements OnMapReadyCallback{
+public class HelpMap extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
 
-    private LatLng lastLatLng ;
-    private ArrayList<Polyline> polylines;
+    private LatLng lastLatLng;
     private Context ctx;
 
-    HelpMap(Context context, Location location){
+    HelpMap(Context context, Location location) {
         ctx = context;
         lastLatLng = location2LatLng(location);
-        polylines = new ArrayList<Polyline>();
     }
 
 
@@ -59,7 +59,7 @@ public class HelpMap extends AppCompatActivity implements OnMapReadyCallback{
         mMap.addMarker(new MarkerOptions().position(lastLatLng).title("Start"));
 
         // 현재위치 == 시작위치 를 알아봐서 카메라를 옮겨줘
-        Toast.makeText(ctx, lastLatLng.toString(),Toast.LENGTH_SHORT).show();
+        Toast.makeText(ctx, lastLatLng.toString(), Toast.LENGTH_SHORT).show();
 
         // 시작위치로 카메라 옮겨주기
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lastLatLng, 18));
@@ -68,9 +68,9 @@ public class HelpMap extends AppCompatActivity implements OnMapReadyCallback{
 
     // 위치가 변할때마 콜할 함수를 만들어줘야해
     // 업데이트 해줘여 하는건 카메라 위치랑 폴리라인
-    public void updateMAP(Location location){
+    public void updateMAP(Location location, float speed) {
         // Location --> LtnLng로 변환해주고 경로 업데이트
-        updatePolyLine(location2LatLng(location));
+        updatePolyLine(location2LatLng(location), speed);
 
         // 카메라 옮겨 주고
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lastLatLng, 18));
@@ -79,28 +79,45 @@ public class HelpMap extends AppCompatActivity implements OnMapReadyCallback{
     /*
      * Location을 LatLng로 변환해주는 함수
      */
-    private LatLng location2LatLng(Location loc){
-         LatLng latLng = new LatLng(loc.getLatitude(), loc.getLongitude());
-         return latLng;
+    private LatLng location2LatLng(Location loc) {
+        LatLng latLng = new LatLng(loc.getLatitude(), loc.getLongitude());
+        return latLng;
     }
 
     /*
      * 지도에 경로를 업데이트 해주는 함수
      */
-    private void updatePolyLine(LatLng newLatLng){
-
-        // 여기 옵션을 잘 손대면 그 속도별로 색깔을 다르게 할 수 있을 것 같아요
-        PolylineOptions options = new PolylineOptions().add(lastLatLng).add(newLatLng).width(15).geodesic(true);
-        polylines.add(mMap.addPolyline(options));
+    private void updatePolyLine(LatLng newLatLng, float speed) {
+        Polyline line = mMap.addPolyline(new PolylineOptions()
+                .add(lastLatLng, newLatLng)
+                .width(15)
+                .endCap(new RoundCap())
+                .jointType(JointType.ROUND)
+                .color(getSpeedColor(speed)));
 
         // lastLatLng을 바꿔줘야해
         lastLatLng = newLatLng;
     }
 
-    public void clearMap(){
+    public void clearMap() {
         mMap.clear();
     }
 
-
+    public int getSpeedColor(float speed) {
+        if (HelpGPS.WALK_SLOW >= speed) { // 시속 3km 이하
+            return ContextCompat.getColor(ctx, R.color.very_slow);
+        }
+        if (HelpGPS.WALK_FAST >= speed) { // 시속 4km 이하
+            return ContextCompat.getColor(ctx, R.color.slow);
+        }
+        if (HelpGPS.RUN_SLOW >= speed) { // 시속 6km 이하
+            return ContextCompat.getColor(ctx, R.color.soso);
+        }
+        if (HelpGPS.RUN_AVG >= speed) { // 시속 8km 이하
+            return ContextCompat.getColor(ctx, R.color.fast);
+        } else {
+            return ContextCompat.getColor(ctx, R.color.very_fast);
+        }
+    }
 
 }

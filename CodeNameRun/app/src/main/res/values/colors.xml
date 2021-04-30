@@ -20,4 +20,10 @@
     <color name="ivory">#F9F1F0</color>
     <color name="warm_white">#FFFAFE</color>
     <color name="red_point">#D6304C</color>
+
+    <color name="very_fast">#FF0000</color>
+    <color name="fast">#FFC000</color>
+    <color name="soso">#FFFF00</color>
+    <color name="slow">#00B050</color>
+    <color name="very_slow">#2E75B6</color>
 </resources>
