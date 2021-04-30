@@ -38,15 +38,19 @@ import static android.speech.tts.TextToSpeech.ERROR;
 
 public class Running extends AppCompatActivity {
 
-    // for gps service
+    public static final String LOG_IN_RUNNUNG = "running";
     private static final int GPS_ENABLE_REQUEST_CODE = 2001;
     private static final int PERMISSIONS_REQUEST_CODE = 100;
+    private final int DISTANCE_MULTIPLE = 100;
+    private final int SECRET_MULTIPLE = 100;
+
     String[] REQUIRED_PERMISSIONS = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
+
+    private boolean isSpeedOK = true;
+    private boolean newInterval = true;
+    private TextToSpeech tts;
     HelpGPS helpGPS;
     HelpMap helpMap;
-    private static boolean isSpeedOK = true;
-    private TextToSpeech tts;
-
     /* variables */
     List<String> messages = new LinkedList<String>();;
     String str;
@@ -59,6 +63,8 @@ public class Running extends AppCompatActivity {
     TextView stageNameText;
     String stageName;
 
+    int totalSecret;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +73,7 @@ public class Running extends AppCompatActivity {
 
         /* data from intent */
         stageName = getIntent().getStringExtra("stageName");
-        
+
         // 느려진 속도를 받기 위한 브로드캐스터 리시버
         SpeedReceiver speedReceiver = new SpeedReceiver();
         IntentFilter filter = new IntentFilter();
@@ -88,11 +94,8 @@ public class Running extends AppCompatActivity {
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(helpMap); // 지도가 준비되면 콜되는 함수
 
-        // 이렇게 최소 속도를 정해주면 되는데 tts 방식이 한번에 큐에 넣는거라 어떻게 넣어야 할지 모르겠음
-        helpGPS.setMinSpeed((float) 4.0);
 
-        // UtteranceProgressListener 을 사용해서 tts를 작동시켜도 괜찮을 것 같아요
-
+        // UtteranceProgressListener
 
         /* find view by id */
         TopSecret1 = findViewById(R.id.TopSecret1);
@@ -160,6 +163,8 @@ public class Running extends AppCompatActivity {
             }
         });
 
+        totalSecret = 0;
+
         /***** Prologue *****/
         if (stageName.equals("Prologue")) {
             new Handler().postDelayed(() -> tts.speak(getResources().getString(R.string.prologue_1), TextToSpeech.QUEUE_ADD, null, "prologue_1"), 2000);
@@ -214,18 +219,18 @@ public class Running extends AppCompatActivity {
         /***** stage 4 *****/
         if (stageName.equals("Stage4")) {
             new Handler().postDelayed(() -> tts.speak("Stage4", TextToSpeech.QUEUE_ADD, null, "Stage3"), 1000);
+
+
         }
 
-
+        Log.d(LOG_IN_RUNNUNG,"create in end");
     }
 
     /*
      * helpGPS에서 제한 속도(speed limit) 보다 느려지면 보내는 브로드캐스트를 받는 클래스
      * boolean 값을 받아서 isSpeedOK 에서 넣어줌
-     *
-     * static 을 좀 남발한 느낌이 없잔아 있지만 다른 방식이 생각이 안남
      */
-    public static class SpeedReceiver extends BroadcastReceiver {
+    public class SpeedReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             isSpeedOK = intent.getBooleanExtra(HelpGPS.MSG_SLOW, true);
@@ -248,16 +253,56 @@ public class Running extends AppCompatActivity {
         messages.remove(0);
     }
 
+    private int endStage(){
+        int score;
+        double distance;
+
+        // 1. 뛴 거리랑 편지지 갯수 알아오기
+        distance = helpGPS.get_total_distance();
+        // 2. 점수 계산하기
+        score = calculateScore(distance,totalSecret);
+        // 3. 객체 종료하기 -> gps랑 map
+        helpMap.clearMap();
+        helpGPS.onDestroy();
+        // TODO: 4. 점수창 띄워주기 -> 궁금한데 인텐트로 점수창 띄워주면 안될거 같은데 fragment나 해야할 것 같은데.. 모르겠다
+
+        Log.d(LOG_IN_RUNNUNG,"score: " + score);
+        return  score;
+
+    }
+
+    private int calculateScore(double distance, int numSecret){
+        int score;
+        score = (int)(distance*DISTANCE_MULTIPLE) + numSecret*SECRET_MULTIPLE;
+
+        return score;
+    }
+
+    private void startInterval(float speedLimit, HelpGPS helpGPS){
+        helpGPS.setMinSpeed(speedLimit);
+        isSpeedOK = true;
+    }
+
+    private void endInterval(HelpGPS helpGPS){
+        helpGPS.setMinSpeed(0);
+        if(isSpeedOK) totalSecret += 1;
+    }
+
+
+
+
 
 
     //--------------------------------------------------------------Start <gps permission>----------------------------------------------------------------------
     /*
-     * Return true if gps service is available
-     * else return false
+     * TODO: 다혜가 퍼미션 부분에서 뻑난다고 말했음 -> 고쳐야한다
+     * 내코드 아니어서 고치기 힘든데 ㅠㅠ
      *
      * GPS 퍼미션 부분은 아래의 출처에서 가져왔습니다.
      * Cdde from https://webnautes.tistory.com/1315
      */
+
+
 
 
     /* if gps service is not available user have to allow to use gps

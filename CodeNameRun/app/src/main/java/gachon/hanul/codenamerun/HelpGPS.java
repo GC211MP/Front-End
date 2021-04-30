@@ -34,7 +34,6 @@ public class HelpGPS extends Service implements LocationListener {
     public static final String LOG_SPEED_CHECK = "speed_check";
     public static final String MSG_SLOW = "limit_speed_slow";
 
-
     protected LocationManager locationManager;
 
     private final Context mContext;
@@ -71,7 +70,6 @@ public class HelpGPS extends Service implements LocationListener {
         // 최소 속도보다 속도가 느리면 로컬방송으로 알려줌
         if (minSpeed > getLastSpeed()) {
             Log.d(LOG_SPEED_CHECK, "!!!! slow !!!!" );
-            // 알려주고
             sendMSG_SpeedIsSlow();
         }
 
@@ -160,8 +158,6 @@ public class HelpGPS extends Service implements LocationListener {
         this.minSpeed = speed;
     }
 
-
-
     private void sendMSG_SpeedIsSlow() {
         Log.d(LOG_SPEED_CHECK, "sending message");
         Intent intent = new Intent("gachon.hanul.codenamerun.local");
@@ -169,5 +165,13 @@ public class HelpGPS extends Service implements LocationListener {
         LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
     }
 
+    public float get_total_distance(){
+        float total_distance = 0;
 
+        for(int i=0;i<locationList.size()-1;i++){
+            total_distance += Math.abs(locationList.get(i).distanceTo(locationList.get(i+1)));
+        }
+
+        return total_distance;
+    }
 }

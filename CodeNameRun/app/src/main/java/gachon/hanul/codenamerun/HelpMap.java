@@ -97,5 +97,10 @@ public class HelpMap extends AppCompatActivity implements OnMapReadyCallback{
         lastLatLng = newLatLng;
     }
 
+    public void clearMap(){
+        mMap.clear();
+    }
+
+
 
 }
