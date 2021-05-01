@@ -114,7 +114,7 @@ public class Running extends AppCompatActivity {
         tts = new TextToSpeech(this, status -> {
             if (status != ERROR) {
                 tts.setLanguage(Locale.KOREAN); // 언어
-                tts.setPitch(2.0f); // 톤 (높낮이, default= 1.0f)
+                tts.setPitch(1.0f); // 톤 (높낮이, default= 1.0f)
                 tts.setSpeechRate(1.5f); // 속도 (default= 1.0f)
             }
         });
