@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CodeNameRun">
 
-        <receiver android:name=".Running$SpeedReceiver"  android:exported="true">
+        <receiver android:name=".Running$LocalReceiver"  android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
                 <action android:name="android.intent.action.INPUT_METHOD_CHANGED" />

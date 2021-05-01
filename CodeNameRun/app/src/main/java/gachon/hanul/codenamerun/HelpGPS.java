@@ -31,6 +31,7 @@ public class HelpGPS extends Service implements LocationListener {
 
     private static final long MIN_DISTANCE_UPDATES = 10; // 3미터
     private static final long MIN_TIME_UPDATES = 3000; // 3초
+
     // 찐
 //    public static final float WALK_SLOW = (float)0.833; // 3km/h
 //    public static final float WALK_FAST = (float)1.11111; // 4km/h
@@ -45,8 +46,10 @@ public class HelpGPS extends Service implements LocationListener {
     public static final float RUN_AVG = (float)6.0;
     public static final float RUN_FAST = (float)7.0;
 
-    public static final String LOG_SPEED_CHECK = "speed_check";
+    public static final String LOG_HELP_GPS = "speed_check";
     public static final String MSG_SLOW = "limit_speed_slow";
+    public static final String MSG_COMPLETE = "complete";
+
 
     protected LocationManager locationManager;
 
@@ -55,6 +58,7 @@ public class HelpGPS extends Service implements LocationListener {
     private ArrayList<Location> locationList;
     private ArrayList<Float> speedList; // m/s
     private float minSpeed; // m/s
+    private long targetTime;
 
     public HelpGPS(Context context) {
         this.mContext = context;
@@ -76,17 +80,22 @@ public class HelpGPS extends Service implements LocationListener {
     public void onLocationChanged(Location location) {
         locationList.add(location);
         speedList.add(location.getSpeed());
-        Log.d(LOG_SPEED_CHECK, Double.toString(speedList.get(speedList.size() - 1)));
         helpMap.updateMAP(location, speedList.get(speedList.size() - 1));
 
-        Log.d(LOG_SPEED_CHECK, "now limit: " + Float.toString(minSpeed) + "speed: " + Float.toString(getLastSpeed()));
 
         // 최소 속도보다 속도가 느리면 로컬방송으로 알려줌
         if (minSpeed > getLastSpeed()) {
-            Log.d(LOG_SPEED_CHECK, "!!!! slow !!!!" );
-            sendMSG_SpeedIsSlow();
+            sendMSGSpeedIsSlow();
+            Log.d(LOG_HELP_GPS, "speed is slow" );
         }
 
+        if (targetTime < System.currentTimeMillis()){
+            sendMSGTimeIsDone();
+            Log.d(LOG_HELP_GPS, "time is done" );
+        }
+
+        Log.d(LOG_HELP_GPS, Double.toString(speedList.get(speedList.size() - 1)));
+        Log.d(LOG_HELP_GPS, "now limit: " + Float.toString(minSpeed) + "speed: " + Float.toString(getLastSpeed()));
     }
 
     @Override
@@ -172,14 +181,26 @@ public class HelpGPS extends Service implements LocationListener {
         this.minSpeed = speed;
     }
 
-    private void sendMSG_SpeedIsSlow() {
-        Log.d(LOG_SPEED_CHECK, "sending message");
+    public void setRemainTime(int sec){
+        targetTime = System.currentTimeMillis() + sec * 1000;
+        Log.d(LOG_HELP_GPS,"setRemainTime");
+
+    }
+
+    private void sendMSGSpeedIsSlow() {
         Intent intent = new Intent("gachon.hanul.codenamerun.local");
         intent.putExtra(MSG_SLOW, false);
         LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
     }
 
-    public float get_total_distance(){
+    private void sendMSGTimeIsDone() {
+        Intent intent = new Intent("gachon.hanul.codenamerun.local");
+        intent.putExtra(MSG_COMPLETE, true);
+        LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
+    }
+
+
+    public float getTotalDistance(){
         float total_distance = 0;
 
         for(int i=0;i<locationList.size()-1;i++){

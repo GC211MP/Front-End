@@ -14,7 +14,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 
 import android.os.Handler;
@@ -38,19 +37,26 @@ import static android.speech.tts.TextToSpeech.ERROR;
 
 public class Running extends AppCompatActivity {
 
-    public static final String LOG_IN_RUNNUNG = "running";
-    private static final int GPS_ENABLE_REQUEST_CODE = 2001;
-    private static final int PERMISSIONS_REQUEST_CODE = 100;
-    private final int DISTANCE_MULTIPLE = 100;
-    private final int SECRET_MULTIPLE = 100;
-
     String[] REQUIRED_PERMISSIONS = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
 
+    public static final String LOG_IN_RUNNING = "running";
+    private static final String NEXT_IS_RUNNING = "next_running";
+    private static final String NEXT_IS_TTS = "next_tts";
+    private static final int GPS_ENABLE_REQUEST_CODE = 2001;
+    private static final int PERMISSIONS_REQUEST_CODE = 100;
+
+    private final int DISTANCE_MULTIPLE = 100;
+    private final int SECRET_MULTIPLE = 100;
+    private final int[] stage_iter = new int[] {1, 5, 10 , 10}; // 각각 stage에서 멘트 혹은 인터벌의 총 합
+
     private boolean isSpeedOK = true;
-    private boolean newInterval = true;
+    private boolean isTTSDone;
+    private boolean isRunDone;
     private TextToSpeech tts;
+
     HelpGPS helpGPS;
     HelpMap helpMap;
+    Handler handler;
     /* variables */
     List<String> messages = new LinkedList<String>();;
     String str;
@@ -64,6 +70,9 @@ public class Running extends AppCompatActivity {
     String stageName;
 
     int totalSecret;
+    int now_stage;
+    int now_step = 0;
+    String[] test_msg;
 
 
     @Override
@@ -71,14 +80,21 @@ public class Running extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_running);
 
-        /* data from intent */
+        /* get stage information */
         stageName = getIntent().getStringExtra("stageName");
+        now_stage = getStageNumber(stageName);
+        if(now_stage < 0){
+            Log.d(LOG_IN_RUNNING,"stage is wrong");
+        }
 
-        // 느려진 속도를 받기 위한 브로드캐스터 리시버
-        SpeedReceiver speedReceiver = new SpeedReceiver();
+        test_msg = getResources().getStringArray(R.array.test);
+
+
+        // 브로드캐스터 리시버, 속도랑 시간을 받아 올거야
+        LocalReceiver localReceiver = new LocalReceiver();
         IntentFilter filter = new IntentFilter();
         filter.addAction("gachon.hanul.codenamerun.local");
-        LocalBroadcastManager.getInstance(this).registerReceiver(speedReceiver, filter);
+        LocalBroadcastManager.getInstance(this).registerReceiver(localReceiver, filter);
 
         // gps permission part
         if (checkLocationServicesStatus()) {
@@ -94,26 +110,7 @@ public class Running extends AppCompatActivity {
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(helpMap); // 지도가 준비되면 콜되는 함수
 
-
-        // UtteranceProgressListener
-
-        /* find view by id */
-        TopSecret1 = findViewById(R.id.TopSecret1);
-        TopSecret2 = findViewById(R.id.TopSecret2);
-        TopSecret3 = findViewById(R.id.TopSecret3);
-        TopSecret4 = findViewById(R.id.TopSecret4);
-        TopSecret5 = findViewById(R.id.TopSecret5);
-
-        stageNameText = findViewById(R.id.alertStage);
-
-        /* change values */
-        TopSecret1.setVisibility(View.INVISIBLE);
-        TopSecret2.setVisibility(View.INVISIBLE);
-        TopSecret3.setVisibility(View.INVISIBLE);
-        TopSecret4.setVisibility(View.INVISIBLE);
-        TopSecret5.setVisibility(View.INVISIBLE);
-
-        stageNameText.setText(stageName);
+        handler = new Handler();
 
         /* set TTS */
         tts = new TextToSpeech(this, status -> {
@@ -123,6 +120,7 @@ public class Running extends AppCompatActivity {
                 tts.setSpeechRate(1.5f); // 속도 (default= 1.0f)
             }
         });
+        /* set TTS utterance listener */
         tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
             @Override
             public void onStart(final String utteranceId) {
@@ -147,94 +145,158 @@ public class Running extends AppCompatActivity {
              *****/
             @Override
             public void onDone(String utteranceId) {
-                Running.this.runOnUiThread(new Runnable() {
-                    public void run() {
-                        Toast.makeText(Running.this, utteranceId, Toast.LENGTH_SHORT).show();
-                        if (!tts.isSpeaking()){
-                            // 속도 경고 알림은 리스트에 추가 하지 않고 즉시 큐에 추가한다.
-                            // 따라서 속도 경고 알림이 진행중일때는 큐에 message 를 더하지 않는다.
-                            if (!messages.isEmpty()){
-                                // message list 가 비어있을때는 종료한다.
-                                MessageToTTSQueue();
-                            }
-                        }
-                    }
-                });
+//                Running.this.runOnUiThread(new Runnable() {
+//                    public void run() {
+//                        Toast.makeText(Running.this, utteranceId, Toast.LENGTH_SHORT).show();
+//                        if (!tts.isSpeaking()){
+//                            // 속도 경고 알림은 리스트에 추가 하지 않고 즉시 큐에 추가한다.
+//                            // 따라서 속도 경고 알림이 진행중일때는 큐에 message 를 더하지 않는다.
+//                            if (!messages.isEmpty()){
+//                                // message list 가 비어있을때는 종료한다.
+//                                MessageToTTSQueue();
+//                            }
+//                        }
+//                    }
+                Log.d(LOG_IN_RUNNING,"tts done");
+                isTTSDone = true;
+                if(isTTSDone && isRunDone){
+                    playNextStep();
+                }
+
             }
+
         });
 
+        // setting game values --------------------------------------------------------------------------------
+        /* find view by id */
+        TopSecret1 = findViewById(R.id.TopSecret1);
+        TopSecret2 = findViewById(R.id.TopSecret2);
+        TopSecret3 = findViewById(R.id.TopSecret3);
+        TopSecret4 = findViewById(R.id.TopSecret4);
+        TopSecret5 = findViewById(R.id.TopSecret5);
+
+        stageNameText = findViewById(R.id.alertStage);
+
+        /* change values */
+        TopSecret1.setVisibility(View.INVISIBLE);
+        TopSecret2.setVisibility(View.INVISIBLE);
+        TopSecret3.setVisibility(View.INVISIBLE);
+        TopSecret4.setVisibility(View.INVISIBLE);
+        TopSecret5.setVisibility(View.INVISIBLE);
+
+        stageNameText.setText(stageName);
         totalSecret = 0;
+        isSpeedOK = true;
+        isRunDone = true; // 나중에 false로 바꿔라
+        isTTSDone = false;
 
-        /***** Prologue *****/
-        if (stageName.equals("Prologue")) {
-            new Handler().postDelayed(() -> tts.speak(getResources().getString(R.string.prologue_1), TextToSpeech.QUEUE_ADD, null, "prologue_1"), 2000);
-            /* Interval marker */
-            // 프롤로그는 마커 필요 없음
+
+        playNextStep();
+
+
+//
+//
+//
+//        /***** Prologue *****/
+//        if (stageName.equals("Prologue")) {
+//            new Handler().postDelayed(() -> tts.speak(getResources().getString(R.string.prologue_1), TextToSpeech.QUEUE_ADD, null, "prologue_1"), 2000);
+//            /* Interval marker */
+//            // 프롤로그는 마커 필요 없음
+//        }
+//
+//        /***** stage 1 *****/
+//        if (stageName.equals("Stage1")) {
+//            /* sound */
+//
+//            new Handler().postDelayed(() -> {
+//                /* interval 1 */
+//                messages.add(getResources().getString(R.string.Stage1_walk1_1));
+//                messages.add(getResources().getString(R.string.Stage1_walk1_2));
+//                messages.add(getResources().getString(R.string.Stage1_walk1_3));
+//                messages.add(getResources().getString(R.string.Stage1_walk1_4));
+//                messages.add(getResources().getString(R.string.Stage1_walk1_5));
+//                messages.add(getResources().getString(R.string.Stage1_walk1_6));
+//                MessageToTTSQueue();
+//            }, 2000);
+//
+//
+//            new Handler().postDelayed(() -> {
+//                MainActivity.mediaPlayer = MediaPlayer.create(Running.this, R.raw.footstep);
+//                MainActivity.mediaPlayer.start();
+//                MainActivity.mediaPlayer.setOnCompletionListener(mp -> {
+//                    MainActivity.mediaPlayer.release();
+//                    MainActivity.mediaPlayer = null;
+//                });
+//            }, 4000);
+//
+//            /* Interval marker */
+//            /* 5번의(4분 ->test로 4초 간격 해둠) 인터벌 표시 마크 보이기 */
+//            new Handler().postDelayed(() -> TopSecret1.setVisibility(View.VISIBLE), 4000);
+//            new Handler().postDelayed(() -> TopSecret2.setVisibility(View.VISIBLE), 8000);
+//            new Handler().postDelayed(() -> TopSecret3.setVisibility(View.VISIBLE), 12000);
+//            new Handler().postDelayed(() -> TopSecret4.setVisibility(View.VISIBLE), 16000);
+//            new Handler().postDelayed(() -> TopSecret5.setVisibility(View.VISIBLE), 20000);
+//        }
+//
+//        /***** stage 2 *****/
+//        if (stageName.equals("Stage2")) {
+//            new Handler().postDelayed(() -> tts.speak("Stage2", TextToSpeech.QUEUE_ADD, null, "Stage2"), 1000);
+//        }
+//
+//        /***** stage 3 *****/
+//        if (stageName.equals("Stage3")) {
+//            new Handler().postDelayed(() -> tts.speak("Stage3", TextToSpeech.QUEUE_ADD, null, "Stage3"), 1000);
+//        }
+//
+//        /***** stage 4 *****/
+//        if (stageName.equals("Stage4")) {
+//            new Handler().postDelayed(() -> tts.speak("Stage4", TextToSpeech.QUEUE_ADD, null, "Stage3"), 1000);
+//
+//
+//        }
+
+        Log.d(LOG_IN_RUNNING,"onCreate in end");
+    }
+
+
+    public void playNextStep(){
+
+        // 다음이 있는지 확인
+        if (now_step < test_msg.length) { // 여기는 다음에 나올 멘트나 뛰는 것을 진행해야해
+
+            // 멘트를 큐에 넣어주고
+            isTTSDone = false;
+            handler.postDelayed(() -> tts.speak(test_msg[now_step-1], TextToSpeech.QUEUE_ADD, null, "prologue_1"), 1000);
+            // 시간 걸어주고
+//            helpGPS.setRemainTime(0);
+//            helpGPS.setMinSpeed(-1);
+
+            now_step += 1;
+            Log.d(LOG_IN_RUNNING,now_step+ "/" + test_msg.length);
+        } else { // 여기 들어오면 스테이지가 끝나거야
+            Log.d(LOG_IN_RUNNING,"enter ending");
+            endStage();
         }
+        //
 
-        /***** stage 1 *****/
-        if (stageName.equals("Stage1")) {
-            /* sound */
-
-            new Handler().postDelayed(() -> {
-                /* interval 1 */
-                messages.add(getResources().getString(R.string.Stage1_walk1_1));
-                messages.add(getResources().getString(R.string.Stage1_walk1_2));
-                messages.add(getResources().getString(R.string.Stage1_walk1_3));
-                messages.add(getResources().getString(R.string.Stage1_walk1_4));
-                messages.add(getResources().getString(R.string.Stage1_walk1_5));
-                messages.add(getResources().getString(R.string.Stage1_walk1_6));
-                MessageToTTSQueue();
-            }, 2000);
-
-
-            new Handler().postDelayed(() -> {
-                MainActivity.mediaPlayer = MediaPlayer.create(Running.this, R.raw.footstep);
-                MainActivity.mediaPlayer.start();
-                MainActivity.mediaPlayer.setOnCompletionListener(mp -> {
-                    MainActivity.mediaPlayer.release();
-                    MainActivity.mediaPlayer = null;
-                });
-            }, 4000);
-
-            /* Interval marker */
-            /* 5번의(4분 ->test로 4초 간격 해둠) 인터벌 표시 마크 보이기 */
-            new Handler().postDelayed(() -> TopSecret1.setVisibility(View.VISIBLE), 4000);
-            new Handler().postDelayed(() -> TopSecret2.setVisibility(View.VISIBLE), 8000);
-            new Handler().postDelayed(() -> TopSecret3.setVisibility(View.VISIBLE), 12000);
-            new Handler().postDelayed(() -> TopSecret4.setVisibility(View.VISIBLE), 16000);
-            new Handler().postDelayed(() -> TopSecret5.setVisibility(View.VISIBLE), 20000);
-        }
-
-        /***** stage 2 *****/
-        if (stageName.equals("Stage2")) {
-            new Handler().postDelayed(() -> tts.speak("Stage2", TextToSpeech.QUEUE_ADD, null, "Stage2"), 1000);
-        }
-
-        /***** stage 3 *****/
-        if (stageName.equals("Stage3")) {
-            new Handler().postDelayed(() -> tts.speak("Stage3", TextToSpeech.QUEUE_ADD, null, "Stage3"), 1000);
-        }
-
-        /***** stage 4 *****/
-        if (stageName.equals("Stage4")) {
-            new Handler().postDelayed(() -> tts.speak("Stage4", TextToSpeech.QUEUE_ADD, null, "Stage3"), 1000);
-
-
-        }
-
-        Log.d(LOG_IN_RUNNUNG,"create in end");
     }
 
     /*
      * helpGPS에서 제한 속도(speed limit) 보다 느려지면 보내는 브로드캐스트를 받는 클래스
      * boolean 값을 받아서 isSpeedOK 에서 넣어줌
      */
-    public class SpeedReceiver extends BroadcastReceiver {
+    public class LocalReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             isSpeedOK = intent.getBooleanExtra(HelpGPS.MSG_SLOW, true);
-            Log.d(HelpGPS.LOG_SPEED_CHECK, "receive slow message: " + Boolean.toString(isSpeedOK));
+            isRunDone = intent.getBooleanExtra(HelpGPS.MSG_COMPLETE, false);
+            if(isRunDone && isTTSDone) {
+                playNextStep();
+            }
+
+            if ((isRunDone)){
+                Log.d(LOG_IN_RUNNING,"run done");
+            }
         }
     }
 
@@ -258,15 +320,16 @@ public class Running extends AppCompatActivity {
         double distance;
 
         // 1. 뛴 거리랑 편지지 갯수 알아오기
-        distance = helpGPS.get_total_distance();
+        //distance = helpGPS.getTotalDistance();
         // 2. 점수 계산하기
-        score = calculateScore(distance,totalSecret);
+        //score = calculateScore(distance,totalSecret);
+        score = calculateScore(100,4);
         // 3. 객체 종료하기 -> gps랑 map
-        helpMap.clearMap();
+        //helpMap.clearMap();
         helpGPS.onDestroy();
         // TODO: 4. 점수창 띄워주기 -> 궁금한데 인텐트로 점수창 띄워주면 안될거 같은데 fragment나 해야할 것 같은데.. 모르겠다
 
-        Log.d(LOG_IN_RUNNUNG,"score: " + score);
+        Log.d(LOG_IN_RUNNING,"score: " + score);
         return  score;
 
     }
@@ -288,7 +351,14 @@ public class Running extends AppCompatActivity {
         if(isSpeedOK) totalSecret += 1;
     }
 
-
+    private int getStageNumber(String str) {
+        if(str.equals("Prologue")) return 0;
+        if(str.equals("Stage1")) return 1;
+        if(str.equals("Stage2")) return 2;
+        if(str.equals("Stage3")) return 3;
+        if(str.equals("Stage4")) return 4;
+        return -1;
+    }
 
 
 
@@ -301,8 +371,6 @@ public class Running extends AppCompatActivity {
      * GPS 퍼미션 부분은 아래의 출처에서 가져왔습니다.
      * Cdde from https://webnautes.tistory.com/1315
      */
-
-
 
 
     /* if gps service is not available user have to allow to use gps
