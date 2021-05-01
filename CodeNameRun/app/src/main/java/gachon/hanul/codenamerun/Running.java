@@ -57,9 +57,6 @@ public class Running extends AppCompatActivity {
     HelpGPS helpGPS;
     HelpMap helpMap;
     Handler handler;
-    /* variables */
-    List<String> messages = new LinkedList<String>();;
-    String str;
 
     ImageView TopSecret1;
     ImageView TopSecret2;
@@ -87,6 +84,7 @@ public class Running extends AppCompatActivity {
             Log.d(LOG_IN_RUNNING,"stage is wrong");
         }
 
+        /* script */
         test_msg = getResources().getStringArray(R.array.test);
 
 
@@ -131,40 +129,17 @@ public class Running extends AppCompatActivity {
             }
 
             @Override
-
             public void onError(String utteranceId) {
             }
 
-            /***** add tts speak
-             * List<String> messages = Arrays.asList(getResources().getStringArray(R.array.Lines));
-             *      get list of the string list
-             *      add new line to tts queue
-             *      -> 읽은건 어떻게 지웁니까
-             * if string list is empty
-             *      end function
-             *****/
             @Override
             public void onDone(String utteranceId) {
-//                Running.this.runOnUiThread(new Runnable() {
-//                    public void run() {
-//                        Toast.makeText(Running.this, utteranceId, Toast.LENGTH_SHORT).show();
-//                        if (!tts.isSpeaking()){
-//                            // 속도 경고 알림은 리스트에 추가 하지 않고 즉시 큐에 추가한다.
-//                            // 따라서 속도 경고 알림이 진행중일때는 큐에 message 를 더하지 않는다.
-//                            if (!messages.isEmpty()){
-//                                // message list 가 비어있을때는 종료한다.
-//                                MessageToTTSQueue();
-//                            }
-//                        }
-//                    }
                 Log.d(LOG_IN_RUNNING,"tts done");
                 isTTSDone = true;
                 if(isTTSDone && isRunDone){
                     playNextStep();
                 }
-
             }
-
         });
 
         // setting game values --------------------------------------------------------------------------------
@@ -194,32 +169,8 @@ public class Running extends AppCompatActivity {
         playNextStep();
 
 
-//
-//
-//
-//        /***** Prologue *****/
-//        if (stageName.equals("Prologue")) {
-//            new Handler().postDelayed(() -> tts.speak(getResources().getString(R.string.prologue_1), TextToSpeech.QUEUE_ADD, null, "prologue_1"), 2000);
-//            /* Interval marker */
-//            // 프롤로그는 마커 필요 없음
-//        }
-//
-//        /***** stage 1 *****/
-//        if (stageName.equals("Stage1")) {
-//            /* sound */
-//
-//            new Handler().postDelayed(() -> {
-//                /* interval 1 */
-//                messages.add(getResources().getString(R.string.Stage1_walk1_1));
-//                messages.add(getResources().getString(R.string.Stage1_walk1_2));
-//                messages.add(getResources().getString(R.string.Stage1_walk1_3));
-//                messages.add(getResources().getString(R.string.Stage1_walk1_4));
-//                messages.add(getResources().getString(R.string.Stage1_walk1_5));
-//                messages.add(getResources().getString(R.string.Stage1_walk1_6));
-//                MessageToTTSQueue();
-//            }, 2000);
-//
-//
+// TODO: MediaPlayer 적용
+        
 //            new Handler().postDelayed(() -> {
 //                MainActivity.mediaPlayer = MediaPlayer.create(Running.this, R.raw.footstep);
 //                MainActivity.mediaPlayer.start();
@@ -228,32 +179,6 @@ public class Running extends AppCompatActivity {
 //                    MainActivity.mediaPlayer = null;
 //                });
 //            }, 4000);
-//
-//            /* Interval marker */
-//            /* 5번의(4분 ->test로 4초 간격 해둠) 인터벌 표시 마크 보이기 */
-//            new Handler().postDelayed(() -> TopSecret1.setVisibility(View.VISIBLE), 4000);
-//            new Handler().postDelayed(() -> TopSecret2.setVisibility(View.VISIBLE), 8000);
-//            new Handler().postDelayed(() -> TopSecret3.setVisibility(View.VISIBLE), 12000);
-//            new Handler().postDelayed(() -> TopSecret4.setVisibility(View.VISIBLE), 16000);
-//            new Handler().postDelayed(() -> TopSecret5.setVisibility(View.VISIBLE), 20000);
-//        }
-//
-//        /***** stage 2 *****/
-//        if (stageName.equals("Stage2")) {
-//            new Handler().postDelayed(() -> tts.speak("Stage2", TextToSpeech.QUEUE_ADD, null, "Stage2"), 1000);
-//        }
-//
-//        /***** stage 3 *****/
-//        if (stageName.equals("Stage3")) {
-//            new Handler().postDelayed(() -> tts.speak("Stage3", TextToSpeech.QUEUE_ADD, null, "Stage3"), 1000);
-//        }
-//
-//        /***** stage 4 *****/
-//        if (stageName.equals("Stage4")) {
-//            new Handler().postDelayed(() -> tts.speak("Stage4", TextToSpeech.QUEUE_ADD, null, "Stage3"), 1000);
-//
-//
-//        }
 
         Log.d(LOG_IN_RUNNING,"onCreate in end");
     }
@@ -309,12 +234,6 @@ public class Running extends AppCompatActivity {
      * if string list is empty
      *      end function
      *****/
-
-    private void  MessageToTTSQueue(){
-        tts.speak(messages.get(0), TextToSpeech.QUEUE_ADD, null, messages.get(0));
-        messages.remove(0);
-    }
-
     private int endStage(){
         int score;
         double distance;
