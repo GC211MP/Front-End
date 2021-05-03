@@ -11,10 +11,10 @@
     android:drawableLeft="@drawable/ic_person_black_24dp"
     android:textColorHighlight="@color/white"-->
     <EditText
-        android:layout_centerVertical="true"
+        android:id="@+id/write_name"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:id="@+id/name"
+        android:layout_above="@+id/write_height"
         android:layout_margin="10dp"
         android:backgroundTint="@color/dusty_rose"
         android:padding="15dp"
@@ -22,19 +22,29 @@
         android:hint="Name"
         android:textColor="@color/dusty_rose"
         android:textColorHint="@color/light_grey"/>
-
     <EditText
-        android:layout_below="@+id/name"
+        android:id="@+id/write_height"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:id="@+id/what_thing"
+        android:layout_centerVertical="true"
         android:layout_margin="10dp"
         android:backgroundTint="@color/dusty_rose"
         android:padding="15dp"
         android:drawablePadding="10dp"
-        android:hint="Email"
+        android:hint="Height"
         android:textColor="@color/dusty_rose"
         android:textColorHint="@color/light_grey"/>
-
+    <EditText
+        android:id="@+id/write_weight"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/write_height"
+        android:layout_margin="10dp"
+        android:backgroundTint="@color/dusty_rose"
+        android:padding="15dp"
+        android:drawablePadding="10dp"
+        android:hint="Weight"
+        android:textColor="@color/dusty_rose"
+        android:textColorHint="@color/light_grey"/>
 
 </RelativeLayout>
