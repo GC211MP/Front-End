@@ -61,7 +61,6 @@
         android:text="Stage3"
         android:textSize="20dp"/>
 
-    /* menu bar */
 
     <Button
         android:id="@+id/Stage4Button"
@@ -77,6 +76,8 @@
         android:text="Stage4"
         android:textSize="20dp" />
 
+
+    /* menu bar */
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
