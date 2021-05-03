@@ -20,19 +20,16 @@
         android:textColor="@color/warm_white"
         android:textSize="30dp" />
 
+    /* menu bar */
+
     <View
-        android:layout_width="335dp"
-        android:layout_height="562dp"
+        android:layout_width="341dp"
+        android:layout_height="570dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginStart="40dp"
         android:layout_marginTop="80dp"
-        android:layout_marginEnd="0dp"
-        android:layout_marginBottom="50dp"
         android:background="@color/dusty_rose"
         android:gravity="center"
         android:text="Information" />
-
-    /* menu bar */
 
     <LinearLayout
         android:layout_width="match_parent"
