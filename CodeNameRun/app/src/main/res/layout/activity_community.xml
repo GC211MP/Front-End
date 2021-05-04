@@ -7,30 +7,80 @@
     android:layout_height="match_parent"
     tools:context=".Community">
 
-    <!-- https://lktprogrammer.tistory.com/163 -->
-    <ListView
-        android:layout_margin="30dp"
-        android:layout_below="@+id/ranking_name"
-        android:layout_above="@+id/menubar"
-        android:id="@+id/listView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="10dp"/>
-
 
     <TextView
-        android:id="@+id/ranking_name"
-        android:layout_width="150dp"
-        android:layout_height="49dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="15dp"
+    android:id="@+id/ranking_name"
+    android:layout_width="150dp"
+    android:layout_height="49dp"
+    android:layout_centerHorizontal="true"
+    android:layout_marginStart="15dp"
+    android:layout_marginTop="20dp"
+    android:background="#00ff0000"
+    android:gravity="center"
+    android:text="Ranking"
+    android:textColor="@color/warm_white"
+    android:textSize="30dp"/>
+
+    /* stage button */
+
+    <Button
+        android:id="@+id/rank_stage1_btn"
+        android:layout_width="85dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ranking_name"
+        android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
-        android:background="#00ff0000"
-        android:gravity="center"
-        android:text="Ranking"
-        android:textColor="@color/warm_white"
-        android:textSize="30dp"/>
+        android:text="Stage1"
+        android:textColor="@color/warm_white" />
+
+    <Button
+        android:id="@+id/rank_stage2_btn"
+        android:layout_width="85dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ranking_name"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="20dp"
+        android:layout_toRightOf="@+id/rank_stage1_btn"
+        android:text="Stage2"
+        android:textColor="@color/warm_white" />
+
+    <Button
+        android:id="@+id/rank_stage3_btn"
+        android:layout_width="85dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ranking_name"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="20dp"
+        android:layout_toRightOf="@+id/rank_stage2_btn"
+        android:text="Stage3"
+        android:textColor="@color/warm_white" />
+
+    <Button
+        android:id="@+id/rank_stage4_btn"
+        android:layout_width="85dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ranking_name"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_toRightOf="@+id/rank_stage3_btn"
+        android:text="Stage4"
+        android:textColor="@color/warm_white" />
+
+    <!-- https://lktprogrammer.tistory.com/163 -->
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="wrap_content"
+        android:layout_height="503dp"
+        android:layout_above="@+id/menubar"
+        android:layout_below="@+id/ranking_name"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="30dp"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="10dp" />
+
 
     /* menu bar */
     <LinearLayout
