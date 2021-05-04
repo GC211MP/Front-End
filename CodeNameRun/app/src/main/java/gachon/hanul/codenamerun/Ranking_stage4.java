@@ -1,5 +1,6 @@
 package gachon.hanul.codenamerun;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,58 +8,47 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link Ranking_stage4#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class Ranking_stage4 extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    Community community;
 
-    public Ranking_stage4() {
-        // Required empty public constructor
+    //OnAttach는 fragment를 붙일 때 호출, getActivity로  액티비티를 찾아준다.
+    @Override
+    public void onAttach(Context context){
+        super.onAttach(context);
+        community = (Community)getActivity();
     }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment Ranking_stage4.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static Ranking_stage4 newInstance(String param1, String param2) {
-        Ranking_stage4 fragment = new Ranking_stage4();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+    @Override
+    public void onDetach(){
+        super.onDetach();
+        community = null;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_ranking_stage4, container, false);
+        ViewGroup view=(ViewGroup)inflater.inflate(R.layout.fragment_ranking_stage4, container, false);
+        //ListView생성
+        ListView listView=(ListView) view.findViewById(R.id.listView);
+
+
+        /*여기 이제 랭킹 스트링으로 받아오고 리스트뷰에 보이게 채워야함*/
+
+
+
+
+
+        return view;
     }
 }

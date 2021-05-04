@@ -24,7 +24,7 @@
     /* stage button */
 
     <Button
-        android:id="@+id/rank_stage1_btn"
+        android:id="@+id/ranking_stage1_btn"
         android:layout_width="85dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/ranking_name"
@@ -34,41 +34,49 @@
         android:textColor="@color/warm_white" />
 
     <Button
-        android:id="@+id/rank_stage2_btn"
+        android:id="@+id/ranking_stage2_btn"
         android:layout_width="85dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/ranking_name"
         android:layout_marginLeft="5dp"
         android:layout_marginTop="20dp"
-        android:layout_toRightOf="@+id/rank_stage1_btn"
+        android:layout_toRightOf="@+id/ranking_stage1_btn"
         android:text="Stage2"
         android:textColor="@color/warm_white" />
 
     <Button
-        android:id="@+id/rank_stage3_btn"
+        android:id="@+id/ranking_stage3_btn"
         android:layout_width="85dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/ranking_name"
         android:layout_marginLeft="5dp"
         android:layout_marginTop="20dp"
-        android:layout_toRightOf="@+id/rank_stage2_btn"
+        android:layout_toRightOf="@+id/ranking_stage2_btn"
         android:text="Stage3"
         android:textColor="@color/warm_white" />
 
     <Button
-        android:id="@+id/rank_stage4_btn"
+        android:id="@+id/ranking_stage4_btn"
         android:layout_width="85dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/ranking_name"
         android:layout_marginLeft="5dp"
         android:layout_marginTop="20dp"
         android:layout_marginRight="20dp"
-        android:layout_toRightOf="@+id/rank_stage3_btn"
+        android:layout_toRightOf="@+id/ranking_stage3_btn"
         android:text="Stage4"
         android:textColor="@color/warm_white" />
 
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/ranking_stage1_btn"></FrameLayout>
+
+
     <!-- https://lktprogrammer.tistory.com/163 -->
-    <ListView
+
+<!--    <ListView
         android:id="@+id/listView"
         android:layout_width="wrap_content"
         android:layout_height="503dp"
@@ -79,7 +87,7 @@
         android:layout_marginEnd="30dp"
         android:layout_marginBottom="30dp"
         android:divider="@android:color/transparent"
-        android:dividerHeight="10dp" />
+        android:dividerHeight="10dp" />-->
 
 
     /* menu bar */
