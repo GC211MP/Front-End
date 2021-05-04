@@ -45,9 +45,13 @@ public class Ranking_stage4 extends Fragment {
 
         /*여기 이제 랭킹 스트링으로 받아오고 리스트뷰에 보이게 채워야함*/
 
+        // 임시 스트링
+        String[] nameArray = {"이름 1","이름 2","이름 3","이름 4","이름 5","이름 6" };
+        String[] recordArray = {"100", "80", "70", "60", "50", "40"};
 
 
-
+        CustomListAdapter whatever = new CustomListAdapter(getActivity(), nameArray, recordArray);
+        listView.setAdapter(whatever);
 
         return view;
     }

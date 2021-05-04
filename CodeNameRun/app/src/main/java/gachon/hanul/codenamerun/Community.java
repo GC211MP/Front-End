@@ -18,10 +18,10 @@ public class Community extends AppCompatActivity {
     Ranking_stage4 ranking_stage4;
 
     /* Ranking buttons */
-    Button ranking_stage1_btn =findViewById(R.id.ranking_stage1_btn);
-    Button ranking_stage2_btn =findViewById(R.id.ranking_stage2_btn);
-    Button ranking_stage3_btn =findViewById(R.id.ranking_stage3_btn);
-    Button ranking_stage4_btn =findViewById(R.id.ranking_stage4_btn);
+    Button ranking_stage1_btn;
+    Button ranking_stage2_btn;
+    Button ranking_stage3_btn;
+    Button ranking_stage4_btn;
 
     /* menu buttons */
     ImageButton AgentInfo;
@@ -40,6 +40,11 @@ public class Community extends AppCompatActivity {
         ranking_stage2= new Ranking_stage2();
         ranking_stage3= new Ranking_stage3();
         ranking_stage4= new Ranking_stage4();
+
+        ranking_stage1_btn =findViewById(R.id.ranking_stage1_btn);
+        ranking_stage2_btn =findViewById(R.id.ranking_stage2_btn);
+        ranking_stage3_btn =findViewById(R.id.ranking_stage3_btn);
+        ranking_stage4_btn =findViewById(R.id.ranking_stage4_btn);
 
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,ranking_stage1).commit();
@@ -77,9 +82,9 @@ public class Community extends AppCompatActivity {
 
 
 
-        CustomListAdapter whatever = new CustomListAdapter(this, nameArray, recordArray);
-        ListView listView = (ListView) findViewById(R.id.listView);
-        listView.setAdapter(whatever);
+        //CustomListAdapter whatever = new CustomListAdapter(this, nameArray, recordArray);
+        //ListView listView = (ListView) findViewById(R.id.listView);
+        //listView.setAdapter(whatever);
 
         /* find view by id */
         AgentInfo =  findViewById(R.id.AgentInfoButton);
