@@ -4,39 +4,74 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 
 public class Home extends AppCompatActivity {
 
-    Button PrologueStageButton;
+   /*
+   Button PrologueStageButton;
     Button Stage1Button;
     Button Stage2Button;
     Button Stage3Button;
     Button Stage4Button;
+    */
 
     ImageButton AgentInfo;
     ImageButton Home;
-    ImageButton Community;
+    ImageButton Ranking;
+
+    SelectStage selectStage;
+    AgentInformation agentInformation;
+    AgentRanking agentRanking;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        /* find view by id */
+  /*      *//* find view by id *//*
         PrologueStageButton = findViewById(R.id.PrologueStageButton);
         Stage1Button = findViewById(R.id.Stage1Button);
         Stage2Button = findViewById(R.id.Stage2Button);
         Stage3Button = findViewById(R.id.Stage3Button);
-        Stage4Button = findViewById(R.id.Stage4Button);
+        Stage4Button = findViewById(R.id.Stage4Button);*/
+
+        selectStage = new SelectStage();
+        agentInformation = new AgentInformation();
+        agentRanking = new AgentRanking();
 
         /* find view by id */
         AgentInfo =  findViewById(R.id.AgentInfoButton);
         Home =  findViewById(R.id.HomeButton);
-        Community =  findViewById(R.id.CommunityButton);
+        Ranking =  findViewById(R.id.CommunityButton);
 
-        /* stage buttons */
+        getSupportFragmentManager().beginTransaction().replace(R.id.menu_fragment_container,selectStage).commit();
+
+        /* menu buttons */
+        AgentInfo.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                getSupportFragmentManager().beginTransaction().replace(R.id.menu_fragment_container,agentInformation).commit();
+            }
+        });
+        Home.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                getSupportFragmentManager().beginTransaction().replace(R.id.menu_fragment_container,selectStage).commit();
+            }
+        });
+        Ranking.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                getSupportFragmentManager().beginTransaction().replace(R.id.menu_fragment_container,agentRanking).commit();
+            }
+        });
+
+    /*    *//* stage buttons *//*
         PrologueStageButton.setOnClickListener(v -> {
             Intent PrologueIntent = new Intent(getApplicationContext(), Running.class);
             PrologueIntent.putExtra("stageName", "Prologue");
@@ -66,22 +101,8 @@ public class Home extends AppCompatActivity {
             Stage4Intent.putExtra("stageName", "Stage4");
             startActivity(Stage4Intent);
         });
-
-        /* menu buttons */
-        AgentInfo.setOnClickListener(v -> {
-            Intent AgentInfoIntent= new Intent(getApplicationContext(), AgentInfo.class);
-            startActivity(AgentInfoIntent);
-        });
-
-        Home.setOnClickListener(v -> {
-            Intent HomeIntent= new Intent(getApplicationContext(), Home.class);
-            startActivity(HomeIntent);
-        });
-
-        Community.setOnClickListener(v -> {
-            Intent CommunityIntent= new Intent(getApplicationContext(), Community.class);
-            startActivity(CommunityIntent);
-        });
+*/
 
     }
+
 }

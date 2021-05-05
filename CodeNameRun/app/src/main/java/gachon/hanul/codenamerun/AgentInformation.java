@@ -8,11 +8,9 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 
 
-public class Ranking_stage4 extends Fragment {
-
+public class AgentInformation extends Fragment {
 
     Home home;
 
@@ -20,12 +18,12 @@ public class Ranking_stage4 extends Fragment {
     @Override
     public void onAttach(Context context){
         super.onAttach(context);
-        home =(Home)getActivity();
+        home = (Home)getActivity();
     }
     @Override
     public void onDetach(){
         super.onDetach();
-        home = null;
+       home = null;
     }
 
     @Override
@@ -33,21 +31,11 @@ public class Ranking_stage4 extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        ViewGroup view=(ViewGroup)inflater.inflate(R.layout.fragment_ranking_stage4, container, false);
-        //ListView생성
-        ListView listView=(ListView) view.findViewById(R.id.listView);
-
-
-        /*여기 이제 랭킹 스트링으로 받아오고 리스트뷰에 보이게 채워야함*/
-
-
-
-
+        ViewGroup view=(ViewGroup)inflater.inflate(R.layout.fragment_agent_information, container, false);
 
         return view;
     }

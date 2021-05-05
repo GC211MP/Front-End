@@ -1,3 +1,4 @@
+/*
 package gachon.hanul.codenamerun;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,12 +19,16 @@ public class AgentInfo extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agent_info);
 
-        /* find view by id */
+        */
+/* find view by id *//*
+
         AgentInfo =  findViewById(R.id.AgentInfoButton);
         Home =  findViewById(R.id.HomeButton);
         Community =  findViewById(R.id.CommunityButton);
 
-        /* menu buttons */
+        */
+/* menu buttons *//*
+
         AgentInfo.setOnClickListener(v -> {
             Intent AgentInfoIntent= new Intent(getApplicationContext(), AgentInfo.class);
             startActivity(AgentInfoIntent);
@@ -39,4 +44,4 @@ public class AgentInfo extends AppCompatActivity {
             startActivity(CommunityIntent);
         });
     }
-}
+}*/

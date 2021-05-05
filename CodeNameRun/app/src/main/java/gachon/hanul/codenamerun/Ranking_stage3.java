@@ -12,19 +12,21 @@ import android.widget.ListView;
 
 public class Ranking_stage3 extends Fragment {
 
-    Community community;
+
+    Home home;
 
     //OnAttach는 fragment를 붙일 때 호출, getActivity로  액티비티를 찾아준다.
     @Override
     public void onAttach(Context context){
         super.onAttach(context);
-        community = (Community)getActivity();
+        home =(Home)getActivity();
     }
     @Override
     public void onDetach(){
         super.onDetach();
-        community = null;
+        home = null;
     }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

@@ -1,20 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Home">
+    tools:context=".SelectStage">
 
-
-    <RelativeLayout
-        android:id="@+id/menu_fragment_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/menubar"></RelativeLayout>
-
-<!--\
     /* stage buttons */
 
     <Button
@@ -82,46 +72,7 @@
         android:layout_marginBottom="20dp"
         android:text="Stage4"
         android:textSize="20dp" />
--->
+    -->
 
-
-    /* menu bar */
-    <LinearLayout
-        android:id="@+id/menubar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_alignParentBottom="true">
-
-        <ImageButton
-            android:id="@+id/AgentInfoButton"
-            android:layout_width="24dp"
-            android:layout_height="30dp"
-            android:layout_margin="10dp"
-            android:layout_weight="1"
-            android:background="#00ff0000"
-            android:scaleType="centerInside"
-            android:src="@drawable/agent_info" />
-
-        <ImageButton
-            android:id="@+id/HomeButton"
-            android:layout_width="24dp"
-            android:layout_height="30dp"
-            android:layout_margin="10dp"
-            android:layout_weight="1"
-            android:background="#00ff0000"
-            android:scaleType="centerInside"
-            android:src="@drawable/home" />
-
-        <ImageButton
-            android:id="@+id/CommunityButton"
-            android:layout_width="24dp"
-            android:layout_height="30dp"
-            android:layout_margin="10dp"
-            android:layout_weight="1"
-            android:background="#00ff0000"
-            android:scaleType="centerInside"
-            android:src="@drawable/community" />
-    </LinearLayout>
 
 </RelativeLayout>
