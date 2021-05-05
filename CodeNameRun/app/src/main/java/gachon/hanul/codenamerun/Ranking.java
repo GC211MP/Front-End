@@ -1,9 +1,11 @@
 package gachon.hanul.codenamerun;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,6 +25,14 @@ public class Ranking extends AppCompatActivity {
     Button ranking_stage2_btn;
     Button ranking_stage3_btn;
     Button ranking_stage4_btn;
+
+    /* menu button */
+    ImageButton AgentInfo;
+    ImageButton Home;
+    ImageButton Ranking;
+
+    SelectStage selectStage;
+    AgentInformation agentInformation;
 
     String[] nameArray = {"이름 1","이름 2","이름 3","이름 4","이름 5","이름 6" };
 
@@ -78,6 +88,39 @@ public class Ranking extends AppCompatActivity {
             @Override
             public void onClick(View view){
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,ranking_stage4).commit();
+            }
+        });
+
+        /* find view by id */
+        AgentInfo =  findViewById(R.id.AgentInfoButton);
+        Home =  findViewById(R.id.HomeButton);
+        Ranking =  findViewById(R.id.CommunityButton);
+
+
+        /* menu buttons */
+        AgentInfo.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                Intent intent = new Intent(getApplicationContext(),Home.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        Home.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                Intent intent = new Intent(getApplicationContext(),Home.class);
+                intent.putExtra("fragment","AgentInfo");
+                startActivity(intent);
+                finish();
+            }
+        });
+        Ranking.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                Intent intent = new Intent(getApplicationContext(),Ranking.class);
+                startActivity(intent);
+                finish();
             }
         });
     }
