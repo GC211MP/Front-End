@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AgentRanking">
+    tools:context=".Ranking">
 
     <TextView
         android:id="@+id/ranking_name"
@@ -70,4 +70,42 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/ranking_stage1_btn"></FrameLayout>
 
+    /* menu bar */
+    <LinearLayout
+        android:id="@+id/menubar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true">
+
+        <ImageButton
+            android:id="@+id/AgentInfoButton"
+            android:layout_width="24dp"
+            android:layout_height="30dp"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:background="#00ff0000"
+            android:scaleType="centerInside"
+            android:src="@drawable/agent_info" />
+
+        <ImageButton
+            android:id="@+id/HomeButton"
+            android:layout_width="24dp"
+            android:layout_height="30dp"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:background="#00ff0000"
+            android:scaleType="centerInside"
+            android:src="@drawable/home" />
+
+        <ImageButton
+            android:id="@+id/CommunityButton"
+            android:layout_width="24dp"
+            android:layout_height="30dp"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:background="#00ff0000"
+            android:scaleType="centerInside"
+            android:src="@drawable/community" />
+    </LinearLayout>
 </RelativeLayout>

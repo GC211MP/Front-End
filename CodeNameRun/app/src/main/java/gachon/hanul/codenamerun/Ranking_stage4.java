@@ -14,18 +14,19 @@ import android.widget.ListView;
 public class Ranking_stage4 extends Fragment {
 
 
-    Home home;
+
+    Ranking ranking;
 
     //OnAttach는 fragment를 붙일 때 호출, getActivity로  액티비티를 찾아준다.
     @Override
     public void onAttach(Context context){
         super.onAttach(context);
-        home =(Home)getActivity();
+        ranking =(Ranking) getActivity();
     }
     @Override
     public void onDetach(){
         super.onDetach();
-        home = null;
+        ranking = null;
     }
 
     @Override

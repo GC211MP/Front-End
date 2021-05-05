@@ -26,7 +26,7 @@ public class Home extends AppCompatActivity {
 
     SelectStage selectStage;
     AgentInformation agentInformation;
-    AgentRanking agentRanking;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +42,6 @@ public class Home extends AppCompatActivity {
 
         selectStage = new SelectStage();
         agentInformation = new AgentInformation();
-        agentRanking = new AgentRanking();
 
         /* find view by id */
         AgentInfo =  findViewById(R.id.AgentInfoButton);
@@ -67,7 +66,8 @@ public class Home extends AppCompatActivity {
         Ranking.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                getSupportFragmentManager().beginTransaction().replace(R.id.menu_fragment_container,agentRanking).commit();
+                Intent intent = new Intent(getApplicationContext(),Ranking.class);
+                startActivity(intent);
             }
         });
 
