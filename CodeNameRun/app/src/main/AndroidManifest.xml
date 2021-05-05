@@ -2,10 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="gachon.hanul.codenamerun">
 
+    <!--<uses-permission android:name="android.permission.WAKE_LOCK" />-->
+
+
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-
-
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -14,21 +15,48 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CodeNameRun">
+   <!--     <uses-library
+            android:name="com.google.android.wearable"
+            android:required="true" />
 
-        <receiver android:name=".Running$LocalReceiver"  android:exported="true">
+        &lt;!&ndash;
+               Set to true if your app is Standalone, that is, it does not require the handheld
+               app to run.
+        &ndash;&gt;
+        <meta-data
+            android:name="com.google.android.wearable.standalone"
+            android:value="true" />-->
+
+        <activity
+            android:name=".Ranking"></activity>
+       <!-- <activity
+            android:name=".Ranking"
+            android:label="@string/title_activity_ranking">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+-->
+        <receiver
+            android:name=".Running$LocalReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.INPUT_METHOD_CHANGED" />
             </intent-filter>
         </receiver>
 
-        <activity android:name=".WriteAgentInfo"></activity>
+        <activity android:name=".WriteAgentInfo" />
         <activity android:name=".Community" />
         <activity android:name=".Home" />
         <activity android:name=".ScoreBoard" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
+
         <activity android:name=".Running" />
         <activity android:name=".AgentInfo" />
         <activity android:name=".MainActivity">
