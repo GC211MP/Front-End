@@ -68,6 +68,7 @@ public class Home extends AppCompatActivity {
             public void onClick(View view){
                 Intent intent = new Intent(getApplicationContext(),Ranking.class);
                 startActivity(intent);
+                finish();
             }
         });
 
