@@ -302,7 +302,7 @@
 
 
     <!--Stage3-->
-    <string-array name="Stage1_walk1">
+    <string-array name="Stage3_walk1">
         <item>
             (전화 연결음)
             요원 님, 반갑습니다. 저번 임무 이후로 오랜만입니다. 걸으면서 들어주시길 바랍니다.
