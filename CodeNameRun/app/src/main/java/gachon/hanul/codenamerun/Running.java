@@ -46,6 +46,7 @@ public class Running extends AppCompatActivity {
     private static final int GPS_ENABLE_REQUEST_CODE = 2001;
     private static final int PERMISSIONS_REQUEST_CODE = 100;
 
+    /* 우리의 브금술사 */
     public static MediaPlayer footstep_mediaPlayer;
     public static MediaPlayer on_a_mission_mediaPlayer;
     public static MediaPlayer phone_ring_mediaPlayer;
@@ -185,7 +186,6 @@ public class Running extends AppCompatActivity {
         
 //            new Handler().postDelayed(() -> {
 //                MainActivity.mediaPlayer = MediaPlayer.create(Running.this, R.raw.footstep); // 선언
-
 //                MainActivity.mediaPlayer.start(); //재생
 //                MainActivity.mediaPlayer.setOnCompletionListener(mp -> { // 제거
 //                    MainActivity.mediaPlayer.release();
