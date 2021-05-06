@@ -30,9 +30,13 @@ import android.widget.Toast;
 import com.google.android.gms.maps.SupportMapFragment;
 
 
+import java.util.ArrayList;
+import java.util.Dictionary;
+import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import static android.speech.tts.TextToSpeech.ERROR;
 
@@ -41,8 +45,10 @@ public class Running extends AppCompatActivity {
     String[] REQUIRED_PERMISSIONS = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
 
     public static final String LOG_IN_RUNNING = "running";
-    private static final String NEXT_IS_RUNNING = "next_running";
-    private static final String NEXT_IS_TTS = "next_tts";
+    private final String NEXT_TTS = "멘트";
+    private final String BGM_START = "배경음 시작";
+    private final String BGM_END = "배경음 끄기";
+    private final String EFFECT = "효과음";
     private static final int GPS_ENABLE_REQUEST_CODE = 2001;
     private static final int PERMISSIONS_REQUEST_CODE = 100;
 
@@ -51,10 +57,14 @@ public class Running extends AppCompatActivity {
     public static MediaPlayer on_a_mission_mediaPlayer;
     public static MediaPlayer phone_ring_mediaPlayer;
     public static MediaPlayer walking_spy_mediaPlayer;
+    private MediaPlayer bgmPlayer;
+    private MediaPlayer effectPlayer;
+    private ArrayList<String> musicList;
+    private ArrayList<Integer> musicResource;
 
+    // for score
     private final int DISTANCE_MULTIPLE = 100;
     private final int SECRET_MULTIPLE = 100;
-    private final int[] stage_iter = new int[] {1, 5, 10 , 10}; // 각각 stage에서 멘트 혹은 인터벌의 총 합
 
     private boolean isSpeedOK = true;
     private boolean isTTSDone;
@@ -87,8 +97,8 @@ public class Running extends AppCompatActivity {
         /* get stage information */
         stageName = getIntent().getStringExtra("stageName");
         now_stage = getStageNumber(stageName);
-        if(now_stage < 0){
-            Log.d(LOG_IN_RUNNING,"stage is wrong");
+        if (now_stage < 0) {
+            Log.d(LOG_IN_RUNNING, "stage is wrong");
         }
 
         /* script */
@@ -141,9 +151,9 @@ public class Running extends AppCompatActivity {
 
             @Override
             public void onDone(String utteranceId) {
-                Log.d(LOG_IN_RUNNING,"tts done");
+                Log.d(LOG_IN_RUNNING, "tts done");
                 isTTSDone = true;
-                if(isTTSDone && isRunDone){
+                if (isTTSDone && isRunDone) {
                     playNextStep();
                 }
             }
@@ -173,17 +183,23 @@ public class Running extends AppCompatActivity {
         isTTSDone = false;
 
 
-        playNextStep();
-
-
 // TODO: MediaPlayer 적용
         /***** 브금 선언 *****/
+        musicList = new ArrayList<String>();
+        musicResource = new ArrayList<Integer>();
+
+        putMusic("footstep",R.raw.footstep);
+        putMusic("on_a_mission",R.raw.on_a_mission);
+        putMusic("phone_ring",R.raw.phone_ring);
+        putMusic("walking_spy",R.raw.walking_spy);
+
+
         footstep_mediaPlayer = MediaPlayer.create(Running.this, R.raw.footstep);
         on_a_mission_mediaPlayer = MediaPlayer.create(Running.this, R.raw.footstep);
         phone_ring_mediaPlayer = MediaPlayer.create(Running.this, R.raw.footstep);
         walking_spy_mediaPlayer = MediaPlayer.create(Running.this, R.raw.footstep);
 
-        
+
 //            new Handler().postDelayed(() -> {
 //                MainActivity.mediaPlayer = MediaPlayer.create(Running.this, R.raw.footstep); // 선언
 //                MainActivity.mediaPlayer.start(); //재생
@@ -193,26 +209,60 @@ public class Running extends AppCompatActivity {
 //                });
 //            }, 4000);
 
-        Log.d(LOG_IN_RUNNING,"onCreate in end");
+        playNextStep();
+
+        for(int i=0;i<test_msg.length;i++){
+            Log.d(LOG_IN_RUNNING, test_msg[i]+", i="+i);
+        }
+
+
+        Log.d(LOG_IN_RUNNING, "onCreate in end");
     }
 
 
-    public void playNextStep(){
+    public void playNextStep() {
+        isTTSDone = false;
+        //isRunDone = false;
 
         // 다음이 있는지 확인
-        if (now_step < test_msg.length) { // 여기는 다음에 나올 멘트나 뛰는 것을 진행해야해
+        if (now_step < test_msg.length) { // 스토지를 진행하자
 
-            // 멘트를 큐에 넣어주고
-            isTTSDone = false;
-            handler.postDelayed(() -> tts.speak(test_msg[now_step-1], TextToSpeech.QUEUE_ADD, null, "prologue_1"), 1000);
-            // 시간 걸어주고
-//            helpGPS.setRemainTime(0);
-//            helpGPS.setMinSpeed(-1);
+            if (test_msg[now_step].equals(NEXT_TTS)) { // TTS 실행
+                // 속도랑 시간을 걸어주자
+                now_step++;
+                helpGPS.setMinSpeed(Integer.parseInt(test_msg[now_step]));
+                now_step++;
+                helpGPS.setRemainTime(Integer.parseInt(test_msg[now_step]));
 
-            now_step += 1;
-            Log.d(LOG_IN_RUNNING,now_step+ "/" + test_msg.length);
+                // 멘트를 큐에 넣어주고
+                now_step++;
+                String msg = test_msg[now_step];
+                handler.postDelayed(() -> tts.speak(msg, TextToSpeech.QUEUE_ADD, null, "prologue_1"), 1000);
+
+                Log.d(LOG_IN_RUNNING, test_msg[now_step] + now_step + "/" + test_msg.length);
+
+                now_step++;
+            } else if (test_msg[now_step].equals(BGM_START)) { // 배경음 틀어주기
+                now_step++;
+                bgmPlayer =  MediaPlayer.create(Running.this, getMusicResource(test_msg[now_step]));
+                bgmPlayer.setLooping(true);
+                bgmPlayer.start();
+
+                now_step++;
+                playNextStep();
+            } else if(test_msg[now_step].equals(EFFECT)){
+                now_step++;
+                effectPlayer =  MediaPlayer.create(Running.this, getMusicResource(test_msg[now_step]));
+                effectPlayer.start();
+
+                now_step++;
+                playNextStep();
+            }
+
+
+
         } else { // 여기 들어오면 스테이지가 끝나거야
-            Log.d(LOG_IN_RUNNING,"enter ending");
+            Log.d(LOG_IN_RUNNING, "enter ending");
             endStage();
         }
         //
@@ -228,63 +278,77 @@ public class Running extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             isSpeedOK = intent.getBooleanExtra(HelpGPS.MSG_SLOW, true);
             isRunDone = intent.getBooleanExtra(HelpGPS.MSG_COMPLETE, false);
-            if(isRunDone && isTTSDone) {
+            if (isRunDone && isTTSDone) {
                 playNextStep();
             }
 
-            if ((isRunDone)){
-                Log.d(LOG_IN_RUNNING,"run done");
+            if ((isRunDone)) {
+                Log.d(LOG_IN_RUNNING, "run done");
             }
         }
     }
 
     //--------------------------------------------------------------------------------------------------------------------------------------
-    private int endStage(){
+    private int endStage() {
         int score;
         double distance;
 
+        if(bgmPlayer.isPlaying()){
+            bgmPlayer.stop();
+        }
         // 1. 뛴 거리랑 편지지 갯수 알아오기
         //distance = helpGPS.getTotalDistance();
         // 2. 점수 계산하기
         //score = calculateScore(distance,totalSecret);
-        score = calculateScore(100,4);
+        score = calculateScore(100, 4);
         // 3. 객체 종료하기 -> gps랑 map
         //helpMap.clearMap();
         helpGPS.onDestroy();
         // TODO: 4. 점수창 띄워주기 -> 궁금한데 인텐트로 점수창 띄워주면 안될거 같은데 fragment나 해야할 것 같은데.. 모르겠다
 
-        Log.d(LOG_IN_RUNNING,"score: " + score);
-        return  score;
+        Log.d(LOG_IN_RUNNING, "score: " + score);
+        return score;
 
     }
 
-    private int calculateScore(double distance, int numSecret){
+    private int calculateScore(double distance, int numSecret) {
         int score;
-        score = (int)(distance*DISTANCE_MULTIPLE) + numSecret*SECRET_MULTIPLE;
+        score = (int) (distance * DISTANCE_MULTIPLE) + numSecret * SECRET_MULTIPLE;
 
         return score;
     }
 
-    private void startInterval(float speedLimit, HelpGPS helpGPS){
+    private void startInterval(float speedLimit, HelpGPS helpGPS) {
         helpGPS.setMinSpeed(speedLimit);
         isSpeedOK = true;
     }
 
-    private void endInterval(HelpGPS helpGPS){
+    private void endInterval(HelpGPS helpGPS) {
         helpGPS.setMinSpeed(0);
-        if(isSpeedOK) totalSecret += 1;
+        if (isSpeedOK) totalSecret += 1;
     }
 
     private int getStageNumber(String str) {
-        if(str.equals("Prologue")) return 0;
-        if(str.equals("Stage1")) return 1;
-        if(str.equals("Stage2")) return 2;
-        if(str.equals("Stage3")) return 3;
-        if(str.equals("Stage4")) return 4;
+        if (str.equals("Prologue")) return 0;
+        if (str.equals("Stage1")) return 1;
+        if (str.equals("Stage2")) return 2;
+        if (str.equals("Stage3")) return 3;
+        if (str.equals("Stage4")) return 4;
         return -1;
     }
 
+    private boolean putMusic(String name, int rsrc) {
+        musicList.add(name);
+        musicResource.add(rsrc);
 
+        if (musicList.indexOf(name) == musicResource.indexOf((rsrc)))
+            return true;
+        return false;
+    }
+
+    private int getMusicResource(String name){
+        return musicResource.get(musicList.indexOf(name));
+    }
 
 
     //--------------------------------------------------------------Start <gps permission>----------------------------------------------------------------------
@@ -374,7 +438,6 @@ public class Running extends AppCompatActivity {
 
 
     //--------------------------------------------------------------end:<gps permission>---------------------------------------------------------------------
-
 
 
 }

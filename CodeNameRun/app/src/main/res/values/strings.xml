@@ -16,34 +16,73 @@
 
 
     <string-array name="test">
-        <item>제발...</item>
-        <item>안드로이드야 믿을게</item>
-        <item>성공이닷</item>
+        <item>멘트</item>
+        <item>0</item> <!-- 요구되는 속도, 이거 숫자말고 스트링으로 해도 좋을듯-->
+        <item>0</item> <!-- 시간, 일단 단위는 초-->
+        <item>새로온 요원 안녕! 한국어 잘못 배웠어. 너가 이해해</item>
+
+        <item>배경음 시작</item>
+        <item>on_a_mission</item> <!-- 배경음 이름-->
+
+        <item>멘트</item>
+        <item>0</item> <!-- 요구되는 속도-->
+        <item>0</item> <!-- 시간 -->
+        <item>다시 한번 말해준다. 놓치지 않고 들어라</item>
+
+        <item>효과음</item>
+        <item>footstep</item> <!-- 효과음 이름, 시간을 어케해주지???-->
+
+        <item>멘트</item>
+        <item>0</item> <!-- 요구되는 속도-->
+        <item>0</item> <!-- 시간 -->
+        <item>효과음 잘 들렸나, 잘했다</item>
     </string-array>
 
 
     <!-- stage1 -->
-    <string-array name="Stage1_walk1">
+    <string-array name="Stage1">
+        <item>멘트</item>
+        <item>0</item> <!-- 요구되는 속도, 이거 숫자말고 스트링으로 해도 좋을듯-->
+        <item>0</item> <!-- 시간, 일단 단위는 초-->
         <item>
             새로 오신 요원 님, 만나서 반갑습니다.
             저는 요원님의 서포터입니다.
             오늘은 조직 내부를 소개 드리겠습니다.
             걸으면서 따라오십시오.
         </item>
+
+        <item>효과음</item>
+        <item>footstep</item> <!-- 효과음 이름, 시간을 어케해주지???-->
+
+        <item>멘트</item>
+        <item>0</item> <!-- 요구되는 속도, 이거 숫자말고 스트링으로 해도 좋을듯-->
+        <item>0</item> <!-- 시간, 일단 단위는 초-->
         <item>
             (조금 있다가 전화벨소리, 받는 소리)
             여보세요. 네. 네...알겠습니다.
         </item>
+
+        <item>멘트</item>
+        <item>0</item> <!-- 요구되는 속도, 이거 숫자말고 스트링으로 해도 좋을듯-->
+        <item>0</item> <!-- 시간, 일단 단위는 초-->
         <item>
             (조금 간격)
             ...요원 님, 갑작스럽겠지만,
             우리 조직 내 스파이가 있는 것 같습니다.
         </item>
+
+        <item>효과음</item>
+        <item>footstep</item> <!-- 쿠구궁 소리 충격음-->
+
+        <item>배경음 시작</item>
+        <item>on_a_mission</item> <!-- 평화로운 배경음-->
+
+        <item>멘트</item>
+        <item>0</item> <!-- 요구되는 속도, 이거 숫자말고 스트링으로 해도 좋을듯-->
+        <item>0</item> <!-- 시간, 일단 단위는 초-->
         <item>
             (쿠구궁! 소리? 충격음?) (다시 평화로운 bgm)
             후...하필 중요한 문서가 빼돌려졌습니다.
-        </item>
-        <item>
             하지만 아직 스파이는 조직 내부에 있는 것 같습니다.
             외부로 유출되기 전에 그 문서를 되찾아야 합니다! 출발하세요!!
             요원 님, 임무를 위해 이어폰을 끼시는 걸 권장 드립니다.

@@ -52,7 +52,6 @@ public class HelpGPS extends Service implements LocationListener {
 
 
     protected LocationManager locationManager;
-
     private final Context mContext;
     private HelpMap helpMap;
     private ArrayList<Location> locationList;
