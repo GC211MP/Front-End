@@ -47,16 +47,11 @@ public class Running extends AppCompatActivity {
     public static final String LOG_IN_RUNNING = "running";
     private final String NEXT_TTS = "멘트";
     private final String BGM_START = "배경음 시작";
-    private final String BGM_END = "배경음 끄기";
     private final String EFFECT = "효과음";
     private static final int GPS_ENABLE_REQUEST_CODE = 2001;
     private static final int PERMISSIONS_REQUEST_CODE = 100;
 
     /* 우리의 브금술사 */
-    public static MediaPlayer footstep_mediaPlayer;
-    public static MediaPlayer on_a_mission_mediaPlayer;
-    public static MediaPlayer phone_ring_mediaPlayer;
-    public static MediaPlayer walking_spy_mediaPlayer;
     private MediaPlayer bgmPlayer;
     private MediaPlayer effectPlayer;
     private ArrayList<String> musicList;
@@ -101,11 +96,7 @@ public class Running extends AppCompatActivity {
             Log.d(LOG_IN_RUNNING, "stage is wrong");
         }
 
-        /* script */
-        test_msg = getResources().getStringArray(R.array.test);
-
-
-        // 브로드캐스터 리시버, 속도랑 시간을 받아 올거야
+        // set broadcaster receiver
         LocalReceiver localReceiver = new LocalReceiver();
         IntentFilter filter = new IntentFilter();
         filter.addAction("gachon.hanul.codenamerun.local");
@@ -113,15 +104,19 @@ public class Running extends AppCompatActivity {
 
         // gps permission part
         if (checkLocationServicesStatus()) {
+            Log.d(LOG_IN_RUNNING,"point gps permission");
             checkRunTimePermission();
-        } else showDialogForLocationServiceSetting();
+        } else {
+            showDialogForLocationServiceSetting();
+            Log.d(LOG_IN_RUNNING,"point gps permission2");
+        }
 
-        // helpGPS 랑 helpMap 객체 생성
+        // set helpGPS and helpMap
         helpGPS = new HelpGPS(this);
-        helpMap = new HelpMap(this, helpGPS.getLocation());
+        helpMap = new HelpMap(this, helpGPS.getLastLocation());
         helpGPS.setHelpMap(helpMap);
 
-        // 화면에 구글맵 가져오기
+        // set google map
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(helpMap); // 지도가 준비되면 콜되는 함수
 
@@ -135,6 +130,7 @@ public class Running extends AppCompatActivity {
                 tts.setSpeechRate(1.5f); // 속도 (default= 1.0f)
             }
         });
+
         /* set TTS utterance listener */
         tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
             @Override
@@ -159,6 +155,16 @@ public class Running extends AppCompatActivity {
             }
         });
 
+        // TODO: MediaPlayer 적용
+        /***** 브금 선언 *****/
+        musicList = new ArrayList<String>();
+        musicResource = new ArrayList<Integer>();
+
+        putMusic("footstep",R.raw.footstep);
+        putMusic("on_a_mission",R.raw.on_a_mission);
+        putMusic("phone_ring",R.raw.phone_ring);
+        putMusic("walking_spy",R.raw.walking_spy);
+
         // setting game values --------------------------------------------------------------------------------
         /* find view by id */
         TopSecret1 = findViewById(R.id.TopSecret1);
@@ -182,22 +188,9 @@ public class Running extends AppCompatActivity {
         isRunDone = true; // 나중에 false로 바꿔라
         isTTSDone = false;
 
+        /* script */
+        test_msg = getResources().getStringArray(R.array.test);
 
-// TODO: MediaPlayer 적용
-        /***** 브금 선언 *****/
-        musicList = new ArrayList<String>();
-        musicResource = new ArrayList<Integer>();
-
-        putMusic("footstep",R.raw.footstep);
-        putMusic("on_a_mission",R.raw.on_a_mission);
-        putMusic("phone_ring",R.raw.phone_ring);
-        putMusic("walking_spy",R.raw.walking_spy);
-
-
-        footstep_mediaPlayer = MediaPlayer.create(Running.this, R.raw.footstep);
-        on_a_mission_mediaPlayer = MediaPlayer.create(Running.this, R.raw.footstep);
-        phone_ring_mediaPlayer = MediaPlayer.create(Running.this, R.raw.footstep);
-        walking_spy_mediaPlayer = MediaPlayer.create(Running.this, R.raw.footstep);
 
 
 //            new Handler().postDelayed(() -> {
@@ -210,11 +203,6 @@ public class Running extends AppCompatActivity {
 //            }, 4000);
 
         playNextStep();
-
-        for(int i=0;i<test_msg.length;i++){
-            Log.d(LOG_IN_RUNNING, test_msg[i]+", i="+i);
-        }
-
 
         Log.d(LOG_IN_RUNNING, "onCreate in end");
     }
@@ -230,9 +218,9 @@ public class Running extends AppCompatActivity {
             if (test_msg[now_step].equals(NEXT_TTS)) { // TTS 실행
                 // 속도랑 시간을 걸어주자
                 now_step++;
-                helpGPS.setMinSpeed(Integer.parseInt(test_msg[now_step]));
+                helpGPS.setMinSpeed(Integer.parseInt(test_msg[now_step])); // 속도
                 now_step++;
-                helpGPS.setRemainTime(Integer.parseInt(test_msg[now_step]));
+                helpGPS.setRemainTime(Integer.parseInt(test_msg[now_step])); // 시간
 
                 // 멘트를 큐에 넣어주고
                 now_step++;
@@ -240,8 +228,8 @@ public class Running extends AppCompatActivity {
                 handler.postDelayed(() -> tts.speak(msg, TextToSpeech.QUEUE_ADD, null, "prologue_1"), 1000);
 
                 Log.d(LOG_IN_RUNNING, test_msg[now_step] + now_step + "/" + test_msg.length);
-
                 now_step++;
+
             } else if (test_msg[now_step].equals(BGM_START)) { // 배경음 틀어주기
                 now_step++;
                 bgmPlayer =  MediaPlayer.create(Running.this, getMusicResource(test_msg[now_step]));
@@ -250,23 +238,20 @@ public class Running extends AppCompatActivity {
 
                 now_step++;
                 playNextStep();
-            } else if(test_msg[now_step].equals(EFFECT)){
+
+            } else if(test_msg[now_step].equals(EFFECT)){ // 효과음 틀어주기
                 now_step++;
                 effectPlayer =  MediaPlayer.create(Running.this, getMusicResource(test_msg[now_step]));
                 effectPlayer.start();
 
                 now_step++;
-                playNextStep();
+                handler.postDelayed(() -> playNextStep(), 2000);
             }
-
-
 
         } else { // 여기 들어오면 스테이지가 끝나거야
             Log.d(LOG_IN_RUNNING, "enter ending");
             endStage();
         }
-        //
-
     }
 
     /*
@@ -318,16 +303,6 @@ public class Running extends AppCompatActivity {
         return score;
     }
 
-    private void startInterval(float speedLimit, HelpGPS helpGPS) {
-        helpGPS.setMinSpeed(speedLimit);
-        isSpeedOK = true;
-    }
-
-    private void endInterval(HelpGPS helpGPS) {
-        helpGPS.setMinSpeed(0);
-        if (isSpeedOK) totalSecret += 1;
-    }
-
     private int getStageNumber(String str) {
         if (str.equals("Prologue")) return 0;
         if (str.equals("Stage1")) return 1;
@@ -354,7 +329,7 @@ public class Running extends AppCompatActivity {
     //--------------------------------------------------------------Start <gps permission>----------------------------------------------------------------------
     /*
      * TODO: 다혜가 퍼미션 부분에서 뻑난다고 말했음 -> 고쳐야한다
-     * 내코드 아니어서 고치기 힘든데 ㅠㅠ
+     * 뻑날때가 있고 뻑 안날때가 있고
      *
      * GPS 퍼미션 부분은 아래의 출처에서 가져왔습니다.
      * Cdde from https://webnautes.tistory.com/1315
