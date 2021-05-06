@@ -59,6 +59,8 @@ public class Ranking extends AppCompatActivity {
         ranking_stage3_btn =findViewById(R.id.ranking_stage3_btn);
         ranking_stage4_btn =findViewById(R.id.ranking_stage4_btn);
 
+
+
        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,ranking_stage1).commit();
 
         /* Ranking_stage1_btn listener */
@@ -96,6 +98,9 @@ public class Ranking extends AppCompatActivity {
         Home =  findViewById(R.id.HomeButton);
         Ranking =  findViewById(R.id.CommunityButton);
 
+        AgentInfo.setImageResource(R.drawable.agent_info_grey);
+        Home.setImageResource(R.drawable.home_grey);
+        Ranking.setImageResource(R.drawable.community);
 
         /* menu buttons */
         AgentInfo.setOnClickListener(new View.OnClickListener(){

@@ -29,6 +29,11 @@ public class Home extends AppCompatActivity {
         Home =  findViewById(R.id.HomeButton);
         Ranking =  findViewById(R.id.CommunityButton);
 
+        AgentInfo.setImageResource(R.drawable.agent_info_grey);
+        Home.setImageResource(R.drawable.home);
+        Ranking.setImageResource(R.drawable.community_grey);
+
+
         /* new fragment */
         selectStage = new SelectStage();
         agentInformation = new AgentInformation();
@@ -49,12 +54,20 @@ public class Home extends AppCompatActivity {
             @Override
             public void onClick(View view){
                 getSupportFragmentManager().beginTransaction().replace(R.id.menu_fragment_container,agentInformation).commit();
+
+                AgentInfo.setImageResource(R.drawable.agent_info);
+                Home.setImageResource(R.drawable.home_grey);
+                Ranking.setImageResource(R.drawable.community_grey);
             }
         });
         Home.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
                 getSupportFragmentManager().beginTransaction().replace(R.id.menu_fragment_container,selectStage).commit();
+
+                AgentInfo.setImageResource(R.drawable.agent_info_grey);
+                Home.setImageResource(R.drawable.home);
+                Ranking.setImageResource(R.drawable.community_grey);
             }
         });
         Ranking.setOnClickListener(new View.OnClickListener(){
