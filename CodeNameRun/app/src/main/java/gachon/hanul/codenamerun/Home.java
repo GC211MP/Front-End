@@ -4,26 +4,17 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 
 public class Home extends AppCompatActivity {
 
-   /*
-   Button PrologueStageButton;
-    Button Stage1Button;
-    Button Stage2Button;
-    Button Stage3Button;
-    Button Stage4Button;
-    */
-
+    /* menu button declaration*/
     ImageButton AgentInfo;
     ImageButton Home;
     ImageButton Ranking;
 
+    /* fragment declaration */
     SelectStage selectStage;
     AgentInformation agentInformation;
 
@@ -33,24 +24,27 @@ public class Home extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-  /*      *//* find view by id *//*
-        PrologueStageButton = findViewById(R.id.PrologueStageButton);
-        Stage1Button = findViewById(R.id.Stage1Button);
-        Stage2Button = findViewById(R.id.Stage2Button);
-        Stage3Button = findViewById(R.id.Stage3Button);
-        Stage4Button = findViewById(R.id.Stage4Button);*/
-
-        selectStage = new SelectStage();
-        agentInformation = new AgentInformation();
-
         /* find view by id */
         AgentInfo =  findViewById(R.id.AgentInfoButton);
         Home =  findViewById(R.id.HomeButton);
         Ranking =  findViewById(R.id.CommunityButton);
 
+        /* new fragment */
+        selectStage = new SelectStage();
+        agentInformation = new AgentInformation();
+
+        /* if 번들이 extra 를 가지고 있으면,
+            agent information fragment 를 띄운다
+            (Ranking activity 에서 home, select stage 를 선택하기 위함)
+            없으면 select stage 를 띄운다
+         */
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.menu_fragment_container,agentInformation).commit();
+        }
         getSupportFragmentManager().beginTransaction().replace(R.id.menu_fragment_container,selectStage).commit();
 
-        /* menu buttons */
+        /* menu buttons onclick*/
         AgentInfo.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
@@ -68,41 +62,9 @@ public class Home extends AppCompatActivity {
             public void onClick(View view){
                 Intent intent = new Intent(getApplicationContext(),Ranking.class);
                 startActivity(intent);
+                // 중첩을 피하기 위해서 다른 activity 로 갈때 quit home activity
+                finish();
             }
         });
-
-    /*    *//* stage buttons *//*
-        PrologueStageButton.setOnClickListener(v -> {
-            Intent PrologueIntent = new Intent(getApplicationContext(), Running.class);
-            PrologueIntent.putExtra("stageName", "Prologue");
-            startActivity(PrologueIntent);
-        });
-
-        Stage1Button.setOnClickListener(v -> {
-            Intent Stage1Intent = new Intent(getApplicationContext(), Running.class);
-            Stage1Intent.putExtra("stageName", "Stage1");
-            startActivity(Stage1Intent);
-        });
-
-        Stage2Button.setOnClickListener(v -> {
-            Intent Stage2Intent = new Intent(getApplicationContext(), Running.class);
-            Stage2Intent.putExtra("stageName", "Stage2");
-            startActivity(Stage2Intent);
-        });
-
-        Stage3Button.setOnClickListener(v -> {
-            Intent Stage3Intent= new Intent(getApplicationContext(), Running.class);
-            Stage3Intent.putExtra("stageName", "Stage3");
-            startActivity(Stage3Intent);
-        });
-
-        Stage4Button.setOnClickListener(v -> {
-            Intent Stage4Intent= new Intent(getApplicationContext(), Running.class);
-            Stage4Intent.putExtra("stageName", "Stage4");
-            startActivity(Stage4Intent);
-        });
-*/
-
     }
-
 }

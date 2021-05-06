@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 
 import android.os.Handler;
@@ -44,6 +45,12 @@ public class Running extends AppCompatActivity {
     private static final String NEXT_IS_TTS = "next_tts";
     private static final int GPS_ENABLE_REQUEST_CODE = 2001;
     private static final int PERMISSIONS_REQUEST_CODE = 100;
+
+    /* 우리의 브금술사 */
+    public static MediaPlayer footstep_mediaPlayer;
+    public static MediaPlayer on_a_mission_mediaPlayer;
+    public static MediaPlayer phone_ring_mediaPlayer;
+    public static MediaPlayer walking_spy_mediaPlayer;
 
     private final int DISTANCE_MULTIPLE = 100;
     private final int SECRET_MULTIPLE = 100;
@@ -170,11 +177,17 @@ public class Running extends AppCompatActivity {
 
 
 // TODO: MediaPlayer 적용
+        /***** 브금 선언 *****/
+        footstep_mediaPlayer = MediaPlayer.create(Running.this, R.raw.footstep);
+        on_a_mission_mediaPlayer = MediaPlayer.create(Running.this, R.raw.footstep);
+        phone_ring_mediaPlayer = MediaPlayer.create(Running.this, R.raw.footstep);
+        walking_spy_mediaPlayer = MediaPlayer.create(Running.this, R.raw.footstep);
+
         
 //            new Handler().postDelayed(() -> {
-//                MainActivity.mediaPlayer = MediaPlayer.create(Running.this, R.raw.footstep);
-//                MainActivity.mediaPlayer.start();
-//                MainActivity.mediaPlayer.setOnCompletionListener(mp -> {
+//                MainActivity.mediaPlayer = MediaPlayer.create(Running.this, R.raw.footstep); // 선언
+//                MainActivity.mediaPlayer.start(); //재생
+//                MainActivity.mediaPlayer.setOnCompletionListener(mp -> { // 제거
 //                    MainActivity.mediaPlayer.release();
 //                    MainActivity.mediaPlayer = null;
 //                });
@@ -226,14 +239,6 @@ public class Running extends AppCompatActivity {
     }
 
     //--------------------------------------------------------------------------------------------------------------------------------------
-    /***** add tts speak
-     * List<String> messages = Arrays.asList(getResources().getStringArray(R.array.Lines));
-     * if there is nothing speaking -> call this function
-     *      get list of the string list
-     *      add new line to tts queue
-     * if string list is empty
-     *      end function
-     *****/
     private int endStage(){
         int score;
         double distance;
