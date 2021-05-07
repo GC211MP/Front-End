@@ -31,12 +31,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 
 
 import java.util.ArrayList;
-import java.util.Dictionary;
-import java.util.Enumeration;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import static android.speech.tts.TextToSpeech.ERROR;
 
@@ -79,9 +74,8 @@ public class Running extends AppCompatActivity {
     String stageName;
 
     int totalSecret;
-    int now_stage;
     int now_step = 0;
-    String[] test_msg;
+    String[] storyLists;
 
 
     @Override
@@ -91,10 +85,7 @@ public class Running extends AppCompatActivity {
 
         /* get stage information */
         stageName = getIntent().getStringExtra("stageName");
-        now_stage = getStageNumber(stageName);
-        if (now_stage < 0) {
-            Log.d(LOG_IN_RUNNING, "stage is wrong");
-        }
+
 
         // set broadcaster receiver
         LocalReceiver localReceiver = new LocalReceiver();
@@ -104,11 +95,11 @@ public class Running extends AppCompatActivity {
 
         // gps permission part
         if (checkLocationServicesStatus()) {
-            Log.d(LOG_IN_RUNNING,"point gps permission");
+            Log.d(LOG_IN_RUNNING, "point gps permission");
             checkRunTimePermission();
         } else {
             showDialogForLocationServiceSetting();
-            Log.d(LOG_IN_RUNNING,"point gps permission2");
+            Log.d(LOG_IN_RUNNING, "point gps permission2");
         }
 
         // set helpGPS and helpMap
@@ -160,10 +151,10 @@ public class Running extends AppCompatActivity {
         musicList = new ArrayList<String>();
         musicResource = new ArrayList<Integer>();
 
-        putMusic("footstep",R.raw.footstep);
-        putMusic("on_a_mission",R.raw.on_a_mission);
-        putMusic("phone_ring",R.raw.phone_ring);
-        putMusic("walking_spy",R.raw.walking_spy);
+        putMusic("footstep", R.raw.footstep);
+        putMusic("on_a_mission", R.raw.on_a_mission);
+        putMusic("phone_ring", R.raw.phone_ring);
+        putMusic("walking_spy", R.raw.walking_spy);
 
         // setting game values --------------------------------------------------------------------------------
         /* find view by id */
@@ -189,8 +180,8 @@ public class Running extends AppCompatActivity {
         isTTSDone = false;
 
         /* script */
-        test_msg = getResources().getStringArray(R.array.test);
-
+        storyLists = getResources().getStringArray(R.array.test); // test 용
+        // storyLists = getStageStringArray(stageName); // 찐
 
 
 //            new Handler().postDelayed(() -> {
@@ -206,42 +197,48 @@ public class Running extends AppCompatActivity {
 
         Log.d(LOG_IN_RUNNING, "onCreate in end");
     }
+    /* onCreate end -----------------------------------------------------------------------------------------*/
 
-
+    /**
+     * playNextStop
+     * 다음 스토리를 진행하는 함수입니다.
+     * 멘트(TTS), 배경음, 효과음 크게 3가지로 나뉘어서 진행
+     * 더 이상 진행할 스토리가 없으면 endStage
+     */
     public void playNextStep() {
         isTTSDone = false;
         //isRunDone = false;
 
         // 다음이 있는지 확인
-        if (now_step < test_msg.length) { // 스토지를 진행하자
+        if (now_step < storyLists.length) { // 스토지를 진행하자
 
-            if (test_msg[now_step].equals(NEXT_TTS)) { // TTS 실행
+            if (storyLists[now_step].equals(NEXT_TTS)) { // TTS 실행
                 // 속도랑 시간을 걸어주자
                 now_step++;
-                helpGPS.setMinSpeed(Integer.parseInt(test_msg[now_step])); // 속도
+                helpGPS.setMinSpeed(Integer.parseInt(storyLists[now_step])); // 속도
                 now_step++;
-                helpGPS.setRemainTime(Integer.parseInt(test_msg[now_step])); // 시간
+                helpGPS.setRemainTime(Integer.parseInt(storyLists[now_step])); // 시간
 
                 // 멘트를 큐에 넣어주고
                 now_step++;
-                String msg = test_msg[now_step];
+                String msg = storyLists[now_step];
                 handler.postDelayed(() -> tts.speak(msg, TextToSpeech.QUEUE_ADD, null, "prologue_1"), 1000);
 
-                Log.d(LOG_IN_RUNNING, test_msg[now_step] + now_step + "/" + test_msg.length);
+                Log.d(LOG_IN_RUNNING, storyLists[now_step] + now_step + "/" + storyLists.length);
                 now_step++;
 
-            } else if (test_msg[now_step].equals(BGM_START)) { // 배경음 틀어주기
+            } else if (storyLists[now_step].equals(BGM_START)) { // 배경음 틀어주기
                 now_step++;
-                bgmPlayer =  MediaPlayer.create(Running.this, getMusicResource(test_msg[now_step]));
+                bgmPlayer = MediaPlayer.create(Running.this, getMusicResource(storyLists[now_step]));
                 bgmPlayer.setLooping(true);
                 bgmPlayer.start();
 
                 now_step++;
                 playNextStep();
 
-            } else if(test_msg[now_step].equals(EFFECT)){ // 효과음 틀어주기
+            } else if (storyLists[now_step].equals(EFFECT)) { // 효과음 틀어주기
                 now_step++;
-                effectPlayer =  MediaPlayer.create(Running.this, getMusicResource(test_msg[now_step]));
+                effectPlayer = MediaPlayer.create(Running.this, getMusicResource(storyLists[now_step]));
                 effectPlayer.start();
 
                 now_step++;
@@ -273,12 +270,11 @@ public class Running extends AppCompatActivity {
         }
     }
 
-    //--------------------------------------------------------------------------------------------------------------------------------------
     private int endStage() {
         int score;
         double distance;
 
-        if(bgmPlayer.isPlaying()){
+        if (bgmPlayer.isPlaying()) {
             bgmPlayer.stop();
         }
         // 1. 뛴 거리랑 편지지 갯수 알아오기
@@ -303,13 +299,24 @@ public class Running extends AppCompatActivity {
         return score;
     }
 
-    private int getStageNumber(String str) {
-        if (str.equals("Prologue")) return 0;
-        if (str.equals("Stage1")) return 1;
-        if (str.equals("Stage2")) return 2;
-        if (str.equals("Stage3")) return 3;
-        if (str.equals("Stage4")) return 4;
-        return -1;
+    private String[] getStageStringArray(String stage) {
+        getResources().getStringArray(R.array.test);
+        if (stage.equals("Prologue")){
+            return getResources().getStringArray(R.array.test);
+        }
+        if (stage.equals("Stage1")) {
+            return getResources().getStringArray(R.array.Stage1);
+        }
+        if (stage.equals("Stage2")) {
+            return getResources().getStringArray(R.array.Stage2);
+        }
+//        if (stage.equals("Stage3")){
+//            return getResources().getStringArray(R.array.Stage3);
+//        }
+//        if (stage.equals("Stage4")) {
+//            return getResources().getStringArray(R.array.Stage4);
+//        }
+        return null;
     }
 
     private boolean putMusic(String name, int rsrc) {
@@ -321,7 +328,7 @@ public class Running extends AppCompatActivity {
         return false;
     }
 
-    private int getMusicResource(String name){
+    private int getMusicResource(String name) {
         return musicResource.get(musicList.indexOf(name));
     }
 
