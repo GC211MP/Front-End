@@ -5,139 +5,141 @@
     android:layout_height="match_parent"
     tools:context=".AgentInformation">
 
-    <TextView
-        android:id="@+id/information"
-        android:layout_width="178dp"
-        android:layout_height="46dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="20dp"
-        android:background="#00ff0000"
-        android:gravity="center"
-        android:text="Information"
-        android:textColor="@color/warm_white"
-        android:textSize="30dp" />
+<!--스크롤뷰 추가-->
+        <TextView
+           android:id="@+id/information"
+           android:layout_width="178dp"
+           android:layout_height="46dp"
+           android:layout_centerHorizontal="true"
+           android:layout_marginStart="15dp"
+           android:layout_marginTop="20dp"
+           android:background="#00ff0000"
+           android:gravity="center"
+           android:text="Information"
+           android:textColor="@color/warm_white"
+           android:textSize="30dp" />
 
-    //초상화
+       //초상화
+
     <ImageView
         android:id="@+id/portrait"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="200dp"
         android:layout_below="@+id/information"
-        android:layout_marginTop="30dp"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
         android:src="@drawable/man_portrait" />
 
-    //이름
+       //이름
 
-    <EditText
-        android:id="@+id/agent_name"
-        android:layout_width="360dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/portrait"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="15dp"
-        android:backgroundTint="@color/dusty_rose"
-        android:padding="15dp"
-        android:layout_centerHorizontal="true"
-        android:text=" Name : 김다혜"
-        android:textColor="@color/warm_white"
-        android:textSize="17dp"
-        android:enabled="false"/>
-    //키
-    <EditText
-        android:id="@+id/agent_height"
-        android:layout_width="360dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/agent_name"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="15dp"
-        android:backgroundTint="@color/dusty_rose"
-        android:padding="15dp"
-        android:layout_centerHorizontal="true"
-        android:textColor="@color/warm_white"
-        android:text=" Height : 190cm"
-        android:textSize="17dp"
-        android:enabled="false"/>
-    //몸무게
-    <EditText
-        android:id="@+id/agent_weight"
-        android:layout_width="360dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/agent_height"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="15dp"
-        android:backgroundTint="@color/dusty_rose"
-        android:padding="15dp"
-        android:layout_centerHorizontal="true"
-        android:textColor="@color/warm_white"
-        android:text=" Weight : 100kg"
-        android:textSize="17dp"
-        android:enabled="false"
-        />
-    //1stage 스코어
-    <TextView
-        android:id="@+id/score_1stage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/agent_weight"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="30dp"
-        android:textColor="@color/warm_white"
-        android:text=" Stage1\n\n   100"
-        android:textSize="17dp"
-        />
-    //2stage 스코어
-    <TextView
-        android:id="@+id/score_2stage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/agent_weight"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="30dp"
-        android:layout_toRightOf="@id/score_1stage"
-        android:textColor="@color/warm_white"
-        android:text=" Stage2\n\n    100"
-        android:textSize="17dp"/>
-    //3stage 스코어
-    <TextView
-        android:id="@+id/score_3stage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/agent_weight"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="30dp"
-        android:layout_toRightOf="@id/score_2stage"
-        android:textColor="@color/warm_white"
-        android:text=" Stage3\n\n    100 "
-        android:textSize="17dp"/>
-    //4stage 스코어
-    <TextView
-        android:id="@+id/score_4stage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/agent_weight"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="30dp"
-        android:layout_toRightOf="@id/score_3stage"
-        android:textColor="@color/warm_white"
-        android:text=" Stage4\n\n    100"
-        android:textSize="17dp"/>
+       <EditText
+           android:id="@+id/agent_name"
+           android:layout_width="360dp"
+           android:layout_height="wrap_content"
+           android:layout_below="@+id/portrait"
+           android:layout_marginStart="15dp"
+           android:layout_marginTop="5dp"
+           android:layout_marginEnd="15dp"
+           android:layout_marginBottom="15dp"
+           android:backgroundTint="@color/dusty_rose"
+           android:padding="15dp"
+           android:layout_centerHorizontal="true"
+           android:text=" Name : 김다혜"
+           android:textColor="@color/warm_white"
+           android:textSize="17dp"
+           android:enabled="false"/>
+       //키
+       <EditText
+           android:id="@+id/agent_height"
+           android:layout_width="360dp"
+           android:layout_height="wrap_content"
+           android:layout_below="@+id/agent_name"
+           android:layout_marginStart="15dp"
+           android:layout_marginEnd="15dp"
+           android:layout_marginBottom="15dp"
+           android:backgroundTint="@color/dusty_rose"
+           android:padding="15dp"
+           android:layout_centerHorizontal="true"
+           android:textColor="@color/warm_white"
+           android:text=" Height : 190cm"
+           android:textSize="17dp"
+           android:enabled="false"/>
+       //몸무게
+       <EditText
+           android:id="@+id/agent_weight"
+           android:layout_width="360dp"
+           android:layout_height="wrap_content"
+           android:layout_below="@+id/agent_height"
+           android:layout_marginStart="15dp"
+           android:layout_marginEnd="15dp"
+           android:layout_marginBottom="15dp"
+           android:backgroundTint="@color/dusty_rose"
+           android:padding="15dp"
+           android:layout_centerHorizontal="true"
+           android:textColor="@color/warm_white"
+           android:text=" Weight : 100kg"
+           android:textSize="17dp"
+           android:enabled="false"
+           />
+       //1stage 스코어
+       <TextView
+           android:id="@+id/score_1stage"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_below="@+id/agent_weight"
+           android:layout_marginTop="10dp"
+           android:layout_marginStart="50dp"
+           android:textColor="@color/warm_white"
+           android:text=" Stage1\n\n   100"
+           android:textSize="17dp"
+           />
+       //2stage 스코어
+       <TextView
+           android:id="@+id/score_2stage"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_below="@+id/agent_weight"
+           android:layout_marginTop="10dp"
+           android:layout_marginStart="15dp"
+           android:layout_toRightOf="@id/score_1stage"
+           android:textColor="@color/warm_white"
+           android:text=" Stage2\n\n    100"
+           android:textSize="17dp"/>
+       //3stage 스코어
+       <TextView
+           android:id="@+id/score_3stage"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_below="@+id/agent_weight"
+           android:layout_marginTop="10dp"
+           android:layout_marginStart="15dp"
+           android:layout_toRightOf="@id/score_2stage"
+           android:textColor="@color/warm_white"
+           android:text=" Stage3\n\n    100 "
+           android:textSize="17dp"/>
+       //4stage 스코어
+       <TextView
+           android:id="@+id/score_4stage"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_below="@+id/agent_weight"
+           android:layout_marginTop="10dp"
+           android:layout_marginStart="15dp"
+           android:layout_toRightOf="@id/score_3stage"
+           android:textColor="@color/warm_white"
+           android:text=" Stage4\n\n    100"
+           android:textSize="17dp"/>
 
-    //총 거리/칼로리
-    <TextView
-        android:id="@+id/agent_distance_colories"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/score_1stage"
-        android:layout_marginTop="40dp"
-        android:layout_centerHorizontal="true"
-        android:textColor="@color/warm_white"
-        android:text="         Total\n 200m/150kcal"
-        android:textSize="17dp"/>
+       //총 거리/칼로리
+       <TextView
+           android:id="@+id/agent_distance_colories"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_below="@+id/score_1stage"
+           android:layout_marginTop="40dp"
+           android:layout_centerHorizontal="true"
+           android:textColor="@color/warm_white"
+           android:text="         Total\n 200m/150kcal"
+           android:textSize="17dp"/>
 
 </RelativeLayout>
