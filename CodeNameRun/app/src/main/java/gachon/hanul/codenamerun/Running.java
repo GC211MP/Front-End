@@ -14,7 +14,10 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
+import android.media.AudioAttributes;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.SoundPool;
 import android.os.Bundle;
 
 import android.os.Handler;
@@ -48,7 +51,7 @@ public class Running extends AppCompatActivity {
 
     /* 우리의 브금술사 */
     private MediaPlayer bgmPlayer;
-    private MediaPlayer effectPlayer;
+    private SoundPool effectPlayer;
     private ArrayList<String> musicList;
     private ArrayList<Integer> musicResource;
 
@@ -148,13 +151,26 @@ public class Running extends AppCompatActivity {
 
         // TODO: MediaPlayer 적용
         /***** 브금 선언 *****/
+
+        effectPlayer = new SoundPool(8, AudioManager.STREAM_MUSIC, 0);
         musicList = new ArrayList<String>();
         musicResource = new ArrayList<Integer>();
 
-        putMusic("footstep", R.raw.footstep);
+        putMusic("구두소리", R.raw.footstep);
         putMusic("on_a_mission", R.raw.on_a_mission);
         putMusic("phone_ring", R.raw.phone_ring);
         putMusic("walking_spy", R.raw.walking_spy);
+        putMusic("전화벨소리", R.raw.phone_ring);
+        putMusic("쿠구궁", R.raw.warning);
+        putMusic("평화로운배경음", R.raw.default_bgm);
+        putMusic("평화로운 bgm", R.raw.default_bgm);
+        putMusic("긴박한배경음", R.raw.on_a_mission);
+        putMusic("전투소리", R.raw.gun_shot);
+        putMusic("신나는배경음", R.raw.walking_spy);
+        putMusic("불길한배경음", R.raw.ominous_bgm);
+        putMusic("불길한 bgm", R.raw.ominous_bgm);
+        putMusic("위험한알람", R.raw.shocking);
+        putMusic("신나는 bgm", R.raw.walking_spy);
 
         // setting game values --------------------------------------------------------------------------------
         /* find view by id */
@@ -180,8 +196,8 @@ public class Running extends AppCompatActivity {
         isTTSDone = false;
 
         /* script */
-        storyLists = getResources().getStringArray(R.array.test); // test 용
-        // storyLists = getStageStringArray(stageName); // 찐
+//        storyLists = getResources().getStringArray(R.array.test); // test 용
+        storyLists = getStageStringArray(stageName); // 찐
 
 
 //            new Handler().postDelayed(() -> {
@@ -229,6 +245,12 @@ public class Running extends AppCompatActivity {
 
             } else if (storyLists[now_step].equals(BGM_START)) { // 배경음 틀어주기
                 now_step++;
+
+                if (bgmPlayer != null && bgmPlayer.isPlaying()) {
+                    bgmPlayer.release();
+                    bgmPlayer = null;
+                }
+
                 bgmPlayer = MediaPlayer.create(Running.this, getMusicResource(storyLists[now_step]));
                 bgmPlayer.setLooping(true);
                 bgmPlayer.start();
@@ -238,11 +260,19 @@ public class Running extends AppCompatActivity {
 
             } else if (storyLists[now_step].equals(EFFECT)) { // 효과음 틀어주기
                 now_step++;
-                effectPlayer = MediaPlayer.create(Running.this, getMusicResource(storyLists[now_step]));
-                effectPlayer.start();
 
-                now_step++;
-                handler.postDelayed(() -> playNextStep(), 2000);
+                int sound = effectPlayer.load(Running.this, getMusicResource(storyLists[now_step]), 1);
+                effectPlayer.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+                    @Override
+                    public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
+                        effectPlayer.play(sound, 1, 1, 0, 0, 1);
+
+                        now_step++;
+
+                        handler.postDelayed(() -> playNextStep(), 2000);
+                    }
+                });
+
             }
 
         } else { // 여기 들어오면 스테이지가 끝나거야
@@ -270,7 +300,7 @@ public class Running extends AppCompatActivity {
         }
     }
 
-    private int endStage() {
+    private void endStage() {
         int score;
         double distance;
 
@@ -285,10 +315,13 @@ public class Running extends AppCompatActivity {
         // 3. 객체 종료하기 -> gps랑 map
         //helpMap.clearMap();
         helpGPS.onDestroy();
-        // TODO: 4. 점수창 띄워주기 -> 궁금한데 인텐트로 점수창 띄워주면 안될거 같은데 fragment나 해야할 것 같은데.. 모르겠다
+        // TODO: 4. 점수창 띄워주기
+        Intent intent = new Intent(getApplicationContext(),ScoreBoard.class);
+        intent.putExtra("score",score);
+        startActivity(intent);
 
-        Log.d(LOG_IN_RUNNING, "score: " + score);
-        return score;
+        // 중첩을 피하기 위해서 다른 activity 로 갈때 quit home activity
+        finish();
 
     }
 
@@ -301,7 +334,7 @@ public class Running extends AppCompatActivity {
 
     private String[] getStageStringArray(String stage) {
         getResources().getStringArray(R.array.test);
-        if (stage.equals("Prologue")){
+        if (stage.equals("Prologue")) {
             return getResources().getStringArray(R.array.test);
         }
         if (stage.equals("Stage1")) {
@@ -310,12 +343,12 @@ public class Running extends AppCompatActivity {
         if (stage.equals("Stage2")) {
             return getResources().getStringArray(R.array.Stage2);
         }
-//        if (stage.equals("Stage3")){
-//            return getResources().getStringArray(R.array.Stage3);
-//        }
-//        if (stage.equals("Stage4")) {
-//            return getResources().getStringArray(R.array.Stage4);
-//        }
+        if (stage.equals("Stage3")) {
+            return getResources().getStringArray(R.array.Stage3);
+        }
+        if (stage.equals("Stage4")) {
+            return getResources().getStringArray(R.array.Stage4);
+        }
         return null;
     }
 

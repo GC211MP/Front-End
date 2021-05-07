@@ -58,6 +58,9 @@ public class HelpGPS extends Service implements LocationListener {
     private ArrayList<Float> speedList; // m/s
     private float minSpeed; // m/s
     private long targetTime;
+    private long lastTime;
+    private long nowTime;
+    private float calories =0;
 
     public HelpGPS(Context context) {
         this.mContext = context;
@@ -67,7 +70,7 @@ public class HelpGPS extends Service implements LocationListener {
         speedList = new ArrayList<Float>();
         locationList.add(getLocation());
         speedList.add((float) 0.0);
-
+        lastTime = System.currentTimeMillis();
     }
 
     /*
@@ -80,6 +83,8 @@ public class HelpGPS extends Service implements LocationListener {
         locationList.add(location);
         speedList.add(location.getSpeed());
         helpMap.updateMAP(location, speedList.get(speedList.size() - 1));
+        nowTime = System.currentTimeMillis();
+        calories += calculateCalories(nowTime-lastTime, getLastSpeed());
 
 
         // 최소 속도보다 속도가 느리면 로컬방송으로 알려줌
@@ -88,10 +93,12 @@ public class HelpGPS extends Service implements LocationListener {
             Log.d(LOG_HELP_GPS, "speed is slow" );
         }
 
-        if (targetTime < System.currentTimeMillis()){
+        if (targetTime < nowTime){
             sendMSGTimeIsDone();
             Log.d(LOG_HELP_GPS, "time is done" );
         }
+
+        lastTime = nowTime;
 
         Log.d(LOG_HELP_GPS, Double.toString(speedList.get(speedList.size() - 1)));
         Log.d(LOG_HELP_GPS, "now limit: " + Float.toString(minSpeed) + "speed: " + Float.toString(getLastSpeed()));
@@ -207,5 +214,21 @@ public class HelpGPS extends Service implements LocationListener {
         }
 
         return total_distance;
+    }
+
+    private float calculateCalories(long time, float speed){
+        float cal = 0;
+
+        if(speed < RUN_SLOW){
+            cal = (time * speed) /1000;
+
+        } else{
+            cal = (time * speed) / 800;
+        }
+        return cal;
+    }
+
+    public int getCalories(){
+        return (int)calories;
     }
 }
