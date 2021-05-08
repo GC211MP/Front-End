@@ -45,12 +45,13 @@ public class CustomListAdapter extends ArrayAdapter{
 
         int color = Color.rgb(r, g, b);
 
+        Drawable sampleDrawable = context.getResources().getDrawable(R.drawable.round, null);
+        sampleDrawable.setTint(color);
 
         LayoutInflater inflater=context.getLayoutInflater();
         View rowView=inflater.inflate(R.layout.listview_ranking, null,true);
 
-        Drawable sampleDrawable = context.getResources().getDrawable(R.drawable.round, null);
-        sampleDrawable.setTint(color);
+
 
         //this code gets references to objects in the listview_row.xml file
         TextView nameTextField = (TextView) rowView.findViewById(R.id.name);
