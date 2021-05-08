@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".AgentInformation">
-
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 <!--스크롤뷰 추가-->
         <TextView
            android:id="@+id/information"
@@ -136,10 +138,10 @@
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:layout_below="@+id/score_1stage"
-           android:layout_marginTop="40dp"
+           android:layout_marginTop="50dp"
            android:layout_centerHorizontal="true"
            android:textColor="@color/warm_white"
            android:text="         Total\n 200m/150kcal"
            android:textSize="17dp"/>
-
 </RelativeLayout>
+</ScrollView>
