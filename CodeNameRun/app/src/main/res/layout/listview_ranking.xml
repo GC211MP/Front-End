@@ -17,7 +17,18 @@
         android:layout_height="wrap_content"
         tools:context=".CustomListAdapter">
 
+        <TextView android:layout_margin="7dp"
+            android:id = "@+id/number"
+            android:layout_width = "wrap_content"
+            android:layout_height = "wrap_content"
+            android:textColor="@color/deep_grey"
+            android:textSize = "50dp"
+            android:gravity="center"
+            android:fontFamily="@font/badhead_typeface"
+            android:background="@drawable/round"/>
+
         <TextView
+            android:layout_toRightOf="@id/number"
             android:layout_margin="7dp"
             android:id = "@+id/name"
             android:layout_width = "match_parent"
@@ -27,6 +38,7 @@
             />
 
         <TextView
+            android:layout_toRightOf="@id/number"
             android:layout_margin="3dp"
             android:id= "@+id/record"
             android:layout_below="@id/name"
