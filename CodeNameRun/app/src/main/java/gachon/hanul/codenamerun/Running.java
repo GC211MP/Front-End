@@ -161,7 +161,7 @@ public class Running extends AppCompatActivity {
         putMusic("phone_ring", R.raw.phone_ring);
         putMusic("walking_spy", R.raw.walking_spy);
         putMusic("전화벨소리", R.raw.phone_ring);
-        putMusic("쿠구궁", R.raw.warning);
+        putMusic("위험한알람", R.raw.warning);
         putMusic("평화로운배경음", R.raw.default_bgm);
         putMusic("평화로운 bgm", R.raw.default_bgm);
         putMusic("긴박한배경음", R.raw.on_a_mission);
@@ -169,7 +169,7 @@ public class Running extends AppCompatActivity {
         putMusic("신나는배경음", R.raw.walking_spy);
         putMusic("불길한배경음", R.raw.ominous_bgm);
         putMusic("불길한 bgm", R.raw.ominous_bgm);
-        putMusic("위험한알람", R.raw.shocking);
+        putMusic("쿠구궁", R.raw.shocking);
         putMusic("신나는 bgm", R.raw.walking_spy);
 
         // setting game values --------------------------------------------------------------------------------

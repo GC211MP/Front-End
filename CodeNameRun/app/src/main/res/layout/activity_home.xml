@@ -16,7 +16,6 @@
 
 <!--\
     /* stage buttons */
-
     <Button
         android:id="@+id/PrologueStageButton"
         android:layout_width="350dp"
