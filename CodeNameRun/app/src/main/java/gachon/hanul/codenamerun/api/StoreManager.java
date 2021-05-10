@@ -18,8 +18,10 @@ public class StoreManager {
     private static StoreManager instance = new StoreManager();
 
     StoreManager(){}
+    private Context context;
 
-    public static StoreManager getInstance(){
+    public static StoreManager getInstance(Context context){
+        instance.context = context;
         return instance;
     }
 
@@ -34,7 +36,7 @@ public class StoreManager {
 
 
     // set rank
-    public boolean setRank(Context context, DataDTO enrollData){
+    public boolean setRank(DataDTO enrollData){
 
         // SQLite
         SqliteManager sqm = new SqliteManager(context, "user.db");
@@ -68,7 +70,7 @@ public class StoreManager {
 
     //이 부분이 근데 sqlite는 context가 parameter로 들어 있어서, 확신 X, 돌아가긴 돈다.
     //sqlite에 사용자 등록
-    public boolean enrollUser(Context context, SqliteDto sDto){
+    public boolean enrollUser(SqliteDto sDto){
 
         // 서버 연동 필요
         UserDAO uDao = new UserDAO();
@@ -84,30 +86,25 @@ public class StoreManager {
 
 
     //sqlite에서 id를 통해서, 사용자 값을 읽어온다
-    public PersonalData readUserData(Context context, Integer[] stages) {
+    public PersonalData readUserData(Integer[] stages) {
 
         // SQLite
         SqliteManager sqm = new SqliteManager(context, "user.db");
         SqliteDto sDto = sqm.read(sqm.getID());
 
-        // API Comm.
-        UserDAO uDao = new UserDAO();
-        UserDTO uDto = uDao.read(sqm.getID());
-        int uIdx = uDto.getUser_idx();
-
         ArrayList<Integer> totalDistance = new ArrayList<Integer>();
         for(int i = 0; i < stages.length; i++)
-            totalDistance.add(this.getTotalDistance(uIdx, stages[i]));
+            totalDistance.add(this.getTotalDistance(stages[i]));
 
         ArrayList<Integer> totalCalorie = new ArrayList<Integer>();
         for(int i = 0; i < stages.length; i++)
-            totalCalorie.add(this.getTotalCalorie(uIdx, stages[i]));
+            totalCalorie.add(this.getTotalCalorie(stages[i]));
 
         ArrayList<Integer> totalScore = new ArrayList<Integer>();
         for(int i = 0; i < stages.length; i++)
-            totalScore.add(this.getTotalScore(uIdx, stages[i]));
+            totalScore.add(this.getTotalScore(stages[i]));
 
-        int totalAllScore = this.getTotalScore(uIdx, -1);
+        int totalAllScore = this.getTotalScore(-1);
 
 
         PersonalData res = new PersonalData(
@@ -126,50 +123,10 @@ public class StoreManager {
         return res;
     }
 
-
-    protected class PersonalData {
-        String id;
-        String password;
-        String userName;
-        String sex;
-        int userHeight;
-        int userWeight;
-        ArrayList<Integer> totalDistanceByStage;
-        ArrayList<Integer> totalCalorieByStage;
-        ArrayList<Integer> totalScoreByStage;
-        int totalScore;
-        PersonalData(String id, String password, String userName, String sex, int userHeight, int userWeight, ArrayList<Integer> totalDistanceByStage, ArrayList<Integer> totalCalorieByStage, ArrayList<Integer> totalScoreByStage, int totalScore){
-            this.id = id;
-            this.password = password;
-            this.userName = userName;
-            this.sex = sex;
-            this.userHeight = userHeight;
-            this.userWeight = userWeight;
-            this.totalDistanceByStage = totalDistanceByStage;
-            this.totalCalorieByStage = totalCalorieByStage;
-            this.totalScoreByStage = totalScoreByStage;
-            this.totalScore = totalScore;
-        }
-        @Override
-        public String toString() {
-            return "PersonalData{" +
-                    "id='" + id + '\'' +
-                    ", password='" + password + '\'' +
-                    ", userName='" + userName + '\'' +
-                    ", sex='" + sex + '\'' +
-                    ", userHeight=" + userHeight +
-                    ", userWeight=" + userWeight +
-                    ", totalDistanceByStage=" + totalDistanceByStage +
-                    ", totalCalorieByStage=" + totalCalorieByStage +
-                    ", totalScoreByStage=" + totalScoreByStage +
-                    ", totalScore=" + totalScore +
-                    '}';
-        }
-    }
-
+    
 
     //sqlite에서 이름과 비밀번호 수정.
-    public boolean updateUserNamePassword(Context context, String userId, String name, String pw) {
+    public boolean updateUserNamePassword(String userId, String name, String pw) {
 
 
         // 서버 연동 필요
@@ -187,7 +144,7 @@ public class StoreManager {
 
 
     //sqlite에서 키와 몸무게 수정.
-    public boolean updateUserHeightWeight(Context context, int ht, int wt){
+    public boolean updateUserHeightWeight(int ht, int wt){
         SqliteManager sqm = new SqliteManager(context, "user.db");
         boolean res = sqm.updateHeightWeight(ht, wt);
         return res;
@@ -196,10 +153,20 @@ public class StoreManager {
 
     // - get total distance
     //   - stageId == -1 => total of all stages
-    public int getTotalDistance(int userIndex, int stageId){
+    public int getTotalDistance(int stageId){
         try {
-            Log.e("=====", "https://api.gcmp.doky.space/data/distance?uidx=" + userIndex + (stageId != -1 ? "&stage=" + stageId : ""));
-            URL url = new URL("https://api.gcmp.doky.space/data/distance?uidx=" + userIndex + (stageId != -1 ? "&stage=" + stageId : ""));
+
+            // SQLite
+            SqliteManager sqm = new SqliteManager(context, "user.db");
+            SqliteDto sDto = sqm.read(sqm.getID());
+
+            // API Comm.
+            UserDAO uDao = new UserDAO();
+            UserDTO uDto = uDao.read(sqm.getID());
+            int uIdx = uDto.getUser_idx();
+
+            Log.e("=====", "https://api.gcmp.doky.space/data/distance?uidx=" + uIdx + (stageId != -1 ? "&stage=" + stageId : ""));
+            URL url = new URL("https://api.gcmp.doky.space/data/distance?uidx=" + uIdx + (stageId != -1 ? "&stage=" + stageId : ""));
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             InputStream is = conn.getInputStream();
@@ -224,10 +191,20 @@ public class StoreManager {
 
     // - get total calorie
     //   - stageId == -1 => total of all stages
-    public int getTotalCalorie(int userIndex, int stageId){
+    public int getTotalCalorie(int stageId){
         try {
-            Log.e("=====", "https://api.gcmp.doky.space/data/calorie?uidx=" + userIndex + (stageId != -1 ? "&stage=" + stageId : ""));
-            URL url = new URL("https://api.gcmp.doky.space/data/calorie?uidx=" + userIndex + (stageId != -1 ? "&stage=" + stageId : ""));
+
+            // SQLite
+            SqliteManager sqm = new SqliteManager(context, "user.db");
+            SqliteDto sDto = sqm.read(sqm.getID());
+
+            // API Comm.
+            UserDAO uDao = new UserDAO();
+            UserDTO uDto = uDao.read(sqm.getID());
+            int uIdx = uDto.getUser_idx();
+
+            Log.e("=====", "https://api.gcmp.doky.space/data/calorie?uidx=" + uIdx + (stageId != -1 ? "&stage=" + stageId : ""));
+            URL url = new URL("https://api.gcmp.doky.space/data/calorie?uidx=" + uIdx + (stageId != -1 ? "&stage=" + stageId : ""));
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             InputStream is = conn.getInputStream();
@@ -252,10 +229,20 @@ public class StoreManager {
 
     // - get total score
     //   - stageId == -1 => total of all stages
-    public int getTotalScore(int userIndex, int stageId){
+    public int getTotalScore(int stageId){
         try {
-            Log.e("=====", "https://api.gcmp.doky.space/data/score?uidx=" + userIndex + (stageId != -1 ? "&stage=" + stageId : ""));
-            URL url = new URL("https://api.gcmp.doky.space/data/score?uidx=" + userIndex + (stageId != -1 ? "&stage=" + stageId : ""));
+
+            // SQLite
+            SqliteManager sqm = new SqliteManager(context, "user.db");
+            SqliteDto sDto = sqm.read(sqm.getID());
+
+            // API Comm.
+            UserDAO uDao = new UserDAO();
+            UserDTO uDto = uDao.read(sqm.getID());
+            int uIdx = uDto.getUser_idx();
+
+            Log.e("=====", "https://api.gcmp.doky.space/data/score?uidx=" + uIdx + (stageId != -1 ? "&stage=" + stageId : ""));
+            URL url = new URL("https://api.gcmp.doky.space/data/score?uidx=" + uIdx + (stageId != -1 ? "&stage=" + stageId : ""));
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             InputStream is = conn.getInputStream();
