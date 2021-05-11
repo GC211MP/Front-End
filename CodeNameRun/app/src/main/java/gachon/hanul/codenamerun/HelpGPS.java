@@ -29,8 +29,8 @@ import java.util.ArrayList;
 public class HelpGPS extends Service implements LocationListener {
 
 
-    private static final long MIN_DISTANCE_UPDATES = 10; // 3미터
-    private static final long MIN_TIME_UPDATES = 3000; // 3초
+    private static final long MIN_DISTANCE_UPDATES = 10; // 10미터
+    private static final long MIN_TIME_UPDATES = 5000; // 5초
 
     // 찐
 //    public static final float WALK_SLOW = (float)0.833; // 3km/h
@@ -80,7 +80,7 @@ public class HelpGPS extends Service implements LocationListener {
      */
     @Override
     public void onLocationChanged(Location location) {
-        locationList.add(location);
+        locationList.add(getLocation());
         speedList.add(location.getSpeed());
         helpMap.updateMAP(location, speedList.get(speedList.size() - 1));
         nowTime = System.currentTimeMillis();
@@ -93,12 +93,6 @@ public class HelpGPS extends Service implements LocationListener {
             Log.d(LOG_HELP_GPS, "speed is slow" );
         }
 
-        if (targetTime < nowTime){
-            sendMSGTimeIsDone();
-            Log.d(LOG_HELP_GPS, "time is done" );
-        }
-
-        lastTime = nowTime;
 
         Log.d(LOG_HELP_GPS, Double.toString(speedList.get(speedList.size() - 1)));
         Log.d(LOG_HELP_GPS, "now limit: " + Float.toString(minSpeed) + "speed: " + Float.toString(getLastSpeed()));

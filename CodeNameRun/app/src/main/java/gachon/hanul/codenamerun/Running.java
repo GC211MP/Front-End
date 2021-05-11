@@ -47,7 +47,9 @@ import static android.speech.tts.TextToSpeech.ERROR;
 public class Running extends AppCompatActivity {
 
     String[] REQUIRED_PERMISSIONS = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
-
+    // for score
+    private final int DISTANCE_MULTIPLE = 100;
+    private final int SECRET_MULTIPLE = 100;
     public static final String LOG_IN_RUNNING = "running";
     private final String NEXT_TTS = "멘트";
     private final String BGM_START = "배경음 시작";
@@ -60,31 +62,32 @@ public class Running extends AppCompatActivity {
     private SoundPool effectPlayer;
     private ArrayList<String> musicList;
     private ArrayList<Integer> musicResource;
-
-    // for score
-    private final int DISTANCE_MULTIPLE = 100;
-    private final int SECRET_MULTIPLE = 100;
-
-    private boolean isSpeedOK = true;
-    private boolean isTTSDone;
-    private boolean isRunDone;
     private TextToSpeech tts;
-
+    // for gps
     HelpGPS helpGPS;
     HelpMap helpMap;
     Handler handler;
 
+    // ui object
     ImageView TopSecret1;
     ImageView TopSecret2;
     ImageView TopSecret3;
     ImageView TopSecret4;
     ImageView TopSecret5;
     TextView stageNameText;
-    String stageName;
-    int nowStage;
+    TextView timeText;
 
+    String stageName;
+    private boolean isSpeedOK = true;
+    private boolean isTTSDone;
+    private boolean isRunDone;
+    private boolean isLost;
+
+    int nowStage;
     int totalSecret;
     int now_step = 0;
+    int time;
+    int targetTime;
     String[] storyLists;
 
 
@@ -188,19 +191,23 @@ public class Running extends AppCompatActivity {
         TopSecret5 = findViewById(R.id.TopSecret5);
 
         stageNameText = findViewById(R.id.alertStage);
+        timeText = findViewById(R.id.timer);
 
         /* change values */
-        TopSecret1.setVisibility(View.INVISIBLE);
-        TopSecret2.setVisibility(View.INVISIBLE);
-        TopSecret3.setVisibility(View.INVISIBLE);
-        TopSecret4.setVisibility(View.INVISIBLE);
-        TopSecret5.setVisibility(View.INVISIBLE);
+        TopSecret1.setVisibility(View.VISIBLE);
+        TopSecret2.setVisibility(View.VISIBLE);
+        TopSecret3.setVisibility(View.VISIBLE);
+        TopSecret4.setVisibility(View.VISIBLE);
+        TopSecret5.setVisibility(View.VISIBLE);
 
         stageNameText.setText(stageName);
-        totalSecret = 0;
+        timeText.setText("00:00");
+        totalSecret = 5;
         isSpeedOK = true;
         isRunDone = true; // 나중에 false로 바꿔라
         isTTSDone = false;
+        isLost = false;
+        targetTime = 0;
 
         /* script */
 //        storyLists = getResources().getStringArray(R.array.test); // test 용
@@ -216,7 +223,8 @@ public class Running extends AppCompatActivity {
 //                });
 //            }, 4000);
 
-        playNextStep();
+        new Thread(new TimeHandler()).start();
+        playNextStep(); // 얘의 위치를 좀 바꾸자자
 
         Log.d(LOG_IN_RUNNING, "onCreate in end");
     }
@@ -230,7 +238,8 @@ public class Running extends AppCompatActivity {
      */
     public void playNextStep() {
         isTTSDone = false;
-        //isRunDone = false;
+        isRunDone = false;
+        isLost = false;
 
         // 다음이 있는지 확인
         if (now_step < storyLists.length) { // 스토지를 진행하자
@@ -240,7 +249,7 @@ public class Running extends AppCompatActivity {
                 now_step++;
                 helpGPS.setMinSpeed(Integer.parseInt(storyLists[now_step])); // 속도
                 now_step++;
-                helpGPS.setRemainTime(Integer.parseInt(storyLists[now_step])); // 시간
+                targetTime = time + Integer.parseInt(storyLists[now_step]); // 시간
 
                 // 멘트를 큐에 넣어주고
                 now_step++;
@@ -296,13 +305,23 @@ public class Running extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             isSpeedOK = intent.getBooleanExtra(HelpGPS.MSG_SLOW, true);
-            isRunDone = intent.getBooleanExtra(HelpGPS.MSG_COMPLETE, false);
-            if (isRunDone && isTTSDone) {
-                playNextStep();
-            }
 
-            if ((isRunDone)) {
-                Log.d(LOG_IN_RUNNING, "run done");
+            // 속도가 느려졋을때
+            if (!isSpeedOK && !isLost) {
+                if (totalSecret == 5) {
+                    TopSecret5.setVisibility(View.INVISIBLE);
+                } else if (totalSecret == 4) {
+                    TopSecret4.setVisibility(View.INVISIBLE);
+                } else if (totalSecret == 4) {
+                    TopSecret3.setVisibility(View.INVISIBLE);
+                } else if (totalSecret == 2) {
+                    TopSecret2.setVisibility(View.INVISIBLE);
+                } else { // 1
+                    TopSecret1.setVisibility(View.INVISIBLE);
+                }
+                totalSecret--;
+                isLost = true;
+
             }
         }
     }
@@ -325,8 +344,8 @@ public class Running extends AppCompatActivity {
         //helpMap.clearMap();
         helpGPS.onDestroy();
         // 4. 점수창 띄워주기
-        Intent intent = new Intent(getApplicationContext(),ScoreBoard.class);
-        intent.putExtra("score",score);
+        Intent intent = new Intent(getApplicationContext(), ScoreBoard.class);
+        intent.putExtra("score", score);
         startActivity(intent);
 
         // 서버에 점수 보내기
@@ -338,7 +357,7 @@ public class Running extends AppCompatActivity {
 //                        new SqliteDto("iiiiidd","ppw","nname",18,90,"m"));
 //                Integer[] ttt = {1,2,3,4};
 //                PersonalData pd =  manager.readUserData(ttt);
-                DataDTO dataDTO = new DataDTO("testman", nowStage, (int)distance, calorie, score);
+                DataDTO dataDTO = new DataDTO("testman", nowStage, (int) distance, calorie, score);
                 manager.setRank(dataDTO);
             }
         }).start();
@@ -394,7 +413,47 @@ public class Running extends AppCompatActivity {
         return musicResource.get(musicList.indexOf(name));
     }
 
+    private class TimeHandler implements Runnable {
 
+        String timeSec;
+        String timeMin;
+
+        @Override
+        public void run() {
+            try {
+                time = 0;
+                while (true) {
+                    Thread.sleep(1000);
+                    time++;
+                    // 시간 보여주기
+                    if (time / 60 < 10) {
+                        timeMin = "0" + time / 60;
+                    } else {
+                        timeMin = "" + time / 60;
+                    }
+                    if (time % 60 < 10) {
+                        timeSec = "0" + time % 60;
+                    } else {
+                        timeSec = "" + time % 60;
+                    }
+                    timeText.setText(timeMin + ":" + timeSec);
+
+                    // 시간 지났는지 확인하기
+                    if (targetTime != 0 && time > targetTime) {
+                        isRunDone = true;
+
+                        if(isRunDone && isTTSDone){
+                            playNextStep();
+                        }
+                    }
+
+                }
+
+            } catch (Exception e) {
+
+            }
+        }
+    }
     //--------------------------------------------------------------Start <gps permission>----------------------------------------------------------------------
     /*
      * TODO: 다혜가 퍼미션 부분에서 뻑난다고 말했음 -> 고쳐야한다
