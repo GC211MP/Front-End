@@ -1,36 +1,30 @@
 package gachon.hanul.codenamerun;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.ShapeDrawable;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import androidx.core.content.ContextCompat;
+import java.util.ArrayList;
+
+import gachon.hanul.codenamerun.api.DataDTO;
 
 public class CustomListAdapter extends ArrayAdapter{
 
 
     private final Activity context;
 
-    private final String[] nameArray ;
+    private ArrayList<DataDTO> userArrayParam;
 
-    private final String[] recordArray ;
-
-    public CustomListAdapter (Activity context, String [] nameArrayParam, String [] recordArrayParam) {
-        super (context, R.layout. listview_ranking , nameArrayParam);
+    public CustomListAdapter (Activity context, ArrayList<DataDTO>  userArrayParam) {
+        super (context, R.layout. listview_ranking , userArrayParam);
 
         this.context=context;
-        this.nameArray = nameArrayParam;
-        this.recordArray = recordArrayParam;
+        this.userArrayParam = userArrayParam;
     }
 
     @Override
@@ -59,8 +53,8 @@ public class CustomListAdapter extends ArrayAdapter{
         TextView numberTextField =  (TextView) rowView.findViewById(R.id.number);
 
         //this code sets the values of the objects to values from the arrays
-        nameTextField.setText(nameArray[position]);
-        recordTextField.setText(recordArray[position]);
+        nameTextField.setText(userArrayParam.get(position).getUser_name());
+        recordTextField.setText("score: " + userArrayParam.get(position).getScore());
         numberTextField.setText(String.valueOf(position + 1));
 
 
