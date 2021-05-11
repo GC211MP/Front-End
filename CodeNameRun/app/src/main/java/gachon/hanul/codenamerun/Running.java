@@ -248,7 +248,7 @@ public class Running extends AppCompatActivity {
                 now_step++;
                 helpGPS.setMinSpeed(Integer.parseInt(storyLists[now_step])); // 속도
                 now_step++;
-                targetTime = time + Integer.parseInt(storyLists[now_step]); // 시간
+                targetTime = time + Integer.parseInt(storyLists[now_step])/3; // 시간
 
                 // 멘트를 큐에 넣어주고
                 now_step++;
@@ -321,6 +321,8 @@ public class Running extends AppCompatActivity {
                 }
                 totalSecret--;
                 isLost = true;
+
+               tts.speak("속도가 느려졌습니다. 조금 더 빨리 뛰시길 바랍니다", TextToSpeech.QUEUE_ADD, null, "prologue_1");
 
             }
 
