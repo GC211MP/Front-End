@@ -21,6 +21,7 @@ import android.media.SoundPool;
 import android.os.Bundle;
 
 import android.os.Handler;
+import android.os.storage.StorageManager;
 import android.speech.tts.UtteranceProgressListener;
 import android.util.Log;
 import android.view.View;
@@ -35,6 +36,11 @@ import com.google.android.gms.maps.SupportMapFragment;
 
 import java.util.ArrayList;
 import java.util.Locale;
+
+import gachon.hanul.codenamerun.api.DataDTO;
+import gachon.hanul.codenamerun.api.PersonalData;
+import gachon.hanul.codenamerun.api.SqliteDto;
+import gachon.hanul.codenamerun.api.StoreManager;
 
 import static android.speech.tts.TextToSpeech.ERROR;
 
@@ -75,6 +81,7 @@ public class Running extends AppCompatActivity {
     ImageView TopSecret5;
     TextView stageNameText;
     String stageName;
+    int nowStage;
 
     int totalSecret;
     int now_step = 0;
@@ -303,22 +310,39 @@ public class Running extends AppCompatActivity {
     private void endStage() {
         int score;
         double distance;
+        int calorie;
 
         if (bgmPlayer.isPlaying()) {
             bgmPlayer.stop();
         }
         // 1. 뛴 거리랑 편지지 갯수 알아오기
-        //distance = helpGPS.getTotalDistance();
+        distance = helpGPS.getTotalDistance();
         // 2. 점수 계산하기
         //score = calculateScore(distance,totalSecret);
         score = calculateScore(100, 4);
+        calorie = helpGPS.getCalories();
         // 3. 객체 종료하기 -> gps랑 map
         //helpMap.clearMap();
         helpGPS.onDestroy();
-        // TODO: 4. 점수창 띄워주기
+        // 4. 점수창 띄워주기
         Intent intent = new Intent(getApplicationContext(),ScoreBoard.class);
         intent.putExtra("score",score);
         startActivity(intent);
+
+        // 서버에 점수 보내기
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                StoreManager manager = StoreManager.getInstance(getApplicationContext());
+//                manager.enrollUser(
+//                        new SqliteDto("iiiiidd","ppw","nname",18,90,"m"));
+//                Integer[] ttt = {1,2,3,4};
+//                PersonalData pd =  manager.readUserData(ttt);
+                DataDTO dataDTO = new DataDTO("testman", nowStage, (int)distance, calorie, score);
+                manager.setRank(dataDTO);
+            }
+        }).start();
+
 
         // 중첩을 피하기 위해서 다른 activity 로 갈때 quit home activity
         finish();
@@ -335,18 +359,23 @@ public class Running extends AppCompatActivity {
     private String[] getStageStringArray(String stage) {
         getResources().getStringArray(R.array.test);
         if (stage.equals("Prologue")) {
+            nowStage = 1;
             return getResources().getStringArray(R.array.test);
         }
         if (stage.equals("Stage1")) {
+            nowStage = 1;
             return getResources().getStringArray(R.array.Stage1);
         }
         if (stage.equals("Stage2")) {
+            nowStage = 2;
             return getResources().getStringArray(R.array.Stage2);
         }
         if (stage.equals("Stage3")) {
+            nowStage = 3;
             return getResources().getStringArray(R.array.Stage3);
         }
         if (stage.equals("Stage4")) {
+            nowStage = 4;
             return getResources().getStringArray(R.array.Stage4);
         }
         return null;

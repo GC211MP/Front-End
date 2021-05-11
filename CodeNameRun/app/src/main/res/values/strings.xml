@@ -35,31 +35,7 @@
         <item>배경음 시작</item>
         <item>on_a_mission</item> <!-- 배경음 이름-->
 
-        <item>멘트</item>
-        <item>0</item> <!-- 요구되는 속도, 이거 숫자말고 스트링으로 해도 좋을듯-->
-        <item>0</item> <!-- 시간, 일단 단위는 초-->
-        <item>새로온 요원 안녕</item>
-
-        <item>배경음 시작</item>
-        <item>평화로운배경음</item> <!-- 효과음 이름, 시간을 어케해주지???-->
-
-        <item>멘트</item>
-        <item>0</item> <!-- 요구되는 속도-->
-        <item>0</item> <!-- 시간 -->
-        <item>다시 한번 말해준다. 놓치지 않고 들어라</item>
-
-        <item>효과음</item>
-        <item>쿠구궁</item> <!-- 효과음 이름, 시간을 어케해주지???-->
-
-        <item>멘트</item>
-        <item>0</item> <!-- 요구되는 속도-->
-        <item>0</item> <!-- 시간 -->
-        <item>효과음 잘 들렸나, 잘했다</item>
-
-        <item>효과음</item>
-        <item>구두소리</item> <!-- 효과음 이름, 시간을 어케해주지???-->
-
-        <item>멘트</item>
+                <item>멘트</item>
         <item>0</item> <!-- 요구되는 속도-->
         <item>0</item> <!-- 시간 -->
         <item>효과음 잘 들렸나, 잘했다</item>
