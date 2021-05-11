@@ -312,7 +312,7 @@ public class Running extends AppCompatActivity {
                     TopSecret5.setVisibility(View.INVISIBLE);
                 } else if (totalSecret == 4) {
                     TopSecret4.setVisibility(View.INVISIBLE);
-                } else if (totalSecret == 4) {
+                } else if (totalSecret == 3) {
                     TopSecret3.setVisibility(View.INVISIBLE);
                 } else if (totalSecret == 2) {
                     TopSecret2.setVisibility(View.INVISIBLE);
@@ -328,24 +328,25 @@ public class Running extends AppCompatActivity {
 
     private void endStage() {
         int score;
-        double distance;
+        int distance;
         int calorie;
 
-        if (bgmPlayer.isPlaying()) {
-            bgmPlayer.stop();
-        }
+
         // 1. 뛴 거리랑 편지지 갯수 알아오기
-        distance = helpGPS.getTotalDistance();
+        distance = (int)helpGPS.getDistance();
         // 2. 점수 계산하기
         //score = calculateScore(distance,totalSecret);
-        score = calculateScore(100, 4);
+        score = calculateScore(distance, totalSecret);
         calorie = helpGPS.getCalories();
         // 3. 객체 종료하기 -> gps랑 map
         //helpMap.clearMap();
+        helpGPS.stopUsingGPS();
         helpGPS.onDestroy();
         // 4. 점수창 띄워주기
         Intent intent = new Intent(getApplicationContext(), ScoreBoard.class);
         intent.putExtra("score", score);
+        intent.putExtra("calorie",calorie);
+        intent.putExtra("distance",distance);
         startActivity(intent);
 
         // 서버에 점수 보내기
@@ -363,6 +364,9 @@ public class Running extends AppCompatActivity {
         }).start();
 
 
+        if (bgmPlayer.isPlaying()) {
+            bgmPlayer.stop();
+        }
         // 중첩을 피하기 위해서 다른 activity 로 갈때 quit home activity
         finish();
 
