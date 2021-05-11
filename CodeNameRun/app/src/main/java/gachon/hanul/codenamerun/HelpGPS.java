@@ -194,11 +194,6 @@ public class HelpGPS extends Service implements LocationListener {
         LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
     }
 
-    private void sendMSGTimeIsDone() {
-        Intent intent = new Intent("gachon.hanul.codenamerun.local");
-        intent.putExtra(MSG_COMPLETE, true);
-        LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
-    }
 
 
     private float calculateDistance(long time, float speed) {

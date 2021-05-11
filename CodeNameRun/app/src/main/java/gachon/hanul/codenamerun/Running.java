@@ -82,6 +82,7 @@ public class Running extends AppCompatActivity {
     private boolean isTTSDone;
     private boolean isRunDone;
     private boolean isLost;
+    private boolean isMapReady;
 
     int nowStage;
     int totalSecret;
@@ -223,8 +224,6 @@ public class Running extends AppCompatActivity {
 //                });
 //            }, 4000);
 
-        new Thread(new TimeHandler()).start();
-        playNextStep(); // 얘의 위치를 좀 바꾸자자
 
         Log.d(LOG_IN_RUNNING, "onCreate in end");
     }
@@ -305,6 +304,7 @@ public class Running extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             isSpeedOK = intent.getBooleanExtra(HelpGPS.MSG_SLOW, true);
+            isMapReady = intent.getBooleanExtra("onMapReady", false);
 
             // 속도가 느려졋을때
             if (!isSpeedOK && !isLost) {
@@ -323,6 +323,15 @@ public class Running extends AppCompatActivity {
                 isLost = true;
 
             }
+
+            if(isMapReady){
+                isMapReady = false;
+                new Thread(new TimeHandler()).start();
+                playNextStep(); // 얘의 위치를 좀 바꾸자자
+
+            }
+
+
         }
     }
 
@@ -333,7 +342,7 @@ public class Running extends AppCompatActivity {
 
 
         // 1. 뛴 거리랑 편지지 갯수 알아오기
-        distance = (int)helpGPS.getDistance();
+        distance = (int) helpGPS.getDistance();
         // 2. 점수 계산하기
         //score = calculateScore(distance,totalSecret);
         score = calculateScore(distance, totalSecret);
@@ -345,8 +354,8 @@ public class Running extends AppCompatActivity {
         // 4. 점수창 띄워주기
         Intent intent = new Intent(getApplicationContext(), ScoreBoard.class);
         intent.putExtra("score", score);
-        intent.putExtra("calorie",calorie);
-        intent.putExtra("distance",distance);
+        intent.putExtra("calorie", calorie);
+        intent.putExtra("distance", distance);
         startActivity(intent);
 
         // 서버에 점수 보내기
@@ -446,7 +455,7 @@ public class Running extends AppCompatActivity {
                     if (targetTime != 0 && time > targetTime) {
                         isRunDone = true;
 
-                        if(isRunDone && isTTSDone){
+                        if (isRunDone && isTTSDone) {
                             playNextStep();
                         }
                     }

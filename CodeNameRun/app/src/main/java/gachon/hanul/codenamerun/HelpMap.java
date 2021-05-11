@@ -3,8 +3,10 @@ package gachon.hanul.codenamerun;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.location.Location;
 import android.text.style.StyleSpan;
@@ -63,6 +65,11 @@ public class HelpMap extends AppCompatActivity implements OnMapReadyCallback {
 
         // 시작위치로 카메라 옮겨주기
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lastLatLng, 18));
+
+
+        Intent intent = new Intent("gachon.hanul.codenamerun.local");
+        intent.putExtra("onMapReady", true);
+        LocalBroadcastManager.getInstance(ctx).sendBroadcast(intent);
 
     }
 
