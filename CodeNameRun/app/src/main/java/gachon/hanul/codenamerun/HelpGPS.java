@@ -57,7 +57,6 @@ public class HelpGPS extends Service implements LocationListener {
     private ArrayList<Location> locationList;
     private ArrayList<Float> speedList; // m/s
     private float minSpeed; // m/s
-    private long targetTime;
     private long lastTime;
     private long nowTime;
     private float calories = 0;
@@ -182,13 +181,7 @@ public class HelpGPS extends Service implements LocationListener {
         this.minSpeed = speed;
     }
 
-    public void setRemainTime(int sec) {
-        targetTime = System.currentTimeMillis() + sec * 1000;
-        Log.d(LOG_HELP_GPS, "setRemainTime");
-
-    }
-
-    private void sendMSGSpeedIsSlow() {
+       private void sendMSGSpeedIsSlow() {
         Intent intent = new Intent("gachon.hanul.codenamerun.local");
         intent.putExtra(MSG_SLOW, false);
         LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
