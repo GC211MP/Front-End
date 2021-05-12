@@ -17,7 +17,6 @@ public class WriteAgentInfo extends AppCompatActivity {
 
         /* tts(korean) download */
         showDialogForTTSDownLoad();
-
     }
 
     /* TTS 한국어 다운로드 안내 팝업

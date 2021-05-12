@@ -40,7 +40,7 @@ public class Ranking_stage1 extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         ViewGroup view=(ViewGroup)inflater.inflate(R.layout.fragment_ranking_stage1, container, false);
-        //ListView생성
+        //ListView 생성
         ListView listView=(ListView) view.findViewById(R.id.listView);
 
 
