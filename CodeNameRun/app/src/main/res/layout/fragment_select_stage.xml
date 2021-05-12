@@ -1,78 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SelectStage">
 
-    /* stage buttons */
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
+        <TextView
+            android:id="@+id/selectStage"
+            android:layout_width="wrap_content"
+            android:layout_height="46dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="20dp"
+            android:background="#00ff0000"
+            android:gravity="center"
+            android:text="Misson stage"
+            android:textColor="@color/warm_white"
+            android:textSize="30dp" />
+
+    /* stage buttons */
     <Button
         android:id="@+id/PrologueStageButton"
         android:layout_width="350dp"
-        android:layout_height="72dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/selectStage"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="30dp"
         android:layout_marginBottom="20dp"
-        android:text="Prologue"
+        android:text="\nPrologue\n"
         android:textSize="20dp" />
 
     <Button
         android:id="@+id/Stage1Button"
-        android:layout_width="140dp"
-        android:layout_height="180dp"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
         android:layout_below="@id/PrologueStageButton"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
         android:backgroundTint="@color/dusty_rose"
-        android:text="Stage1"
+        android:text="\nStage1\n(걷기 3분 + 달리기 1분)x5\n"
         android:textSize="20dp" />
 
     <Button
         android:id="@+id/Stage2Button"
-        android:layout_width="140dp"
-        android:layout_height="180dp"
-        android:layout_below="@id/PrologueStageButton"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/Stage1Button"
         android:layout_alignParentRight="true"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="30dp"
         android:layout_marginRight="29dp"
         android:layout_marginBottom="20dp"
-        android:text="Stage2"
+        android:text="\nStage2\n(걷기 2분 + 달리기 1분 30초)x5\n"
         android:textSize="20dp" />
 
     <Button
         android:id="@+id/Stage3Button"
-        android:layout_width="140dp"
-        android:layout_height="180dp"
-        android:layout_below="@id/Stage1Button"
+        android:layout_width="349dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/Stage2Button"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
-        android:text="Stage3"
-        android:textSize="20dp"/>
+        android:text="\nStage3\n(걷기 2분 + 달리기 2분)x5\n"
+        android:textSize="20dp" />
 
 
     <Button
         android:id="@+id/Stage4Button"
-        android:layout_width="140dp"
-        android:layout_height="180dp"
-        android:layout_below="@id/Stage1Button"
+        android:layout_width="348dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/Stage3Button"
         android:layout_alignParentRight="true"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="30dp"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="20dp"
-        android:text="Stage4"
+        android:text="\nstage4\n(걷기 2분 + 달리기 2분 30초)x5\n"
         android:textSize="20dp" />
-    -->
-
-
 </RelativeLayout>
+</ScrollView>
