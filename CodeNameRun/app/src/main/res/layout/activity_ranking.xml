@@ -26,37 +26,48 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/ranking_name"
-
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="5dp"
+        android:layout_toLeftOf="@+id/ranking_stage2_btn"
         android:text="Stage1"
-        android:textSize="11dp"
-        android:textColor="@color/warm_white" />
+        android:textColor="@color/warm_white"
+        android:textSize="11dp" />
 
     <Button
         android:id="@+id/ranking_stage2_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/ranking_name"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="2.5dp"
         android:textSize="11dp"
-        android:layout_toRightOf="@+id/ranking_stage1_btn"
+        android:layout_toLeftOf="@+id/center"
         android:text="Stage2"
         android:textColor="@color/warm_white" />
 
+
+    <!--배치용 투명칸-->
+    <TextView
+        android:id="@+id/center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/ranking_name"
+        android:layout_marginTop="30dp"
+        android:text=""/>
 
     <Button
         android:id="@+id/ranking_stage3_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/ranking_name"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginLeft="2.5dp"
+        android:layout_marginTop="30dp"
         android:textSize="11dp"
-        android:layout_toRightOf="@+id/ranking_stage2_btn"
+        android:layout_toRightOf="@+id/center"
         android:text="Stage3"
         android:textColor="@color/warm_white" />
+
 
     <Button
         android:id="@+id/ranking_stage4_btn"
@@ -64,13 +75,11 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/ranking_name"
         android:layout_marginLeft="5dp"
-        android:layout_marginTop="20dp"
-        android:textSize="11dp"
+        android:layout_marginTop="30dp"
         android:layout_toRightOf="@+id/ranking_stage3_btn"
         android:text="Stage4"
-        android:textColor="@color/warm_white" />
-
-
+        android:textColor="@color/warm_white"
+        android:textSize="11dp" />
 
     <FrameLayout
         android:id="@+id/fragment_container"
