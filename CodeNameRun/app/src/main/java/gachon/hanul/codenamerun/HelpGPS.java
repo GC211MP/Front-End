@@ -29,8 +29,8 @@ import java.util.ArrayList;
 public class HelpGPS extends Service implements LocationListener {
 
 
-    private static final long MIN_DISTANCE_UPDATES = 10; // 3미터
-    private static final long MIN_TIME_UPDATES = 3000; // 3초
+    private static final long MIN_DISTANCE_UPDATES = 10; // 10미터
+    private static final long MIN_TIME_UPDATES = 5000; // 5초
 
     // 찐
 //    public static final float WALK_SLOW = (float)0.833; // 3km/h
@@ -40,11 +40,11 @@ public class HelpGPS extends Service implements LocationListener {
 //    public static final float RUN_FAST = (float)4.16; // 15km/h
 
     // 테스트용
-    public static final float WALK_SLOW = (float)1.5;
-    public static final float WALK_FAST = (float)3.0;
-    public static final float RUN_SLOW = (float)4.5;
-    public static final float RUN_AVG = (float)6.0;
-    public static final float RUN_FAST = (float)7.0;
+    public static final float WALK_SLOW = (float) 1.5;
+    public static final float WALK_FAST = (float) 3.0;
+    public static final float RUN_SLOW = (float) 4.5;
+    public static final float RUN_AVG = (float) 6.0;
+    public static final float RUN_FAST = (float) 7.0;
 
     public static final String LOG_HELP_GPS = "speed_check";
     public static final String MSG_SLOW = "limit_speed_slow";
@@ -57,10 +57,10 @@ public class HelpGPS extends Service implements LocationListener {
     private ArrayList<Location> locationList;
     private ArrayList<Float> speedList; // m/s
     private float minSpeed; // m/s
-    private long targetTime;
     private long lastTime;
     private long nowTime;
-    private float calories =0;
+    private float calories = 0;
+    private float distance = 0;
 
     public HelpGPS(Context context) {
         this.mContext = context;
@@ -80,25 +80,19 @@ public class HelpGPS extends Service implements LocationListener {
      */
     @Override
     public void onLocationChanged(Location location) {
-        locationList.add(location);
+        locationList.add(getLocation());
         speedList.add(location.getSpeed());
         helpMap.updateMAP(location, speedList.get(speedList.size() - 1));
         nowTime = System.currentTimeMillis();
-        calories += calculateCalories(nowTime-lastTime, getLastSpeed());
-
+        calories += calculateCalories(nowTime - lastTime, getLastSpeed());
+        distance += calculateDistance(nowTime - lastTime, getLastSpeed());
 
         // 최소 속도보다 속도가 느리면 로컬방송으로 알려줌
         if (minSpeed > getLastSpeed()) {
             sendMSGSpeedIsSlow();
-            Log.d(LOG_HELP_GPS, "speed is slow" );
+            Log.d(LOG_HELP_GPS, "speed is slow");
         }
 
-        if (targetTime < nowTime){
-            sendMSGTimeIsDone();
-            Log.d(LOG_HELP_GPS, "time is done" );
-        }
-
-        lastTime = nowTime;
 
         Log.d(LOG_HELP_GPS, Double.toString(speedList.get(speedList.size() - 1)));
         Log.d(LOG_HELP_GPS, "now limit: " + Float.toString(minSpeed) + "speed: " + Float.toString(getLastSpeed()));
@@ -187,48 +181,35 @@ public class HelpGPS extends Service implements LocationListener {
         this.minSpeed = speed;
     }
 
-    public void setRemainTime(int sec){
-        targetTime = System.currentTimeMillis() + sec * 1000;
-        Log.d(LOG_HELP_GPS,"setRemainTime");
-
-    }
-
-    private void sendMSGSpeedIsSlow() {
+       private void sendMSGSpeedIsSlow() {
         Intent intent = new Intent("gachon.hanul.codenamerun.local");
         intent.putExtra(MSG_SLOW, false);
         LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
     }
 
-    private void sendMSGTimeIsDone() {
-        Intent intent = new Intent("gachon.hanul.codenamerun.local");
-        intent.putExtra(MSG_COMPLETE, true);
-        LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
+
+
+    private float calculateDistance(long time, float speed) {
+        return time * speed / 1000;
     }
 
-
-    public float getTotalDistance(){
-        float total_distance = 0;
-
-        for(int i=0;i<locationList.size()-1;i++){
-            total_distance += Math.abs(locationList.get(i).distanceTo(locationList.get(i+1)));
-        }
-
-        return total_distance;
-    }
-
-    private float calculateCalories(long time, float speed){
+    private float calculateCalories(long time, float speed) {
         float cal = 0;
 
-        if(speed < RUN_SLOW){
-            cal = (time * speed) /1000;
+        if (speed < RUN_SLOW) {
+            cal = (time * speed) / 1000;
 
-        } else{
+        } else {
             cal = (time * speed) / 800;
         }
         return cal;
     }
 
-    public int getCalories(){
-        return (int)calories;
+    public int getCalories() {
+        return (int) calories;
+    }
+
+    public int getDistance() {
+        return (int) distance;
     }
 }

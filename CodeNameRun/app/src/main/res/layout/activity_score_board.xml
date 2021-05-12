@@ -29,6 +29,55 @@
         android:textSize="80dp"
         android:layout_below="@id/alertStage"/>
 
+    <TextView
+        android:id="@+id/calorieText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="40dp"
+        android:layout_marginTop="20dp"
+        android:text="calorie"
+        android:textColor="@color/warm_white"
+        android:textSize="30dp"
+        android:layout_below="@id/score"/>
+
+    <TextView
+        android:id="@+id/calorie"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="40dp"
+        android:layout_marginTop="20dp"
+        android:text="100"
+        android:textColor="@color/warm_white"
+        android:textSize="30dp"
+        android:layout_below="@id/calorieText"/>
+
+    <TextView
+        android:id="@+id/distanceText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="20dp"
+        android:text="distance"
+        android:textColor="@color/warm_white"
+        android:textSize="30dp"
+        android:layout_below="@id/score"/>
+
+    <TextView
+        android:id="@+id/distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="20dp"
+        android:text="100"
+        android:textColor="@color/warm_white"
+        android:textSize="30dp"
+        android:layout_below="@id/distanceText"/>
+
+
 
     <Button
         android:id="@+id/backButton"
