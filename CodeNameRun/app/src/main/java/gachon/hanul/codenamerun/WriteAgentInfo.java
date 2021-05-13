@@ -11,6 +11,11 @@ import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import gachon.hanul.codenamerun.api.SqliteDto;
 import gachon.hanul.codenamerun.api.StoreManager;
@@ -20,28 +25,84 @@ public class WriteAgentInfo extends AppCompatActivity {
     //TODO name height weight 를 입력하고 확인 버튼을 누르면, 유저 정보가 update 된다.
     Button okButton;
 
+    StoreManager store;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_write_agent_info);
 
+        store = StoreManager.getInstance(getApplicationContext());
+
+        TextView lblUserId = findViewById(R.id.lbl_user_id);
+        EditText agentPassword = findViewById(R.id.write_password);
+        EditText agentHeight = findViewById(R.id.write_height);
+        EditText agentName = findViewById(R.id.write_name);
+        EditText agentWeight = findViewById(R.id.write_weight);
+
+
         /* tts(korean) download */
         showDialogForTTSDownLoad();
 
+        String userId = generateRandomString(6);
 
-        okButton =findViewById(R.id.okButton);
+        lblUserId.setText("Your ID: " + userId);
+
+
+        okButton = findViewById(R.id.okButton);
         okButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
 
-                //TODO name height weight(editText) 를 서버에 넘긴다
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        boolean result = false;
+                        try{
 
-                Intent intent = new Intent(getApplicationContext(), Home.class);
-                startActivity(intent);
+                            String userpw = agentPassword.getText().toString();
+                            String username = agentName.getText().toString();
+                            int userht = Integer.parseInt(agentHeight.getText().toString());
+                            int userwt = Integer.parseInt(agentWeight.getText().toString());
+
+                            result = store.enrollUser(new SqliteDto(userId, userpw, username, userht, userwt, "sex"));
+
+                            System.out.println(userId);
+                            System.out.println(userpw);
+                            System.out.println(username);
+                            System.out.println(userht);
+                            System.out.println(userwt);
+                            System.out.println("result" + result);
+
+                        } catch (Exception e){
+                            Toast.makeText(getApplicationContext(), "계정을 생성할 수 없습니다!", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        if(result == false)
+                            Toast.makeText(getApplicationContext(), "계정을 생성할 수 없습니다!", Toast.LENGTH_SHORT).show();
+                        else {
+                            Intent intent = new Intent(getApplicationContext(), Home.class);
+                            startActivity(intent);
+                        }
+                    }
+                }).start();
             }
         });
     }
 
+
+    private String generateRandomString(int length){
+
+        String result = "";
+
+        for(int i = 0; i < length; i++){
+            double dValue = Math.random();
+            result += (char)(dValue * 26 + 65) + "";
+        }
+
+        return result;
+    }
 
 
 
