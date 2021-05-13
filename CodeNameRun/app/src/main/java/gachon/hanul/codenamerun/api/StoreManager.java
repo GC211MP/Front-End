@@ -25,6 +25,8 @@ public class StoreManager {
         return instance;
     }
 
+
+
     // # Main Features
     // > Implemented with Singleton
     // - set rank data

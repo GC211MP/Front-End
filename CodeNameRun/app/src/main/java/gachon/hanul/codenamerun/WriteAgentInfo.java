@@ -3,12 +3,22 @@ package gachon.hanul.codenamerun;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.app.AsyncNotedAppOp;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
+import android.view.View;
+import android.widget.Button;
+
+import gachon.hanul.codenamerun.api.SqliteDto;
+import gachon.hanul.codenamerun.api.StoreManager;
 
 public class WriteAgentInfo extends AppCompatActivity {
+
+    //TODO name height weight 를 입력하고 확인 버튼을 누르면, 유저 정보가 update 된다.
+    Button okButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,7 +27,35 @@ public class WriteAgentInfo extends AppCompatActivity {
 
         /* tts(korean) download */
         showDialogForTTSDownLoad();
+
+
+        okButton =findViewById(R.id.okButton);
+        okButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+
+                //TODO name height weight(editText) 를 서버에 넘긴다
+
+                Intent intent = new Intent(getApplicationContext(), Home.class);
+                startActivity(intent);
+            }
+        });
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     /* TTS 한국어 다운로드 안내 팝업
     * 한번만 실행하면 되기 때문에 회원가입 창에 넣었습니다 */

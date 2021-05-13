@@ -10,6 +10,16 @@
     <!--android:background="@drawable/shapeemail"
     android:drawableLeft="@drawable/ic_person_black_24dp"
     android:textColorHighlight="@color/white"-->
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/write_name"
+        android:layout_marginBottom="30dp"
+        android:text="Write Information"
+        android:textSize="30dp"
+        android:textColor="@color/warm_white"/>
     <EditText
         android:id="@+id/write_name"
         android:layout_height="wrap_content"
@@ -31,7 +41,7 @@
         android:backgroundTint="@color/dusty_rose"
         android:padding="15dp"
         android:drawablePadding="10dp"
-        android:hint="Height"
+        android:hint="Height:"
         android:textColor="@color/dusty_rose"
         android:textColorHint="@color/light_grey"/>
     <EditText
@@ -43,8 +53,17 @@
         android:backgroundTint="@color/dusty_rose"
         android:padding="15dp"
         android:drawablePadding="10dp"
-        android:hint="Weight"
+        android:hint="Weight:"
         android:textColor="@color/dusty_rose"
         android:textColorHint="@color/light_grey"/>
+
+    <Button
+        android:id="@+id/okButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/write_weight"
+        android:layout_marginTop="20dp"
+        android:text="OK"/>
 
 </RelativeLayout>
