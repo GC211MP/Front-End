@@ -33,18 +33,18 @@ public class HelpGPS extends Service implements LocationListener {
     private static final long MIN_TIME_UPDATES = 5000; // 5초
 
     // 찐
-//    public static final float WALK_SLOW = (float)0.833; // 3km/h
-//    public static final float WALK_FAST = (float)1.11111; // 4km/h
-//    public static final float RUN_SLOW = (float)1.66667; // 6km/h
-//    public static final float RUN_AVG = (float)2.72; // 10km/h
-//    public static final float RUN_FAST = (float)4.16; // 15km/h
+    public static final float WALK_SLOW = (float)0.833; // 3km/h
+    public static final float WALK_FAST = (float)1.11111; // 4km/h
+    public static final float RUN_SLOW = (float)1.66667; // 6km/h
+    public static final float RUN_AVG = (float)2.72; // 10km/h
+    public static final float RUN_FAST = (float)4.16; // 15km/h
 
-    // 테스트용
-    public static final float WALK_SLOW = (float) 1.5;
-    public static final float WALK_FAST = (float) 3.0;
-    public static final float RUN_SLOW = (float) 4.5;
-    public static final float RUN_AVG = (float) 6.0;
-    public static final float RUN_FAST = (float) 7.0;
+//    // 테스트용
+//    public static final float WALK_SLOW = (float) 1.5;
+//    public static final float WALK_FAST = (float) 3.0;
+//    public static final float RUN_SLOW = (float) 4.5;
+//    public static final float RUN_AVG = (float) 6.0;
+//    public static final float RUN_FAST = (float) 7.0;
 
     public static final String LOG_HELP_GPS = "speed_check";
     public static final String MSG_SLOW = "limit_speed_slow";

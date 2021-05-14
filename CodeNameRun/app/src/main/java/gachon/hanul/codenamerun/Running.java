@@ -205,7 +205,7 @@ public class Running extends AppCompatActivity {
         timeText.setText("00:00");
         totalSecret = 5;
         isSpeedOK = true;
-        isRunDone = true; // 나중에 false로 바꿔라
+        isRunDone = false; // 나중에 false로 바꿔라
         isTTSDone = false;
         isLost = false;
         targetTime = 0;
@@ -248,7 +248,7 @@ public class Running extends AppCompatActivity {
                 now_step++;
                 helpGPS.setMinSpeed(Integer.parseInt(storyLists[now_step])); // 속도
                 now_step++;
-                targetTime = time + Integer.parseInt(storyLists[now_step])/3; // 시간
+                targetTime = time + Integer.parseInt(storyLists[now_step]); // 시간
 
                 // 멘트를 큐에 넣어주고
                 now_step++;
