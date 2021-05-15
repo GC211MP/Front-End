@@ -30,12 +30,20 @@ public class CustomListAdapter extends ArrayAdapter{
     @Override
     public View getView(int position, View view, ViewGroup parent) {
 
-        int colorvariable = position;
+        int colorvariable;
+
+        if (position > 21){
+            colorvariable = 21;
+        }
+        else {
+            colorvariable = position;
+        }
         int r, g, b;
 
-        r = 102 + colorvariable * 20;
-        g = 54 + colorvariable * 20;
-        b = 53 + colorvariable * 20;
+        r = 102 + colorvariable * 7;
+        g = 54 + colorvariable * 8;
+        b = 53 + colorvariable * 8;
+
 
         int color = Color.rgb(r, g, b);
 
@@ -54,7 +62,9 @@ public class CustomListAdapter extends ArrayAdapter{
 
         //this code sets the values of the objects to values from the arrays
         nameTextField.setText(userArrayParam.get(position).getUser_name());
-        recordTextField.setText("score: " + userArrayParam.get(position).getScore());
+        recordTextField.setText("Score: " + userArrayParam.get(position).getScore() + "\n" +
+                "Distance: " + userArrayParam.get(position).getDistance() +
+                "       Calorie: " + userArrayParam.get(position).getCalorie());
         numberTextField.setText(String.valueOf(position + 1));
 
 

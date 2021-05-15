@@ -68,7 +68,7 @@ public class Ranking_stage1 extends Fragment {
         @Override
         protected Void doInBackground(Void... params) {
             StoreManager manager = StoreManager.getInstance(ranking.getApplicationContext());
-            ArrayList<DataDTO> result = manager.getRankTable("score", true, 1);
+            ArrayList<DataDTO> result = manager.getRankTable("score", false, 1);
             publishProgress(result);
             return null;
         }

@@ -21,6 +21,7 @@ public class Ranking_stage2 extends Fragment {
 
     ArrayList<DataDTO> userArray;
     Ranking ranking;
+    ListView listView;
 
     //OnAttach는 fragment를 붙일 때 호출, getActivity로  액티비티를 찾아준다.
     @Override
@@ -36,7 +37,9 @@ public class Ranking_stage2 extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        new Ranking_stage2.RankingInstance().execute();
+        userArray = new ArrayList<DataDTO>();
+
+        new RankingInstance().execute();
         super.onCreate(savedInstanceState);
 
     }
@@ -48,7 +51,7 @@ public class Ranking_stage2 extends Fragment {
         // Inflate the layout for this fragment
         ViewGroup view=(ViewGroup)inflater.inflate(R.layout.fragment_ranking_stage2, container, false);
         //ListView생성
-        ListView listView=(ListView) view.findViewById(R.id.listView);
+        listView = (ListView) view.findViewById(R.id.listView);
 
 
         /*여기 이제 랭킹 스트링으로 받아오고 리스트뷰에 보이게 채워야함*/
@@ -58,17 +61,22 @@ public class Ranking_stage2 extends Fragment {
 
         return view;
     }
-    private class RankingInstance extends AsyncTask<Void, Integer, Void> {
-        @Override
-        protected void onPreExecute() {
-            // tvCounter.setText("*START*");
-            StoreManager manager = StoreManager.getInstance(ranking.getApplicationContext());
+    private class RankingInstance extends AsyncTask<Void, ArrayList<DataDTO>, Void> {
 
-            userArray = manager.getRankTable("score", true, 2);
-        }
         @Override
         protected Void doInBackground(Void... params) {
+            StoreManager manager = StoreManager.getInstance(ranking.getApplicationContext());
+            ArrayList<DataDTO> result = manager.getRankTable("score", false, 2);
+            publishProgress(result);
             return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(ArrayList<DataDTO>... values) {
+            super.onProgressUpdate(values);
+            userArray = values[0];
+            CustomListAdapter whatever = new CustomListAdapter(getActivity(), userArray);
+            listView.setAdapter(whatever);
         }
     }
 }

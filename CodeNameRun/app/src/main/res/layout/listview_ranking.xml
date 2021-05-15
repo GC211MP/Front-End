@@ -22,7 +22,7 @@
             android:layout_width = "wrap_content"
             android:layout_height = "wrap_content"
             android:textColor="@color/deep_grey"
-            android:textSize = "50dp"
+            android:textSize = "40dp"
             android:gravity="center"
             android:fontFamily="@font/badhead_typeface"
             android:background="@drawable/round"/>
@@ -34,7 +34,7 @@
             android:layout_width = "match_parent"
             android:layout_height = "wrap_content"
             android:textColor="@color/warm_white"
-            android:textSize = "30dp"
+            android:textSize = "20dp"
             />
 
         <TextView
@@ -45,6 +45,6 @@
             android:layout_width = "match_parent"
             android:layout_height = "wrap_content"
             android:textColor="@color/light_grey"
-            android:textSize = "20dp"/>
+            android:textSize = "15dp"/>
     </RelativeLayout>
 </androidx.cardview.widget.CardView>
