@@ -46,10 +46,11 @@
            android:backgroundTint="@color/dusty_rose"
            android:padding="15dp"
            android:layout_centerHorizontal="true"
-           android:text=" Name : 김다혜"
+           android:text=" Name : "
            android:textColor="@color/warm_white"
            android:textSize="17dp"
            android:enabled="false"/>
+
        //키
        <EditText
            android:id="@+id/agent_height"
@@ -63,7 +64,7 @@
            android:padding="15dp"
            android:layout_centerHorizontal="true"
            android:textColor="@color/warm_white"
-           android:text=" Height : 190cm"
+           android:text=" Height : "
            android:textSize="17dp"
            android:enabled="false"/>
        //몸무게
@@ -79,7 +80,7 @@
            android:padding="15dp"
            android:layout_centerHorizontal="true"
            android:textColor="@color/warm_white"
-           android:text=" Weight : 100kg"
+           android:text=" Weight : "
            android:textSize="17dp"
            android:enabled="false"
            />
@@ -92,7 +93,7 @@
            android:layout_marginTop="10dp"
            android:layout_marginStart="50dp"
            android:textColor="@color/warm_white"
-           android:text=" Stage1\n\n   100"
+           android:text=" Stage1\n\n   "
            android:textSize="17dp"
            />
        //2stage 스코어
@@ -105,7 +106,7 @@
            android:layout_marginStart="15dp"
            android:layout_toRightOf="@id/score_1stage"
            android:textColor="@color/warm_white"
-           android:text=" Stage2\n\n    100"
+           android:text=" Stage2\n\n    "
            android:textSize="17dp"/>
        //3stage 스코어
        <TextView
@@ -117,7 +118,7 @@
            android:layout_marginStart="15dp"
            android:layout_toRightOf="@id/score_2stage"
            android:textColor="@color/warm_white"
-           android:text=" Stage3\n\n    100 "
+           android:text=" Stage3\n\n    "
            android:textSize="17dp"/>
        //4stage 스코어
        <TextView
@@ -129,19 +130,28 @@
            android:layout_marginStart="15dp"
            android:layout_toRightOf="@id/score_3stage"
            android:textColor="@color/warm_white"
-           android:text=" Stage4\n\n    100"
+           android:text=" Stage4\n\n    "
            android:textSize="17dp"/>
 
        //총 거리/칼로리
        <TextView
-           android:id="@+id/agent_distance_colories"
+           android:id="@+id/totalText"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:layout_below="@+id/score_1stage"
            android:layout_marginTop="50dp"
            android:layout_centerHorizontal="true"
            android:textColor="@color/warm_white"
-           android:text="         Total\n 200m/150kcal"
+           android:text="Total"
            android:textSize="17dp"/>
+   <TextView
+       android:id="@+id/agent_distance_colories"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_below="@+id/totalText"
+       android:layout_centerHorizontal="true"
+       android:textColor="@color/warm_white"
+       android:text=""
+       android:textSize="17dp"/>
 </RelativeLayout>
 </ScrollView>
