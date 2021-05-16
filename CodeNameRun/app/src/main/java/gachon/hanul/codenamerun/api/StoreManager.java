@@ -266,4 +266,45 @@ public class StoreManager {
         }
     }
 
+
+    // - get total score
+    //   - stageId == -1 => total of all stages
+    public int getTopScore(int stageId){
+        try {
+
+            // SQLite
+            SqliteManager sqm = new SqliteManager(context, "user.db");
+            SqliteDto sDto = sqm.read(sqm.getID());
+
+            // API Comm.
+            UserDAO uDao = new UserDAO();
+            UserDTO uDto = uDao.read(sqm.getID());
+            int uIdx = uDto.getUser_idx();
+
+            Log.e("=====", "https://api.gcmp.doky.space/data/scoretop?uidx=" + uIdx + (stageId != -1 ? "&stage=" + stageId : ""));
+            URL url = new URL("https://api.gcmp.doky.space/data/scoretop?uidx=" + uIdx + (stageId != -1 ? "&stage=" + stageId : ""));
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            InputStream is = conn.getInputStream();
+            StringBuilder builder = new StringBuilder();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+            String line;
+            while ((line = reader.readLine()) != null)
+                builder.append(line);
+            String resultJson = "";
+            resultJson = builder.toString();
+            JSONObject json = new JSONObject(resultJson);
+
+            return json.getInt("top_score");
+
+        } catch (Exception e) {
+            Log.e("APIManager", "GET getUser method failed: " + e.getMessage());
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+
+
+
 }
