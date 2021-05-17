@@ -29,6 +29,7 @@
         android:layout_marginTop="30dp"
         android:layout_marginRight="5dp"
         android:layout_toLeftOf="@+id/ranking_stage2_btn"
+        android:backgroundTint="@color/dusty_rose"
         android:text="Stage1"
         android:textSize="11dp" />
 
@@ -39,6 +40,7 @@
         android:layout_below="@+id/ranking_name"
         android:layout_marginTop="30dp"
         android:layout_marginRight="2.5dp"
+        android:backgroundTint="@color/dusty_rose"
         android:textSize="11dp"
         android:layout_toLeftOf="@+id/center"
         android:text="Stage2" />
@@ -61,6 +63,7 @@
         android:layout_below="@+id/ranking_name"
         android:layout_marginLeft="2.5dp"
         android:layout_marginTop="30dp"
+        android:backgroundTint="@color/dusty_rose"
         android:textSize="11dp"
         android:layout_toRightOf="@+id/center"
         android:text="Stage3" />
@@ -73,6 +76,7 @@
         android:layout_below="@+id/ranking_name"
         android:layout_marginLeft="5dp"
         android:layout_marginTop="30dp"
+        android:backgroundTint="@color/dusty_rose"
         android:layout_toRightOf="@+id/ranking_stage3_btn"
         android:text="Stage4"
         android:textSize="11dp" />

@@ -1,6 +1,7 @@
 package gachon.hanul.codenamerun;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -57,6 +58,10 @@ public class Ranking extends AppCompatActivity {
             @Override
             public void onClick(View view){
                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,ranking_stage1).commit();
+                ranking_stage1_btn.setBackgroundColor(Color.parseColor("#E1999F")); //rose_water
+                ranking_stage2_btn.setBackgroundColor(Color.parseColor("#DEB3AD")); //dusty_rose
+                ranking_stage3_btn.setBackgroundColor(Color.parseColor("#DEB3AD"));
+                ranking_stage4_btn.setBackgroundColor(Color.parseColor("#DEB3AD"));
             }
         });
 
@@ -65,6 +70,10 @@ public class Ranking extends AppCompatActivity {
             @Override
             public void onClick(View view){
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,ranking_stage2).commit();
+                ranking_stage1_btn.setBackgroundColor(Color.parseColor("#DEB3AD"));
+                ranking_stage2_btn.setBackgroundColor(Color.parseColor("#E1999F"));
+                ranking_stage3_btn.setBackgroundColor(Color.parseColor("#DEB3AD"));
+                ranking_stage4_btn.setBackgroundColor(Color.parseColor("#DEB3AD"));
             }
         });
         /*Ranking_stage3_btn listener*/
@@ -72,6 +81,10 @@ public class Ranking extends AppCompatActivity {
             @Override
             public void onClick(View view){
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,ranking_stage3).commit();
+                ranking_stage1_btn.setBackgroundColor(Color.parseColor("#DEB3AD"));
+                ranking_stage2_btn.setBackgroundColor(Color.parseColor("#DEB3AD"));
+                ranking_stage3_btn.setBackgroundColor(Color.parseColor("#E1999F"));
+                ranking_stage4_btn.setBackgroundColor(Color.parseColor("#DEB3AD"));
             }
         });
         /*Ranking_stage4_btn listener*/
@@ -79,6 +92,10 @@ public class Ranking extends AppCompatActivity {
             @Override
             public void onClick(View view){
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,ranking_stage4).commit();
+                ranking_stage1_btn.setBackgroundColor(Color.parseColor("#DEB3AD"));
+                ranking_stage2_btn.setBackgroundColor(Color.parseColor("#DEB3AD"));
+                ranking_stage3_btn.setBackgroundColor(Color.parseColor("#DEB3AD"));
+                ranking_stage4_btn.setBackgroundColor(Color.parseColor("#E1999F"));
             }
         });
 
