@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -34,6 +35,8 @@ public class AgentInformation extends Fragment {
     TextView stage3;
     TextView stage4;
     TextView total;
+    int[]ImageId={R.drawable.woman_portrait,R.drawable.man_portrait};
+    ImageView portrait;
 
 
     //OnAttach는 fragment를 붙일 때 호출, getActivity로  액티비티를 찾아준다.
@@ -74,6 +77,9 @@ public class AgentInformation extends Fragment {
 
         new InformationInstance().execute();
 
+        portrait = (ImageView)view.findViewById(R.id.portrait);
+        portrait.setOnClickListener(new MyListener() //초상화 클릭시 초상화변경
+        );
         return view;
     }
 
@@ -134,5 +140,17 @@ public class AgentInformation extends Fragment {
         }
     }
 
+    class MyListener implements View.OnClickListener{
+
+        int i=0;
+        int length=ImageId.length;
+
+        @Override
+        public  void onClick(View v){
+            portrait.setImageResource(ImageId[i]);
+            i++;
+            if(i==ImageId.length) i=0;
+        }
+    }
 
 }
