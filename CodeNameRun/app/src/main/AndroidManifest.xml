@@ -54,16 +54,14 @@
         </receiver>
 
         <activity android:name=".WriteAgentInfo" />
-        <activity android:name=".Community" />
         <activity android:name=".Home" />
         <activity android:name=".ScoreBoard" />
-
+        <activity android:name=".AgentInformation" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
         <activity android:name=".Running" />
-        <activity android:name=".AgentInfo" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

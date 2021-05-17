@@ -38,26 +38,17 @@ public class Home extends AppCompatActivity {
         selectStage = new SelectStage();
         agentInformation = new AgentInformation();
 
-        /* if 번들이 extra 를 가지고 있으면,
-            agent information fragment 를 띄운다
-            (Ranking activity 에서 home, select stage 를 선택하기 위함)
-            없으면 select stage 를 띄운다
-         */
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.menu_fragment_container,agentInformation).commit();
-        }
+
         getSupportFragmentManager().beginTransaction().replace(R.id.menu_fragment_container,selectStage).commit();
 
         /* menu buttons onclick*/
         AgentInfo.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                getSupportFragmentManager().beginTransaction().replace(R.id.menu_fragment_container,agentInformation).commit();
-
-                AgentInfo.setImageResource(R.drawable.agent_info);
-                Home.setImageResource(R.drawable.home_grey);
-                Ranking.setImageResource(R.drawable.community_grey);
+                Intent intent = new Intent(getApplicationContext(),AgentInformation.class);
+                startActivity(intent);
+                // 중첩을 피하기 위해서 다른 activity 로 갈때 quit home activity
+                finish();
             }
         });
         Home.setOnClickListener(new View.OnClickListener(){

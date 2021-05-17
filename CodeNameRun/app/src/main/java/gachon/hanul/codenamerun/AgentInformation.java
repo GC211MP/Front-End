@@ -1,28 +1,26 @@
 package gachon.hanul.codenamerun;
 
-import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
-import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import gachon.hanul.codenamerun.api.DataDTO;
 import gachon.hanul.codenamerun.api.PersonalData;
 import gachon.hanul.codenamerun.api.StoreManager;
 
 
-public class AgentInformation extends Fragment {
-
+public class AgentInformation extends AppCompatActivity {
 
     ArrayList<String> information;
     Home home;
@@ -35,53 +33,73 @@ public class AgentInformation extends Fragment {
     TextView stage3;
     TextView stage4;
     TextView total;
+    AgentInformation agentInformation;
+
     int[]ImageId={R.drawable.woman_portrait,R.drawable.man_portrait};
     ImageView portrait;
 
-
-    //OnAttach는 fragment를 붙일 때 호출, getActivity로  액티비티를 찾아준다.
-    @Override
-    public void onAttach(Context context){
-        super.onAttach(context);
-        home = (Home)getActivity();
-    }
-    @Override
-    public void onDetach(){
-        super.onDetach();
-       home = null;
-    }
+    /* menu button */
+    ImageButton AgentInfo;
+    ImageButton Home;
+    ImageButton Ranking;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
+        setContentView(R.layout.activity_agent_information);
 
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        ViewGroup view=(ViewGroup)inflater.inflate(R.layout.fragment_agent_information, container, false);
-
-        name= view.findViewById(R.id.agent_name);
-        height= view.findViewById(R.id.agent_height);
-        weight=view.findViewById(R.id.agent_weight);
-        stage1= view.findViewById(R.id.score_1stage);
-        stage2= view.findViewById(R.id.score_2stage);
-        stage3= view.findViewById(R.id.score_3stage);
-        stage4= view.findViewById(R.id.score_4stage);
-        total= view.findViewById(R.id.agent_distance_colories);
-
-        information = new ArrayList<String>();
-        information=null;
+        name= findViewById(R.id.agent_name);
+        height= findViewById(R.id.agent_height);
+        weight= findViewById(R.id.agent_weight);
+        stage1= findViewById(R.id.score_1stage);
+        stage2= findViewById(R.id.score_2stage);
+        stage3= findViewById(R.id.score_3stage);
+        stage4= findViewById(R.id.score_4stage);
+        total= findViewById(R.id.agent_distance_colories);
 
         new InformationInstance().execute();
 
-        portrait = (ImageView)view.findViewById(R.id.portrait);
+        portrait = (ImageView)findViewById(R.id.portrait);
         portrait.setOnClickListener(new MyListener() //초상화 클릭시 초상화변경
         );
-        return view;
+
+
+        AgentInfo =  findViewById(R.id.AgentInfoButton);
+        Home =  findViewById(R.id.HomeButton);
+        Ranking =  findViewById(R.id.CommunityButton);
+
+        AgentInfo.setImageResource(R.drawable.agent_info);
+        Home.setImageResource(R.drawable.home_grey);
+        Ranking.setImageResource(R.drawable.community_grey);
+
+        /* menu buttons */
+        AgentInfo.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                Intent intent = new Intent(getApplicationContext(),AgentInformation.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        Home.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                Intent intent = new Intent(getApplicationContext(),Home.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        Ranking.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                Intent intent = new Intent(getApplicationContext(),Ranking.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
     }
+
 
 
     private class InformationInstance extends AsyncTask<Void, ArrayList<String>, Void> {
@@ -89,16 +107,9 @@ public class AgentInformation extends Fragment {
 
         @Override
         protected Void doInBackground(Void... params) {
-            manager = StoreManager.getInstance(home.getApplicationContext()); //서버 불러오기
+            manager = StoreManager.getInstance(getApplicationContext()); //서버 불러오기
             Integer[] stages = {};
             PersonalData user = manager.readUserData(stages);
-   /*         ArrayList<DataDTO> stage1 = manager.getRankTable("score", false, 1);
-            ArrayList<DataDTO> stage2 = manager.getRankTable("score", false, 2);
-            ArrayList<DataDTO> stage3 = manager.getRankTable("score", false, 3);
-            ArrayList<DataDTO> stage4 = manager.getRankTable("score", false, 4);*/
-
-         /*   ArrayList information; //agent Info를 순서대로 담고 있다.
-            information = new ArrayList<String>();*/
             ArrayList<String> temp = new ArrayList<String>();
             temp.add(user.userName);
             temp.add(String.valueOf(user.userHeight));

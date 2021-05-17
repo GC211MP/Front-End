@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".AgentInformation">
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+
 <!--스크롤뷰 추가-->
         <TextView
            android:id="@+id/information"
@@ -163,5 +161,45 @@
        android:textColor="@color/warm_white"
        android:text=""
        android:textSize="17dp"/>
+
+   /* menu bar */
+   <LinearLayout
+       android:id="@+id/menubar"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:orientation="horizontal"
+       android:layout_alignParentBottom="true">
+
+      <ImageButton
+          android:id="@+id/AgentInfoButton"
+          android:layout_width="24dp"
+          android:layout_height="30dp"
+          android:layout_margin="10dp"
+          android:layout_weight="1"
+          android:background="#00ff0000"
+          android:scaleType="centerInside"
+          android:src="@drawable/agent_info" />
+
+      <ImageButton
+          android:id="@+id/HomeButton"
+          android:layout_width="24dp"
+          android:layout_height="30dp"
+          android:layout_margin="10dp"
+          android:layout_weight="1"
+          android:background="#00ff0000"
+          android:scaleType="centerInside"
+          android:src="@drawable/home" />
+
+      <ImageButton
+          android:id="@+id/CommunityButton"
+          android:layout_width="24dp"
+          android:layout_height="30dp"
+          android:layout_margin="10dp"
+          android:layout_weight="1"
+          android:background="#00ff0000"
+          android:scaleType="centerInside"
+          android:src="@drawable/community" />
+   </LinearLayout>
+
+
 </RelativeLayout>
-</ScrollView>

@@ -112,7 +112,7 @@ public class Ranking extends AppCompatActivity {
         AgentInfo.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                Intent intent = new Intent(getApplicationContext(),Home.class);
+                Intent intent = new Intent(getApplicationContext(),AgentInformation.class);
                 startActivity(intent);
                 finish();
             }
