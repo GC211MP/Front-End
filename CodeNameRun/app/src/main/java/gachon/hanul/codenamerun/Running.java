@@ -394,7 +394,7 @@ public class Running extends AppCompatActivity {
         getResources().getStringArray(R.array.test);
         if (stage.equals("Prologue")) {
             nowStage = 1;
-            return getResources().getStringArray(R.array.test);
+            return getResources().getStringArray(R.array.Prologue);
         }
         if (stage.equals("Stage1")) {
             nowStage = 1;
