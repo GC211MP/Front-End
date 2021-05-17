@@ -97,15 +97,20 @@ public class AgentInformation extends Fragment {
             temp.add(user.userName);
             temp.add(String.valueOf(user.userHeight));
             temp.add(String.valueOf(user.userWeight));
-            temp.add("임시점수1");
-            temp.add("임시점수2");
-            temp.add("임시점수3");
-            temp.add("임시점수4");
 
-/*          temp.add(String.valueOf(stage1.get(4)));
-            temp.add(String.valueOf(stage2.get(0)));
-            temp.add(String.valueOf(stage3.get(0)));
-            temp.add(String.valueOf(stage4.get(0)));*/
+            //점수가 없으면 -1이 나와서 수정
+            if(manager.getTopScore(1)==-1){temp.add(String.valueOf(0));}
+            else {temp.add(String.valueOf(manager.getTopScore(1)));}
+
+            if(manager.getTopScore(2)==-1){temp.add(String.valueOf(0));}
+            else {temp.add(String.valueOf(manager.getTopScore(2)));}
+
+            if(manager.getTopScore(3)==-1){temp.add(String.valueOf(0));}
+            else {temp.add(String.valueOf(manager.getTopScore(3)));}
+
+            if(manager.getTopScore(4)==-1){temp.add(String.valueOf(0));}
+            else {temp.add(String.valueOf(manager.getTopScore(4)));}
+
 
             temp.add(String.valueOf(manager.getTotalDistance(-1)));
             temp.add(String.valueOf(manager.getTotalCalorie(-1)));
@@ -119,8 +124,8 @@ public class AgentInformation extends Fragment {
             super.onProgressUpdate(values);
             information = values[0];
             name.setText(" Name : "+ information.get(0));
-            height.setText(" Height : "+information.get(1));
-            weight.setText(" Weight : "+information.get(2));
+            height.setText(" Height : "+information.get(1) +"cm");
+            weight.setText(" Weight : "+information.get(2)+"kg");
             stage1.setText(" Stage1\n\n  "+information.get(3));
             stage2.setText(" Stage2\n\n  "+information.get(4));
             stage3.setText(" Stage3\n\n  "+information.get(5));

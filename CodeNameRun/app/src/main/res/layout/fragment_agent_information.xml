@@ -91,7 +91,8 @@
            android:layout_height="wrap_content"
            android:layout_below="@+id/agent_weight"
            android:layout_marginTop="20dp"
-           android:layout_marginStart="20dp"
+           android:layout_toLeftOf="@+id/score_2stage"
+           android:layout_marginRight="10dp"
            android:textColor="@color/warm_white"
            android:text=" Stage1\n\n   "
            android:textSize="17dp"
@@ -103,11 +104,20 @@
            android:layout_height="wrap_content"
            android:layout_below="@+id/agent_weight"
            android:layout_marginTop="20dp"
-           android:layout_marginStart="15dp"
-           android:layout_toRightOf="@id/score_1stage"
+           android:layout_toLeftOf="@+id/center1"
+           android:layout_marginRight="10dp"
            android:textColor="@color/warm_white"
            android:text=" Stage2\n\n    "
            android:textSize="17dp"/>
+   <!--배치용 투명칸-->
+       <TextView
+          android:id="@+id/center1"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_centerHorizontal="true"
+          android:layout_below="@+id/agent_weight"
+          android:layout_marginTop="30dp"
+          android:text=""/>
        //3stage 스코어
        <TextView
            android:id="@+id/score_3stage"
@@ -115,8 +125,8 @@
            android:layout_height="wrap_content"
            android:layout_below="@+id/agent_weight"
            android:layout_marginTop="20dp"
-           android:layout_marginStart="15dp"
-           android:layout_toRightOf="@id/score_2stage"
+           android:layout_marginLeft="10dp"
+           android:layout_toRightOf="@+id/center1"
            android:textColor="@color/warm_white"
            android:text=" Stage3\n\n    "
            android:textSize="17dp"/>
@@ -127,7 +137,7 @@
            android:layout_height="wrap_content"
            android:layout_below="@+id/agent_weight"
            android:layout_marginTop="20dp"
-           android:layout_marginStart="15dp"
+           android:layout_marginLeft="10dp"
            android:layout_toRightOf="@id/score_3stage"
            android:textColor="@color/warm_white"
            android:text=" Stage4\n\n    "
