@@ -11,6 +11,45 @@
     //텍스트뷰 추가해서 앱 사용설명주기
     //찬영선배 prologue 지도는 뜨는데, 늦게 달려도 경고 안뜨고 기밀문서 안줄게 해주실수 있나용?
 
+    <string-array name="test">
+    <item>효과음</item>
+    <item>쿠구궁</item>
+
+    <item>효과음</item>
+    <item>구두소리</item> <!-- 효과음 이름, 시간을 어케해주지???-->
+
+    <item>멘트</item>
+    <item>0</item> <!-- 요구되는 속도, 이거 숫자말고 스트링으로 해도 좋을듯-->
+    <item>0</item> <!-- 시간, 일단 단위는 초-->
+    <item>새로온 요원 안녕</item>
+
+    <item>배경음 시작</item>
+    <item>on_a_mission</item> <!-- 배경음 이름-->
+
+    <item>멘트</item>
+    <item>1000000</item> <!-- 요구되는 속도-->
+    <item>0</item> <!-- 시간 -->
+    <item>효과음 잘 들렸나, 잘했다</item>
+    <item>효과음</item>
+    <item>쿠구궁</item>
+
+    <item>효과음</item>
+    <item>구두소리</item> <!-- 효과음 이름, 시간을 어케해주지???-->
+
+    <item>멘트</item>
+    <item>0</item> <!-- 요구되는 속도, 이거 숫자말고 스트링으로 해도 좋을듯-->
+    <item>0</item> <!-- 시간, 일단 단위는 초-->
+    <item>새로온 요원 안녕</item>
+
+    <item>배경음 시작</item>
+    <item>on_a_mission</item> <!-- 배경음 이름-->
+
+    <item>멘트</item>
+    <item>1000000</item> <!-- 요구되는 속도-->
+    <item>0</item> <!-- 시간 -->
+    <item>효과음 잘 들렸나, 잘했다</item>
+
+</string-array>
 
     <string-array name="Prologue">
 
@@ -66,45 +105,7 @@
     </string-array>
 
 
-    <string-array name="test">
-        <item>효과음</item>
-        <item>쿠구궁</item>
 
-        <item>효과음</item>
-        <item>구두소리</item> <!-- 효과음 이름, 시간을 어케해주지???-->
-
-        <item>멘트</item>
-        <item>0</item> <!-- 요구되는 속도, 이거 숫자말고 스트링으로 해도 좋을듯-->
-        <item>0</item> <!-- 시간, 일단 단위는 초-->
-        <item>새로온 요원 안녕</item>
-
-        <item>배경음 시작</item>
-        <item>on_a_mission</item> <!-- 배경음 이름-->
-
-                <item>멘트</item>
-        <item>1000000</item> <!-- 요구되는 속도-->
-        <item>0</item> <!-- 시간 -->
-        <item>효과음 잘 들렸나, 잘했다</item>
-        <item>효과음</item>
-        <item>쿠구궁</item>
-
-        <item>효과음</item>
-        <item>구두소리</item> <!-- 효과음 이름, 시간을 어케해주지???-->
-
-        <item>멘트</item>
-        <item>0</item> <!-- 요구되는 속도, 이거 숫자말고 스트링으로 해도 좋을듯-->
-        <item>0</item> <!-- 시간, 일단 단위는 초-->
-        <item>새로온 요원 안녕</item>
-
-        <item>배경음 시작</item>
-        <item>on_a_mission</item> <!-- 배경음 이름-->
-
-        <item>멘트</item>
-        <item>1000000</item> <!-- 요구되는 속도-->
-        <item>0</item> <!-- 시간 -->
-        <item>효과음 잘 들렸나, 잘했다</item>
-
-    </string-array>
 
 
     <!-- stage1 -->
@@ -187,7 +188,7 @@
         <item>긴박한배경음</item>
 
         <item>멘트</item>
-        <item>0</item> <!-- 요구되는 속도(m/s)-->
+        <item>1.66667</item> <!-- 요구되는 속도(m/s)-->
         <item>60</item>  <!-- 시간(sec): 60-->
         <item>
             3분 걷기가 끝났습니다. 1분동안 달리십시오.
@@ -225,7 +226,7 @@
         <item>긴박한배경음</item>
 
         <item>멘트</item>
-        <item>0</item> <!-- 요구되는 속도(m/s)-->
+        <item>1.66667</item> <!-- 요구되는 속도(m/s)-->
         <item>60</item>  <!-- 시간(sec): 60-->
         <item>
             3분 걷기가 끝났습니다. 1분 동안 달리십시오.
@@ -274,7 +275,7 @@
         <item>전투소리</item>
 
         <item>멘트</item>
-        <item>0</item> <!-- 요구되는 속도(m/s)-->
+        <item>1.66667</item> <!-- 요구되는 속도(m/s)-->
         <item>60</item>  <!-- 시간(sec): 60-->
         <item>
             3분 걷기가 끝났습니다. 1분 동안 달리십시오.
@@ -320,7 +321,7 @@
         <item>긴박한배경음</item>
 
         <item>멘트</item>
-        <item>0</item> <!-- 요구되는 속도(m/s)-->
+        <item>1.66667</item> <!-- 요구되는 속도(m/s)-->
         <item>60</item>  <!-- 시간(sec): 60-->
         <item>
             3분 걷기가 끝났습니다. 1분동안 달리십시오.
@@ -376,7 +377,7 @@
         <item>신나는배경음</item>
 
         <item>멘트</item>
-        <item>0</item> <!-- 요구되는 속도(m/s)-->
+        <item>1.66667</item> <!-- 요구되는 속도(m/s)-->
         <item>60</item>  <!-- 시간(sec): 60-->
         <item>
             3분 걷기가 끝났습니다. 1분 동안 달리십시오.
@@ -468,7 +469,7 @@
         <item>긴박한배경음</item>
 
         <item>멘트</item>
-        <item>0</item> <!-- 요구되는 속도(m/s)-->
+        <item>1.66667</item> <!-- 요구되는 속도(m/s)-->
         <item>90</item>  <!-- 시간(sec): 90-->
         <item>
             3분 걷기가 끝났습니다. 1분 30초동안 달리십시오.
@@ -508,7 +509,7 @@
         <item>긴박한배경음</item>
 
         <item>멘트</item>
-        <item>0</item> <!-- 요구되는 속도(m/s)-->
+        <item>1.66667</item> <!-- 요구되는 속도(m/s)-->
         <item>90</item>  <!-- 시간(sec): 60-->
         <item>
             요원님 스파이의 본거지까지 달립시다! 1분 30초 동안 달리십시오.
@@ -549,7 +550,7 @@
         <item>긴박한배경음</item>
 
         <item>멘트</item>
-        <item>0</item> <!-- 요구되는 속도(m/s)-->
+        <item>1.66667</item> <!-- 요구되는 속도(m/s)-->
         <item>90</item>  <!-- 시간(sec): 60-->
         <item>
             3분 걷기가 끝났습니다. 달리십시오.
@@ -598,7 +599,7 @@
         <item>긴박한배경음</item>
 
         <item>멘트</item>
-        <item>0</item> <!-- 요구되는 속도(m/s)-->
+        <item>1.66667</item> <!-- 요구되는 속도(m/s)-->
         <item>90</item>  <!-- 시간(sec): 60-->
         <item>
             3분 걷기가 끝났습니다. 1분 30초 동안 달리십시오.
@@ -645,7 +646,7 @@
         <item>긴박한배경음</item>
 
         <item>멘트</item>
-        <item>0</item> <!-- 요구되는 속도(m/s)-->
+        <item>1.66667</item> <!-- 요구되는 속도(m/s)-->
         <item>90</item>  <!-- 시간(sec): 60-->
         <item>
             3분 걷기가 끝났습니다. 1분 30초 동안 달리십시오.
@@ -750,7 +751,7 @@
         <item>긴박한배경음</item>
 
         <item>멘트</item>
-        <item>0</item> <!-- 요구되는 속도(m/s)-->
+        <item>2</item> <!-- 요구되는 속도(m/s)-->
         <item>120</item>  <!-- 시간(sec): 120-->
         <item>
             2분 걷기가 끝났습니다. 2분 동안 달리십시오.
@@ -798,7 +799,7 @@
         <item>긴박한배경음</item>
 
         <item>멘트</item>
-        <item>0</item> <!-- 요구되는 속도(m/s)-->
+        <item>2</item> <!-- 요구되는 속도(m/s)-->
         <item>120</item>  <!-- 시간(sec): 120-->
         <item>
             2분 걷기가 끝났습니다. 2분 동안 달리십시오.
@@ -843,7 +844,7 @@
         <item>전투소리</item>
 
         <item>멘트</item>
-        <item>0</item> <!-- 요구되는 속도(m/s)-->
+        <item>2</item> <!-- 요구되는 속도(m/s)-->
         <item>120</item>  <!-- 시간(sec): 120-->
         <item>
             2분 걷기가 끝났습니다. 2분 동안 달리십시오.
@@ -878,7 +879,7 @@
         <item>긴박한배경음</item>
 
         <item>멘트</item>
-        <item>0</item> <!-- 요구되는 속도(m/s)-->
+        <item>2</item> <!-- 요구되는 속도(m/s)-->
         <item>120</item>  <!-- 시간(sec): 120-->
         <item>
             2분 걷기가 끝났습니다. 2분 동안 달리십시오.
@@ -919,7 +920,7 @@
         <item>긴박한배경음</item>
 
         <item>멘트</item>
-        <item>0</item> <!-- 요구되는 속도(m/s)-->
+        <item>2</item> <!-- 요구되는 속도(m/s)-->
         <item>120</item>  <!-- 시간(sec): 120-->
         <item>
             2분 걷기가 끝났습니다. 2분 동안 달리십시오.
@@ -988,7 +989,7 @@
         <item>긴박한배경음</item>
 
         <item>멘트</item>
-        <item>0</item> <!-- 요구되는 속도(m/s)-->
+        <item>2</item> <!-- 요구되는 속도(m/s)-->
         <item>150</item>  <!-- 시간(sec): 150-->
         <item>
             2분 걷기가 끝났습니다. 2분 30초 동안 달리십시오.
@@ -1020,7 +1021,7 @@
         <item>긴박한배경음</item>
 
         <item>멘트</item>
-        <item>0</item> <!-- 요구되는 속도(m/s)-->
+        <item>2</item> <!-- 요구되는 속도(m/s)-->
         <item>150</item>  <!-- 시간(sec): 150-->
         <item>
             2분 걷기가 끝났습니다. 2분 30초동안 달리십시오.
@@ -1051,7 +1052,7 @@
         <item>긴박한배경음</item>
 
         <item>멘트</item>
-        <item>0</item> <!-- 요구되는 속도(m/s)-->
+        <item>2</item> <!-- 요구되는 속도(m/s)-->
         <item>150</item>  <!-- 시간(sec): 150-->
         <item>
             2분 걷기가 끝났습니다. 달리십시오. 요원님
@@ -1097,7 +1098,7 @@
         <item>긴박한배경음</item>
 
         <item>멘트</item>
-        <item>0</item> <!-- 요구되는 속도(m/s)-->
+        <item>2</item> <!-- 요구되는 속도(m/s)-->
         <item>150</item>  <!-- 시간(sec): 150-->
         <item>
             2분 걷기가 끝났습니다. 달리십시오.
@@ -1154,7 +1155,7 @@
         <item>신나는배경음</item>
 
         <item>멘트</item>
-        <item>0</item> <!-- 요구되는 속도(m/s)-->
+        <item>2</item> <!-- 요구되는 속도(m/s)-->
         <item>150</item>  <!-- 시간(sec): 120-->
         <item>2분 걷기가 끝났습니다. 달리십시오.
         </item>
