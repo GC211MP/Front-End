@@ -33,11 +33,11 @@ public class HelpGPS extends Service implements LocationListener {
     private static final long MIN_TIME_UPDATES = 5000; // 5초
 
     // 찐
-    public static final float WALK_SLOW = (float)0.833; // 3km/h
-    public static final float WALK_FAST = (float)1.11111; // 4km/h
-    public static final float RUN_SLOW = (float)1.66667; // 6km/h
-    public static final float RUN_AVG = (float)2.72; // 10km/h
-    public static final float RUN_FAST = (float)4.16; // 15km/h
+    public static final float WALK_SLOW = (float) 0.833; // 3km/h
+    public static final float WALK_FAST = (float) 1.11111; // 4km/h
+    public static final float RUN_SLOW = (float) 1.66667; // 6km/h
+    public static final float RUN_AVG = (float) 2.72; // 10km/h
+    public static final float RUN_FAST = (float) 4.16; // 15km/h
 
 //    // 테스트용
 //    public static final float WALK_SLOW = (float) 1.5;
@@ -181,12 +181,11 @@ public class HelpGPS extends Service implements LocationListener {
         this.minSpeed = speed;
     }
 
-       private void sendMSGSpeedIsSlow() {
+    private void sendMSGSpeedIsSlow() {
         Intent intent = new Intent("gachon.hanul.codenamerun.local");
         intent.putExtra(MSG_SLOW, false);
         LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
     }
-
 
 
     private float calculateDistance(long time, float speed) {

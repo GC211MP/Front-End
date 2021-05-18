@@ -24,6 +24,7 @@ import android.os.Handler;
 import android.os.storage.StorageManager;
 import android.speech.tts.UtteranceProgressListener;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -48,8 +49,8 @@ public class Running extends AppCompatActivity {
 
     String[] REQUIRED_PERMISSIONS = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
     // for score
-    private final int DISTANCE_MULTIPLE = 100;
-    private final int SECRET_MULTIPLE = 100;
+    private final int DISTANCE_MULTIPLE = 1;
+    private final int SECRET_MULTIPLE = 200;
     public static final String LOG_IN_RUNNING = "running";
     private final String NEXT_TTS = "멘트";
     private final String BGM_START = "배경음 시작";
@@ -83,6 +84,7 @@ public class Running extends AppCompatActivity {
     private boolean isRunDone;
     private boolean isLost;
     private boolean isMapReady;
+    private boolean backKey = false;
 
     int nowStage;
     int totalSecret;
@@ -229,6 +231,30 @@ public class Running extends AppCompatActivity {
     }
     /* onCreate end -----------------------------------------------------------------------------------------*/
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_BACK:
+                if (backKey == false) {
+                    backKey = true;
+                    Toast.makeText(getApplicationContext(), "뒤로키를 한번더 누르시면 종료됩니다", Toast.LENGTH_SHORT).show();
+                    handler.postDelayed(()->backKey= false,1500);
+                    return false;
+                } else {
+                    if (bgmPlayer.isPlaying()) {
+                        bgmPlayer.stop();
+                    }
+                    // 중첩을 피하기 위해서 다른 activity 로 갈때 quit home activity
+                    helpGPS.stopUsingGPS();
+                    helpGPS.onDestroy();
+                    finish();
+                    super.onKeyDown(keyCode, event);
+                }
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+
     /**
      * playNextStop
      * 다음 스토리를 진행하는 함수입니다.
@@ -322,11 +348,11 @@ public class Running extends AppCompatActivity {
                 totalSecret--;
                 isLost = true;
 
-               tts.speak("속도가 느려졌습니다. 조금 더 빨리 뛰시길 바랍니다", TextToSpeech.QUEUE_ADD, null, "prologue_1");
+                tts.speak("속도가 느려졌습니다. 조금 더 빨리 뛰시길 바랍니다", TextToSpeech.QUEUE_ADD, null, "prologue_1");
 
             }
 
-            if(isMapReady){
+            if (isMapReady) {
                 isMapReady = false;
                 new Thread(new TimeHandler()).start();
                 playNextStep(); // 얘의 위치를 좀 바꾸자자
@@ -393,7 +419,7 @@ public class Running extends AppCompatActivity {
     private String[] getStageStringArray(String stage) {
         getResources().getStringArray(R.array.test);
         if (stage.equals("Prologue")) {
-            nowStage = 1;
+            nowStage = 0;
             return getResources().getStringArray(R.array.Prologue);
         }
         if (stage.equals("Stage1")) {
