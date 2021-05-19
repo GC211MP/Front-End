@@ -17,9 +17,16 @@ android {
     }
 
     buildTypes {
+        debug {
+            // 개발용 KEY
+            resValue "string", "google_maps_key", "AIzaSyABMefWjQMzsJNJvtniwXfN9uhbRjU6ofE"
+        }
+
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            resValue "string", "google_maps_key", "AIzaSyABMefWjQMzsJNJvtniwXfN9uhbRjU6ofEY"
         }
     }
     compileOptions {
@@ -38,6 +45,12 @@ android {
         exclude 'META-INF/dependencies.txt'
         exclude 'META-INF/LGPL2.1'
     }
+
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+
 }
 
 dependencies {

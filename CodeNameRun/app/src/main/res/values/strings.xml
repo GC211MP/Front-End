@@ -1172,7 +1172,7 @@
 
 
 
-    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyABMefWjQMzsJNJvtniwXfN9uhbRjU6ofE</string>
+    <string name="sdsd" templateMergeStrategy="preserve" translatable="false">AIzaSyABMefWjQMzsJNJvtniwXfN9uhbRjU6ofE</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_ranking">Ranking</string>
