@@ -455,7 +455,7 @@
         </item>
 
         <item>멘트</item>
-        <item>20</item> <!-- 요구되는 속도(m/s)-->
+        <item>0</item> <!-- 요구되는 속도(m/s)-->
         <item>20</item>  <!-- 시간(sec): 60-->
         <item>
             요원님, 들리십니까?

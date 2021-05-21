@@ -238,7 +238,7 @@ public class Running extends AppCompatActivity {
                 if (backKey == false) {
                     backKey = true;
                     Toast.makeText(getApplicationContext(), "뒤로키를 한번더 누르시면 종료됩니다", Toast.LENGTH_SHORT).show();
-                    handler.postDelayed(()->backKey= false,1500);
+                    handler.postDelayed(() -> backKey = false, 1500);
                     return false;
                 } else {
                     if (bgmPlayer != null && bgmPlayer.isPlaying()) {
@@ -264,17 +264,23 @@ public class Running extends AppCompatActivity {
     public void playNextStep() {
         isTTSDone = false;
         isRunDone = false;
-        isLost = false;
+
 
         // 다음이 있는지 확인
         if (now_step < storyLists.length) { // 스토지를 진행하자
 
             if (storyLists[now_step].equals(NEXT_TTS)) { // TTS 실행
+                isLost = false;
                 // 속도랑 시간을 걸어주자
                 now_step++;
-                helpGPS.setMinSpeed(Integer.parseInt(storyLists[now_step])); // 속도
+                float speed = Float.parseFloat(storyLists[now_step]);
+                if (speed > 1) {
+                    handler.postDelayed(() -> helpGPS.setMinSpeed(speed), 30000);  // 속도
+                } else {
+                    helpGPS.setMinSpeed(speed);
+                }
                 now_step++;
-                targetTime = time + Integer.parseInt(storyLists[now_step]); // 시간
+                targetTime = time + Integer.parseInt(storyLists[now_step])/3; // 시간
 
                 // 멘트를 큐에 넣어주고
                 now_step++;
@@ -289,7 +295,7 @@ public class Running extends AppCompatActivity {
 
                 if (bgmPlayer != null && bgmPlayer.isPlaying()) {
                     bgmPlayer.release();
-                    bgmPlayer = null;
+
                 }
 
                 bgmPlayer = MediaPlayer.create(Running.this, getMusicResource(storyLists[now_step]));
@@ -391,10 +397,7 @@ public class Running extends AppCompatActivity {
             @Override
             public void run() {
                 StoreManager manager = StoreManager.getInstance(getApplicationContext());
-//                manager.enrollUser(
-//                        new SqliteDto("iiiiidd","ppw","nname",18,90,"m"));
-//                Integer[] ttt = {1,2,3,4};
-//                PersonalData pd =  manager.readUserData(ttt);
+                //manager.readUserData TODO: 이거봐꿔야행
                 DataDTO dataDTO = new DataDTO("testman", nowStage, (int) distance, calorie, score);
                 manager.setRank(dataDTO);
             }
