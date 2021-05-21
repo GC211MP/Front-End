@@ -47,7 +47,7 @@ import static android.speech.tts.TextToSpeech.ERROR;
 
 public class Running extends AppCompatActivity {
 
-    String[] REQUIRED_PERMISSIONS = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
+
     // for score
     private final int DISTANCE_MULTIPLE = 1;
     private final int SECRET_MULTIPLE = 200;
@@ -55,8 +55,6 @@ public class Running extends AppCompatActivity {
     private final String NEXT_TTS = "멘트";
     private final String BGM_START = "배경음 시작";
     private final String EFFECT = "효과음";
-    private static final int GPS_ENABLE_REQUEST_CODE = 2001;
-    private static final int PERMISSIONS_REQUEST_CODE = 100;
 
     /* 우리의 브금술사 */
     private MediaPlayer bgmPlayer;
@@ -108,15 +106,6 @@ public class Running extends AppCompatActivity {
         IntentFilter filter = new IntentFilter();
         filter.addAction("gachon.hanul.codenamerun.local");
         LocalBroadcastManager.getInstance(this).registerReceiver(localReceiver, filter);
-
-//        // gps permission part
-//        if (checkLocationServicesStatus()) {
-//            Log.d(LOG_IN_RUNNING, "point gps permission");
-//            checkRunTimePermission();
-//        } else {
-//            showDialogForLocationServiceSetting();
-//            Log.d(LOG_IN_RUNNING, "point gps permission2");
-//        }
 
         // set helpGPS and helpMap
         helpGPS = new HelpGPS(this);
@@ -216,24 +205,26 @@ public class Running extends AppCompatActivity {
 //        storyLists = getResources().getStringArray(R.array.test); // test 용
         storyLists = getStageStringArray(stageName); // 찐
 
-
-//            new Handler().postDelayed(() -> {
-//                MainActivity.mediaPlayer = MediaPlayer.create(Running.this, R.raw.footstep); // 선언
-//                MainActivity.mediaPlayer.start(); //재생
-//                MainActivity.mediaPlayer.setOnCompletionListener(mp -> { // 제거
-//                    MainActivity.mediaPlayer.release();
-//                    MainActivity.mediaPlayer = null;
-//                });
-//            }, 4000);
-
-
         Log.d(LOG_IN_RUNNING, "onCreate in end");
     }
     /* onCreate end -----------------------------------------------------------------------------------------*/
 
+
+    public void ByeBye() {
+        bgmPlayer.release();
+        helpGPS.stopUsingGPS();
+        helpGPS.onDestroy();
+        helpMap.finish();
+        finish();
+    }
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         switch (keyCode) {
+            /**
+             * if user press back key once than toast a message
+             * if user press back key one more than finish stage
+             */
             case KeyEvent.KEYCODE_BACK:
                 if (backKey == false) {
                     backKey = true;
@@ -241,13 +232,8 @@ public class Running extends AppCompatActivity {
                     handler.postDelayed(() -> backKey = false, 1500);
                     return false;
                 } else {
-                    if (bgmPlayer != null && bgmPlayer.isPlaying()) {
-                        bgmPlayer.stop();
-                    }
                     // 중첩을 피하기 위해서 다른 activity 로 갈때 quit home activity
-                    helpGPS.stopUsingGPS();
-                    helpGPS.onDestroy();
-                    finish();
+                    ByeBye();
                     super.onKeyDown(keyCode, event);
                 }
         }
@@ -275,12 +261,12 @@ public class Running extends AppCompatActivity {
                 now_step++;
                 float speed = Float.parseFloat(storyLists[now_step]);
                 if (speed > 1) {
-                    handler.postDelayed(() -> helpGPS.setMinSpeed(speed), 30000);  // 속도
+                    handler.postDelayed(() -> helpGPS.setMinSpeed(speed), 20000);  // 속도
                 } else {
                     helpGPS.setMinSpeed(speed);
                 }
                 now_step++;
-                targetTime = time + Integer.parseInt(storyLists[now_step])/3; // 시간
+                targetTime = time + Integer.parseInt(storyLists[now_step]); // 시간
 
                 // 멘트를 큐에 넣어주고
                 now_step++;
@@ -355,17 +341,13 @@ public class Running extends AppCompatActivity {
                 isLost = true;
 
                 tts.speak("속도가 느려졌습니다. 조금 더 빨리 뛰시길 바랍니다", TextToSpeech.QUEUE_ADD, null, "prologue_1");
-
             }
 
             if (isMapReady) {
                 isMapReady = false;
                 new Thread(new TimeHandler()).start();
                 playNextStep(); // 얘의 위치를 좀 바꾸자자
-
             }
-
-
         }
     }
 
@@ -381,10 +363,6 @@ public class Running extends AppCompatActivity {
         //score = calculateScore(distance,totalSecret);
         score = calculateScore(distance, totalSecret);
         calorie = helpGPS.getCalories();
-        // 3. 객체 종료하기 -> gps랑 map
-        //helpMap.clearMap();
-        helpGPS.stopUsingGPS();
-        helpGPS.onDestroy();
         // 4. 점수창 띄워주기
         Intent intent = new Intent(getApplicationContext(), ScoreBoard.class);
         intent.putExtra("score", score);
@@ -398,27 +376,35 @@ public class Running extends AppCompatActivity {
             public void run() {
                 StoreManager manager = StoreManager.getInstance(getApplicationContext());
                 //manager.readUserData TODO: 이거봐꿔야행
-                DataDTO dataDTO = new DataDTO("testman", nowStage, (int) distance, calorie, score);
+                PersonalData pd = manager.readUserData(new Integer[]{1,2,3,4});
+                DataDTO dataDTO = new DataDTO(pd.userName, nowStage, (int) distance, calorie, score);
                 manager.setRank(dataDTO);
             }
         }).start();
 
-
-        if (bgmPlayer.isPlaying()) {
-            bgmPlayer.stop();
-        }
         // 중첩을 피하기 위해서 다른 activity 로 갈때 quit home activity
-        finish();
-
+        ByeBye();
     }
 
+    /**
+     * calculateScore
+     * calculate score by distance and number of success interval running
+     * @param distance: distance that user walk and run
+     * @param numSecret: number of sucess interval running
+     * @return
+     */
     private int calculateScore(double distance, int numSecret) {
         int score;
         score = (int) (distance * DISTANCE_MULTIPLE) + numSecret * SECRET_MULTIPLE;
-
         return score;
     }
 
+    /**
+     * getStageStringArray
+     * get story array and stage information
+     * @param stage: String that contains stage
+     * @return: String array that story lines
+     */
     private String[] getStageStringArray(String stage) {
         getResources().getStringArray(R.array.test);
         if (stage.equals("Prologue")) {
@@ -498,93 +484,5 @@ public class Running extends AppCompatActivity {
             }
         }
     }
-//    //--------------------------------------------------------------Start <gps permission>----------------------------------------------------------------------
-//    /*
-//     * TODO: 다혜가 퍼미션 부분에서 뻑난다고 말했음 -> 고쳐야한다
-//     * 뻑날때가 있고 뻑 안날때가 있고
-//     *
-//     * GPS 퍼미션 부분은 아래의 출처에서 가져왔습니다.
-//     * Cdde from https://webnautes.tistory.com/1315
-//     */
-//
-//
-//    /* if gps service is not available user have to allow to use gps
-//     * this function show permission pop up
-//     */
-//    private void showDialogForLocationServiceSetting() {
-//
-//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//        builder.setTitle("위치 서비스 비활성화");
-//        builder.setMessage("앱을 사용하기 위해서는 위치 서비스가 필요합니다.\n"
-//                + "위치 설정을 수정하실래요?");
-//        builder.setCancelable(true);
-//        builder.setPositiveButton("설정", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int id) {
-//                Intent callGPSSettingIntent
-//                        = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-//                startActivityForResult(callGPSSettingIntent, GPS_ENABLE_REQUEST_CODE);
-//            }
-//        });
-//        builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int id) {
-//                dialog.cancel();
-//            }
-//        });
-//        builder.create().show();
-//    }
-//
-//    public boolean checkLocationServicesStatus() {
-//        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-//
-//        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
-//                || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-//    }
-//
-//    void checkRunTimePermission() {
-//
-//        //런타임 퍼미션 처리
-//        // 1. 위치 퍼미션을 가지고 있는지 체크합니다.
-//        int hasFineLocationPermission = ContextCompat.checkSelfPermission(this,
-//                Manifest.permission.ACCESS_FINE_LOCATION);
-//        int hasCoarseLocationPermission = ContextCompat.checkSelfPermission(this,
-//                Manifest.permission.ACCESS_COARSE_LOCATION);
-//
-//
-//        if (hasFineLocationPermission == PackageManager.PERMISSION_GRANTED &&
-//                hasCoarseLocationPermission == PackageManager.PERMISSION_GRANTED) {
-//
-//            // 2. 이미 퍼미션을 가지고 있다면
-//            // ( 안드로이드 6.0 이하 버전은 런타임 퍼미션이 필요없기 때문에 이미 허용된 걸로 인식합니다.)
-//
-//
-//            // 3.  위치 값을 가져올 수 있음
-//
-//
-//        } else {  //2. 퍼미션 요청을 허용한 적이 없다면 퍼미션 요청이 필요합니다. 2가지 경우(3-1, 4-1)가 있습니다.
-//
-//            // 3-1. 사용자가 퍼미션 거부를 한 적이 있는 경우에는
-//            if (ActivityCompat.shouldShowRequestPermissionRationale(this, REQUIRED_PERMISSIONS[0])) {
-//
-//                // 3-2. 요청을 진행하기 전에 사용자가에게 퍼미션이 필요한 이유를 설명해줄 필요가 있습니다.
-//                Toast.makeText(this, "이 앱을 실행하려면 위치 접근 권한이 필요합니다.", Toast.LENGTH_LONG).show();
-//                // 3-3. 사용자게에 퍼미션 요청을 합니다. 요청 결과는 onRequestPermissionResult에서 수신됩니다.
-//                ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS,
-//                        PERMISSIONS_REQUEST_CODE);
-//
-//
-//            } else {
-//                // 4-1. 사용자가 퍼미션 거부를 한 적이 없는 경우에는 퍼미션 요청을 바로 합니다.
-//                // 요청 결과는 onRequestPermissionResult에서 수신됩니다.
-//                ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS,
-//                        PERMISSIONS_REQUEST_CODE);
-//            }
-//        }
-//    }
-//
-//
-//    //--------------------------------------------------------------end:<gps permission>---------------------------------------------------------------------
-
 
 }
