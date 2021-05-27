@@ -4,7 +4,7 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "gachon.hanul.codenamerun",
+  "applicationId": "gachon.hanul.codename",
   "variantName": "processReleaseResources",
   "elements": [
     {

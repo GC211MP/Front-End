@@ -7,7 +7,7 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "gachon.hanul.codenamerun"
+        applicationId "gachon.hanul.codename"
         minSdkVersion 26
         targetSdkVersion 30
         versionCode 1
