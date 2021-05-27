@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="gachon.hanul.codenamerun">
+    package="gachon.hanul.codename">
 
     <!--<uses-permission android:name="android.permission.WAKE_LOCK" />-->
 
@@ -33,7 +33,7 @@
             android:value="true" />-->
 
         <activity
-            android:name=".Ranking"></activity>
+            android:name="gachon.hanul.codename.Ranking"></activity>
        <!-- <activity
             android:name=".Ranking"
             android:label="@string/title_activity_ranking">
@@ -45,7 +45,7 @@
         </activity>
 -->
         <receiver
-            android:name=".Running$LocalReceiver"
+            android:name="gachon.hanul.codename.Running$LocalReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
@@ -53,16 +53,16 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".WriteAgentInfo" />
-        <activity android:name=".Home" />
-        <activity android:name=".ScoreBoard" />
-        <activity android:name=".AgentInformation" />
+        <activity android:name="gachon.hanul.codename.WriteAgentInfo" />
+        <activity android:name="gachon.hanul.codename.Home" />
+        <activity android:name="gachon.hanul.codename.ScoreBoard" />
+        <activity android:name="gachon.hanul.codename.AgentInformation" />
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="@string/google_maps_key"/>
 
-        <activity android:name=".Running" />
-        <activity android:name=".MainActivity">
+        <activity android:name="gachon.hanul.codename.Running" />
+        <activity android:name="gachon.hanul.codename.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
