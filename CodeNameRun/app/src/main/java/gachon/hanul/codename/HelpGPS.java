@@ -86,6 +86,7 @@ public class HelpGPS extends Service implements LocationListener {
         nowTime = System.currentTimeMillis();
         calories += calculateCalories(nowTime - lastTime, getLastSpeed());
         distance += calculateDistance(nowTime - lastTime, getLastSpeed());
+        lastTime = nowTime;
 
         // 최소 속도보다 속도가 느리면 로컬방송으로 알려줌
         if (minSpeed > getLastSpeed()) {
